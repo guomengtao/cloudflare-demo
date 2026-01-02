@@ -1,0 +1,21 @@
+{
+  "name": "cloudflare-demo",
+  "version": "1.0.0",
+  "description": "A simple Cloudflare Pages demo project",
+  "main": "index.html",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy"
+  },
+  "keywords": [
+    "cloudflare",
+    "pages",
+    "demo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
+
