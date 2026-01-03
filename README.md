@@ -21,34 +21,52 @@ npm run deploy
 
 ## GitHub 设置
 
-### 自动创建仓库（推荐）
+### 方法 1：使用 GitHub Token（推荐，最快）
 
-运行以下脚本自动创建 GitHub 仓库并推送代码：
+1. **获取 GitHub Token**：
+   - 访问 https://github.com/settings/tokens
+   - 点击 "Generate new token (classic)"
+   - 勾选 `repo` 权限
+   - 点击 "Generate token" 并复制 token
 
-```bash
-./setup-github.sh
-```
-
-如果首次使用，脚本会引导你完成 GitHub 认证。
-
-### 使用 GitHub Token（无需浏览器）
-
-1. 在 https://github.com/settings/tokens 创建 token（需要 `repo` 权限）
-2. 运行：
+2. **运行脚本**：
 ```bash
 export GH_TOKEN=your_token_here
+./create-repo-with-token.sh
+```
+
+### 方法 2：浏览器登录
+
+运行脚本并按照提示在浏览器中完成登录：
+
+```bash
 ./setup-github.sh
 ```
 
-### 手动设置
+如果网络有问题，可以手动登录：
+```bash
+gh auth login --web
+# 然后运行
+./setup-github.sh
+```
 
-1. 在 GitHub 上创建新仓库（名为 `cloudflare-demo`）
-2. 运行以下命令：
+### 方法 3：手动创建（最简单）
+
+1. **在 GitHub 上创建仓库**：
+   - 访问 https://github.com/new
+   - 仓库名：`cloudflare-demo`
+   - 选择 Public
+   - **不要**勾选 "Initialize with README"
+   - 点击 "Create repository"
+
+2. **推送代码**：
 ```bash
 git remote add origin https://github.com/YOUR_USERNAME/cloudflare-demo.git
 git branch -M main
 git push -u origin main
 ```
+
+将 `YOUR_USERNAME` 替换为你的 GitHub 用户名。
 
 ## 使用 Cloudflare Pages
 
