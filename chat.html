@@ -19,8 +19,7 @@
 
     <script>
         const chatDiv = document.getElementById('chat');
-        let lastId = 0;
-
+        
         // 加载消息（包含历史和新消息）
         async function load() {
             try {
@@ -28,8 +27,8 @@
                 const msgs = await res.json();
                 chatDiv.innerHTML = msgs.map(m => `
                     <div class="msg">
-                        <span class="time">[${new Date(m.created_at).toLocaleTimeString()}]</span>
-                        <strong>${m.user}:</strong> ${m.content}
+                        <span class="time">[${new Date(m.timestamp).toLocaleTimeString()}]</span>
+                        <strong>${m.username}:</strong> ${m.text}
                     </div>
                 `).join('');
                 // 自动滚动到底部
@@ -39,14 +38,14 @@
 
         // 发送消息
         async function send() {
-            const user = document.getElementById('user').value || '匿名者';
-            const content = document.getElementById('text').value;
-            if (!content) return;
+            const username = document.getElementById('user').value || '匿名者';
+            const text = document.getElementById('text').value;
+            if (!text) return;
             
             await fetch('/api/send', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user, content })
+                body: JSON.stringify({ username, text })
             });
             document.getElementById('text').value = '';
             load(); // 发送后立即刷新
@@ -54,305 +53,6 @@
 
         setInterval(load, 2000); // 每2秒拉取一次，实现“伪实时”
         load(); // 初始加载
-    </script>
-</body>
-</html>
-        }
-        
-        function sendToServer(data) {
-            // Try WebSocket first, fallback to HTTP POST
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                sendToServer(message);
-                // Optimistically add message
-                addMessage({ ...message, id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` });
-            } else {
-                // Use HTTP POST
-                try {
-                    addDebugLog({ action: 'sending_message', message }, 'info');
-                    const response = await fetch('/api/chat/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(message)
-                    });
-                    
-                    addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
-                    
-                    // Clear the input field
-                    input.value = '';
-                } catch (error) {
-                    console.error('Error sending message:', error);
-                    addDebugLog({ error: 'Error sending message', message: error.message }, 'error');
-                }
-            }
-
-        }
-        
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            if (!text) return;
-            
-            const message = {
-                type: 'message',
-                username,
-                text,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Try WebSocket first, fallback to HTTP POST
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                sendToServer(message);
-                // Optimistically add message
-                addMessage({ ...message, id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` });
-            } else {
-                // Use HTTP POST
-                try {
-                    addDebugLog({ action: 'sending_message', message }, 'info');
-                    const response = await fetch('/api/chat/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(message)
-                    });
-                    
-                    addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
-                    
-                    try {
-                      // 修复前
-                      try {
-                        await env.DB.prepare(
-                          `SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 100`
-                        ).all();  // 缺少赋值给result变量
-                        
-                        messages = result.results || [];  // result未定义
-                      } catch (error) {
-                        console.error('Database error:', error);
-                      }
-                      
-                      // 修复后
-                      try {
-                        const result = await env.DB.prepare(
-                          `SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 100`
-                        ).all();  // 正确赋值给result
-                        
-                        messages = result.results || [];
-                      } catch (error) {
-                        console.error('Database error:', error);
-                      }
-                      
-                      messages = result.results || [];
-                    } catch (error) {
-                      console.error('Database error:', error);
-                    }
-                } catch (error) {
-                    console.error('Error loading initial messages:', error);
-                    addDebugLog({ error: 'Error loading initial messages', message: error.message, stack: error.stack }, 'error');
-                }
-            }
-        }
-    }
-        
-        function startPolling() {
-            // Load initial messages first - ensure it's called
-            if (!loadedInitialMessages) {
-                addDebugLog('Starting to load initial messages...', 'info');
-                loadInitialMessages().then(() => {
-                    addDebugLog('Initial messages loading completed', 'success');
-                }).catch(error => {
-                    addDebugLog({ error: 'Failed to load initial messages', message: error.message }, 'error');
-                });
-            }
-            
-            // Fallback polling mode - check for new messages
-            if (pollingInterval) clearInterval(pollingInterval);
-            
-            pollingInterval = setInterval(async () => {
-                try {
-                    const sinceParam = lastMessageTime ? new Date(lastMessageTime).toISOString() : '0';
-                    const response = await fetch(`/api/chat/messages?since=${sinceParam}`);
-                    if (response.ok) {
-                        const messages = await response.json();
-                        if (messages.length > 0) {
-                            addDebugLog({ action: 'polling_new_messages', count: messages.length }, 'info');
-                        }
-                        messages.forEach(msg => {
-                            if (!document.querySelector(`[data-id="${msg.id}"]`)) {
-                                addMessage(msg);
-                                const msgTime = new Date(msg.timestamp).getTime();
-                                if (!lastMessageTime || msgTime > lastMessageTime) {
-                                    lastMessageTime = msgTime;
-                                }
-                            }
-                        });
-                    }
-                } catch (error) {
-                    console.error('Polling error:', error);
-                    addDebugLog({ error: 'Polling error', message: error.message }, 'error');
-                }
-            }, 2000);
-        }
-        
-        function sendToServer(data) {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify(data));
-            } else {
-                // Fallback: use HTTP POST
-                fetch('/api/chat/send', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                }).catch(error => console.error('Send error:', error));
-            }
-        }
-        
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            if (!text) return;
-            
-            const message = {
-                type: 'message',
-                username,
-                text,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Try WebSocket first, fallback to HTTP POST
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                sendToServer(message);
-                // Optimistically add message
-                addMessage({ ...message, id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` });
-            } else {
-                // Use HTTP POST
-                try {
-                    addDebugLog({ action: 'sending_message', message }, 'info');
-                    const response = await fetch('/api/chat/send', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(message)
-                    });
-                    
-                    addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
-                    
-                    let result;
-                    try {
-                        result = await response.json();
-                        addDebugLog({ action: 'response_parsed', result }, response.ok ? 'success' : 'error');
-                    } catch (parseError) {
-                        addDebugLog({ error: 'Failed to parse response', message: parseError.message, responseText: await response.text() }, 'error');
-                        throw parseError;
-                    }
-                    
-                    if (response.ok) {
-                        // Immediately display the sent message
-                        if (result.message) {
-                            addMessage(result.message);
-                            const msgTime = new Date(result.message.timestamp).getTime();
-                            if (!lastMessageTime || msgTime > lastMessageTime) {
-                                lastMessageTime = msgTime;
-                            }
-                            addDebugLog({ action: 'message_displayed', messageId: result.message.id }, 'success');
-                        }
-                    } else {
-                        // Show error but still display message if available
-                        const errorMsg = result.error || 'Unknown error';
-                        const errorDetails = result.details || result;
-                        console.error('Send error:', errorMsg, result);
-                        addDebugLog({ action: 'send_failed', error: errorMsg, details: errorDetails, fullResult: result }, 'error');
-                        
-                        if (result.message) {
-                            // Still show the message even if save failed
-                            addMessage(result.message);
-                            addDebugLog({ action: 'message_displayed_despite_error', messageId: result.message.id }, 'info');
-                            alert(`Message sent but may not be saved: ${errorMsg}`);
-                        } else {
-                            alert(`Failed to send message: ${errorMsg}`);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Send error:', error);
-                    addDebugLog({ 
-                        action: 'send_exception', 
-                        error: error.message, 
-                        stack: error.stack,
-                        name: error.name 
-                    }, 'error');
-                    alert(`Failed to send message: ${error.message || 'Unknown error'}`);
-                }
-            }
-            
-            input.value = '';
-        }
-        
-        function handleMessage(data) {
-            if (data.type === 'message') {
-                addMessage(data);
-            } else if (data.type === 'system') {
-                addSystemMessage(data.text);
-            }
-        }
-        
-        function addMessage(msg) {
-            const messagesDiv = document.getElementById('messages');
-            const msgId = msg.id || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-            
-            // Check if message already exists
-            if (document.querySelector(`[data-id="${msgId}"]`)) {
-                return;
-            }
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${msg.username === username ? 'own' : ''}`;
-            messageDiv.setAttribute('data-id', msgId);
-            
-            const time = new Date(msg.timestamp || Date.now()).toLocaleTimeString();
-            messageDiv.innerHTML = `
-                <div class="message-header">
-                    <span><strong>${escapeHtml(msg.username)}</strong></span>
-                    <span>${time}</span>
-                </div>
-                <div class="message-content">${escapeHtml(msg.text)}</div>
-            `;
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-        
-        function addSystemMessage(text) {
-            const messagesDiv = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message';
-            messageDiv.style.background = 'rgba(255, 255, 0, 0.2)';
-            messageDiv.style.textAlign = 'center';
-            messageDiv.style.fontStyle = 'italic';
-            messageDiv.textContent = text;
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-        
-        function updateStatus(type, text) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.className = `status ${type}`;
-            statusDiv.textContent = text;
-        }
-        
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        // Allow Enter key to send message
-        document.getElementById('messageInput')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-        
-        document.getElementById('usernameInput')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                setUsername();
-            }
-        });
     </script>
 </body>
 </html>
