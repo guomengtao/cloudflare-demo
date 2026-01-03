@@ -35,9 +35,10 @@ export async function onRequestGet(context) {
         messages = result.results || [];
         
         // Log for debugging
-        if (messages.length > 0) {
-          console.log(`Loaded ${messages.length} messages from database`);
-        }
+        console.log(`Loaded ${messages.length} messages from database`, {
+          since: since || 'all',
+          messages: messages.map(m => ({ id: m.id, username: m.username, text: m.text.substring(0, 20) + '...' }))
+        });
       } catch (error) {
         console.error('Database error:', error);
         console.error('Database error details:', {

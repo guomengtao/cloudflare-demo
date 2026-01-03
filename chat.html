@@ -266,7 +266,11 @@
             updateStatus('connected', 'Connected (Polling Mode)');
             // Load initial messages first, then start polling
             loadInitialMessages().then(() => {
+                addDebugLog('Initial messages loaded, starting polling...', 'info');
                 startPolling();
+            }).catch(error => {
+                addDebugLog({ error: 'Failed to load initial messages', message: error.message }, 'error');
+                startPolling(); // Start polling anyway
             });
             return;
             
@@ -369,22 +373,39 @@
             
             // Load all historical messages on first connection
             try {
+                addDebugLog('Loading initial messages...', 'info');
                 const response = await fetch('/api/chat/messages');
                 if (response.ok) {
                     const messages = await response.json();
-                    messages.forEach(msg => {
-                        if (!document.querySelector(`[data-id="${msg.id}"]`)) {
-                            addMessage(msg);
-                            const msgTime = new Date(msg.timestamp).getTime();
-                            if (!lastMessageTime || msgTime > lastMessageTime) {
-                                lastMessageTime = msgTime;
+                    addDebugLog({ action: 'messages_loaded', count: messages.length, messages }, 'info');
+                    console.log('Loaded messages:', messages);
+                    
+                    if (messages.length === 0) {
+                        addDebugLog('No messages found in database', 'info');
+                    } else {
+                        messages.forEach(msg => {
+                            if (!document.querySelector(`[data-id="${msg.id}"]`)) {
+                                addMessage(msg);
+                                const msgTime = new Date(msg.timestamp).getTime();
+                                if (!lastMessageTime || msgTime > lastMessageTime) {
+                                    lastMessageTime = msgTime;
+                                }
+                                addDebugLog({ action: 'message_added', id: msg.id, username: msg.username }, 'success');
+                            } else {
+                                addDebugLog({ action: 'message_skipped_duplicate', id: msg.id }, 'info');
                             }
-                        }
-                    });
+                        });
+                        addDebugLog({ action: 'all_messages_displayed', count: messages.length }, 'success');
+                    }
                     loadedInitialMessages = true;
+                } else {
+                    const errorText = await response.text();
+                    addDebugLog({ error: 'Failed to load messages', status: response.status, errorText }, 'error');
+                    console.error('Failed to load messages:', response.status, errorText);
                 }
             } catch (error) {
                 console.error('Error loading initial messages:', error);
+                addDebugLog({ error: 'Error loading initial messages', message: error.message, stack: error.stack }, 'error');
             }
         }
         
