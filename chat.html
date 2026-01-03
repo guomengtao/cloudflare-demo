@@ -204,7 +204,7 @@
     </div>
     
     <div class="container">
-        <h1>Real-time Chat Demo</h1>
+        <h1>Real-time Chat Demo v1.0.1</h1>
         
         <div class="chat-container">
             <div id="status" class="status disconnected">Disconnected</div>
@@ -451,16 +451,31 @@
         }
         
         function sendToServer(data) {
+            // Try WebSocket first, fallback to HTTP POST
             if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify(data));
+                sendToServer(message);
+                // Optimistically add message
+                addMessage({ ...message, id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` });
             } else {
-                // Fallback: use HTTP POST
-                fetch('/api/chat/send', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                }).catch(error => console.error('Send error:', error));
+                // Use HTTP POST
+                try {
+                    addDebugLog({ action: 'sending_message', message }, 'info');
+                    const response = await fetch('/api/chat/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(message)
+                    });
+                    
+                    addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
+                    
+                    // Clear the input field
+                    input.value = '';
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    addDebugLog({ error: 'Error sending message', message: error.message }, 'error');
+                }
             }
+
         }
         
         async function sendMessage() {
