@@ -247,6 +247,7 @@
             username = name;
             document.getElementById('usernameSection').classList.add('hidden');
             document.getElementById('chatSection').classList.remove('hidden');
+            addDebugLog({ action: 'username_set', username: name }, 'info');
             connect();
         }
         
@@ -410,9 +411,14 @@
         }
         
         function startPolling() {
-            // Load initial messages first
+            // Load initial messages first - ensure it's called
             if (!loadedInitialMessages) {
-                loadInitialMessages();
+                addDebugLog('Starting to load initial messages...', 'info');
+                loadInitialMessages().then(() => {
+                    addDebugLog('Initial messages loading completed', 'success');
+                }).catch(error => {
+                    addDebugLog({ error: 'Failed to load initial messages', message: error.message }, 'error');
+                });
             }
             
             // Fallback polling mode - check for new messages
@@ -424,6 +430,9 @@
                     const response = await fetch(`/api/chat/messages?since=${sinceParam}`);
                     if (response.ok) {
                         const messages = await response.json();
+                        if (messages.length > 0) {
+                            addDebugLog({ action: 'polling_new_messages', count: messages.length }, 'info');
+                        }
                         messages.forEach(msg => {
                             if (!document.querySelector(`[data-id="${msg.id}"]`)) {
                                 addMessage(msg);
@@ -436,6 +445,7 @@
                     }
                 } catch (error) {
                     console.error('Polling error:', error);
+                    addDebugLog({ error: 'Polling error', message: error.message }, 'error');
                 }
             }, 2000);
         }
