@@ -27,29 +27,42 @@ export async function onRequestPost(context) {
     if (env.DB) {
       let insertResult = null;
       try {
-        // Ensure table exists
-        await env.DB.exec(`
-          CREATE TABLE IF NOT EXISTS chat_messages (
-            id TEXT PRIMARY KEY,
-            username TEXT NOT NULL,
-            text TEXT NOT NULL,
-            timestamp TEXT NOT NULL
-          )
-        `);
+        // Ensure table exists - use try-catch to handle any errors
+        try {
+          await env.DB.exec(`
+            CREATE TABLE IF NOT EXISTS chat_messages (
+              id TEXT PRIMARY KEY,
+              username TEXT NOT NULL,
+              text TEXT NOT NULL,
+              timestamp TEXT NOT NULL
+            )
+          `);
+        } catch (execError) {
+          // Table might already exist, continue
+          console.log('Table creation result (may already exist):', execError.message);
+        }
         
         // Insert message - handle D1 database response properly
+        // D1 run() returns: { success: boolean, meta: { duration, changes, last_row_id, ... } }
         insertResult = await env.DB.prepare(
           'INSERT INTO chat_messages (id, username, text, timestamp) VALUES (?, ?, ?, ?)'
         ).bind(message.id, message.username, message.text, message.timestamp).run();
         
-        // Verify the insert was successful
+        // Safely check the result
         // D1 returns { success: true, meta: {...} } structure
-        const success = insertResult?.success !== false;
+        const success = insertResult && (insertResult.success === true || insertResult.success === undefined);
         
         if (success) {
-          console.log('Message saved to database:', message.id, insertResult);
+          console.log('Message saved to database:', message.id);
+          // Log meta info safely
+          if (insertResult.meta) {
+            console.log('Insert meta:', {
+              changes: insertResult.meta.changes,
+              last_row_id: insertResult.meta.last_row_id
+            });
+          }
         } else {
-          console.error('Failed to insert message:', JSON.stringify(insertResult, null, 2));
+          console.error('Failed to insert message. Result:', JSON.stringify(insertResult, null, 2));
           // Return error response if insert failed
           return new Response(JSON.stringify({ 
             error: 'Failed to save message to database',
@@ -65,21 +78,31 @@ export async function onRequestPost(context) {
         }
       } catch (error) {
         console.error('Database error:', error);
+        
+        // Safely extract error details without accessing potentially undefined properties
         const errorDetails = {
-          message: error.message,
-          name: error.name,
-          stack: error.stack,
+          message: error?.message || 'Unknown error',
+          name: error?.name || 'Error',
+          stack: error?.stack || 'No stack trace',
           messageData: message,
           envKeys: Object.keys(env || {}),
           insertResultType: typeof insertResult,
           insertResultKeys: insertResult ? Object.keys(insertResult) : null,
-          insertResultValue: insertResult
+          insertResultValue: insertResult ? JSON.stringify(insertResult) : null
         };
+        
+        // Try to safely stringify insertResult
+        try {
+          errorDetails.insertResultStringified = JSON.stringify(insertResult, null, 2);
+        } catch (stringifyError) {
+          errorDetails.insertResultStringifyError = stringifyError.message;
+        }
+        
         console.error('Database error details:', errorDetails);
         
         // Return detailed error for debugging
         return new Response(JSON.stringify({ 
-          error: 'Database error: ' + error.message,
+          error: 'Database error: ' + (error?.message || 'Unknown error'),
           errorDetails: errorDetails,
           message: message 
         }), {
