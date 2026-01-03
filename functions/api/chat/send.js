@@ -36,19 +36,23 @@ export async function onRequestPost(context) {
           )
         `);
         
-        // Insert message
+        // Insert message - handle D1 database response properly
         const insertResult = await env.DB.prepare(
           'INSERT INTO chat_messages (id, username, text, timestamp) VALUES (?, ?, ?, ?)'
         ).bind(message.id, message.username, message.text, message.timestamp).run();
         
         // Verify the insert was successful
-        if (insertResult.success) {
-          console.log('Message saved to database:', message.id);
+        // D1 returns { success: true, meta: {...} } structure
+        const success = insertResult?.success !== false;
+        
+        if (success) {
+          console.log('Message saved to database:', message.id, insertResult);
         } else {
-          console.error('Failed to insert message:', insertResult);
+          console.error('Failed to insert message:', JSON.stringify(insertResult, null, 2));
           // Return error response if insert failed
           return new Response(JSON.stringify({ 
             error: 'Failed to save message to database',
+            details: insertResult,
             message: message 
           }), {
             status: 500,
@@ -60,15 +64,21 @@ export async function onRequestPost(context) {
         }
       } catch (error) {
         console.error('Database error:', error);
-        console.error('Database error details:', {
+        const errorDetails = {
           message: error.message,
+          name: error.name,
           stack: error.stack,
           messageData: message,
-          envKeys: Object.keys(env)
-        });
-        // Return error but still include the message data
+          envKeys: Object.keys(env || {}),
+          insertResultType: typeof insertResult,
+          insertResultKeys: insertResult ? Object.keys(insertResult) : null
+        };
+        console.error('Database error details:', errorDetails);
+        
+        // Return detailed error for debugging
         return new Response(JSON.stringify({ 
           error: 'Database error: ' + error.message,
+          errorDetails: errorDetails,
           message: message 
         }), {
           status: 500,

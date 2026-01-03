@@ -175,6 +175,27 @@
         .hidden {
             display: none;
         }
+        #debugPanel {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        #debugContent {
+            margin-top: 10px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .debug-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        .debug-error {
+            color: #ff6b6b;
+        }
+        .debug-success {
+            color: #51cf66;
+        }
     </style>
 </head>
 <body>
@@ -194,6 +215,13 @@
             </div>
             
             <div id="chatSection" class="hidden">
+                <div style="margin-bottom: 10px;">
+                    <button onclick="toggleDebug()" style="padding: 5px 10px; font-size: 0.8rem; background: rgba(255,255,255,0.2); border: 1px solid white; border-radius: 4px; color: white; cursor: pointer;">🔍 Toggle Debug</button>
+                </div>
+                <div id="debugPanel" class="hidden" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 10px; font-family: monospace; font-size: 0.85rem; max-height: 200px; overflow-y: auto;">
+                    <div><strong>Debug Info:</strong></div>
+                    <div id="debugContent">No debug information yet...</div>
+                </div>
                 <div class="messages" id="messages"></div>
                 <div class="input-area">
                     <input type="text" id="messageInput" placeholder="Type a message..." maxlength="500">
@@ -288,22 +316,55 @@
         let pollingInterval = null;
         let lastMessageTime = null;
         let loadedInitialMessages = false;
+        let debugLogs = [];
+        
+        function addDebugLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            debugLogs.push({ timestamp, message, type });
+            if (debugLogs.length > 50) debugLogs.shift(); // Keep last 50 logs
+            updateDebugPanel();
+        }
+        
+        function updateDebugPanel() {
+            const debugContent = document.getElementById('debugContent');
+            if (debugContent) {
+                debugContent.innerHTML = debugLogs.map(log => {
+                    const className = log.type === 'error' ? 'debug-error' : log.type === 'success' ? 'debug-success' : '';
+                    return `<div class="debug-entry ${className}">[${log.timestamp}] ${escapeHtml(JSON.stringify(log.message, null, 2))}</div>`;
+                }).join('');
+                debugContent.scrollTop = debugContent.scrollHeight;
+            }
+        }
+        
+        function toggleDebug() {
+            const panel = document.getElementById('debugPanel');
+            panel.classList.toggle('hidden');
+        }
         
         async function loadInitialMessages() {
             // Check database status first
             try {
+                addDebugLog('Checking database status...', 'info');
                 const statusResponse = await fetch('/api/chat/status');
                 if (statusResponse.ok) {
                     const status = await statusResponse.json();
+                    addDebugLog({ action: 'database_status', status }, 'info');
                     console.log('Database status:', status);
                     if (!status.database_available) {
                         addSystemMessage('⚠️ Database not configured. Messages will not persist. Please bind D1 database in Cloudflare Dashboard.');
+                        addDebugLog('Database not available', 'error');
                     } else if (!status.database_working) {
                         addSystemMessage(`⚠️ Database error: ${status.database_error || 'Unknown error'}`);
+                        addDebugLog({ error: 'Database not working', details: status.database_error }, 'error');
+                    } else {
+                        addDebugLog({ message: 'Database is working', count: status.message_count }, 'success');
                     }
+                } else {
+                    addDebugLog({ error: 'Failed to check database status', status: statusResponse.status }, 'error');
                 }
             } catch (error) {
                 console.error('Error checking database status:', error);
+                addDebugLog({ error: 'Error checking database status', message: error.message }, 'error');
             }
             
             // Load all historical messages on first connection
@@ -391,37 +452,59 @@
             } else {
                 // Use HTTP POST
                 try {
+                    addDebugLog({ action: 'sending_message', message }, 'info');
                     const response = await fetch('/api/chat/send', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(message)
                     });
-                const result = await response.json();
-                if (response.ok) {
-                    // Immediately display the sent message
-                    if (result.message) {
-                        addMessage(result.message);
-                        const msgTime = new Date(result.message.timestamp).getTime();
-                        if (!lastMessageTime || msgTime > lastMessageTime) {
-                            lastMessageTime = msgTime;
+                    
+                    addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
+                    
+                    let result;
+                    try {
+                        result = await response.json();
+                        addDebugLog({ action: 'response_parsed', result }, response.ok ? 'success' : 'error');
+                    } catch (parseError) {
+                        addDebugLog({ error: 'Failed to parse response', message: parseError.message, responseText: await response.text() }, 'error');
+                        throw parseError;
+                    }
+                    
+                    if (response.ok) {
+                        // Immediately display the sent message
+                        if (result.message) {
+                            addMessage(result.message);
+                            const msgTime = new Date(result.message.timestamp).getTime();
+                            if (!lastMessageTime || msgTime > lastMessageTime) {
+                                lastMessageTime = msgTime;
+                            }
+                            addDebugLog({ action: 'message_displayed', messageId: result.message.id }, 'success');
+                        }
+                    } else {
+                        // Show error but still display message if available
+                        const errorMsg = result.error || 'Unknown error';
+                        const errorDetails = result.details || result;
+                        console.error('Send error:', errorMsg, result);
+                        addDebugLog({ action: 'send_failed', error: errorMsg, details: errorDetails, fullResult: result }, 'error');
+                        
+                        if (result.message) {
+                            // Still show the message even if save failed
+                            addMessage(result.message);
+                            addDebugLog({ action: 'message_displayed_despite_error', messageId: result.message.id }, 'info');
+                            alert(`Message sent but may not be saved: ${errorMsg}`);
+                        } else {
+                            alert(`Failed to send message: ${errorMsg}`);
                         }
                     }
-                } else {
-                    // Show error but still display message if available
-                    const errorMsg = result.error || 'Unknown error';
-                    console.error('Send error:', errorMsg, result);
-                    
-                    if (result.message) {
-                        // Still show the message even if save failed
-                        addMessage(result.message);
-                        alert(`Message sent but may not be saved: ${errorMsg}`);
-                    } else {
-                        alert(`Failed to send message: ${errorMsg}`);
-                    }
-                }
                 } catch (error) {
                     console.error('Send error:', error);
-                    alert('Failed to send message. Please try again.');
+                    addDebugLog({ 
+                        action: 'send_exception', 
+                        error: error.message, 
+                        stack: error.stack,
+                        name: error.name 
+                    }, 'error');
+                    alert(`Failed to send message: ${error.message || 'Unknown error'}`);
                 }
             }
             
