@@ -20,22 +20,34 @@ export async function onRequestGet(context) {
         `);
         
         let result;
-        if (since && since !== '0') {
+        if (since && since !== '0' && since !== 'null') {
           // Get messages after a specific timestamp
           result = await env.DB.prepare(
             'SELECT * FROM chat_messages WHERE timestamp > ? ORDER BY timestamp ASC LIMIT 50'
           ).bind(since).all();
         } else {
-          // Get all recent messages (last 50)
+          // Get all recent messages (last 50) - always get all messages on initial load
           result = await env.DB.prepare(
-            'SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 50'
+            'SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 100'
           ).all();
         }
         
         messages = result.results || [];
+        
+        // Log for debugging
+        if (messages.length > 0) {
+          console.log(`Loaded ${messages.length} messages from database`);
+        }
       } catch (error) {
         console.error('Database error:', error);
+        console.error('Database error details:', {
+          message: error.message,
+          stack: error.stack,
+          since: since
+        });
       }
+    } else {
+      console.warn('Database (env.DB) is not available for messages endpoint');
     }
     
     // If no database or no messages, return welcome message only on first load

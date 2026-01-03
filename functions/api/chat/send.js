@@ -26,6 +26,7 @@ export async function onRequestPost(context) {
     // If D1 is available, store the message
     if (env.DB) {
       try {
+        // Ensure table exists
         await env.DB.exec(`
           CREATE TABLE IF NOT EXISTS chat_messages (
             id TEXT PRIMARY KEY,
@@ -35,13 +36,61 @@ export async function onRequestPost(context) {
           )
         `);
         
-        await env.DB.prepare(
+        // Insert message
+        const insertResult = await env.DB.prepare(
           'INSERT INTO chat_messages (id, username, text, timestamp) VALUES (?, ?, ?, ?)'
         ).bind(message.id, message.username, message.text, message.timestamp).run();
+        
+        // Verify the insert was successful
+        if (insertResult.success) {
+          console.log('Message saved to database:', message.id);
+        } else {
+          console.error('Failed to insert message:', insertResult);
+          // Return error response if insert failed
+          return new Response(JSON.stringify({ 
+            error: 'Failed to save message to database',
+            message: message 
+          }), {
+            status: 500,
+            headers: { 
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          });
+        }
       } catch (error) {
         console.error('Database error:', error);
-        // Continue even if database fails - message will still be returned
+        console.error('Database error details:', {
+          message: error.message,
+          stack: error.stack,
+          messageData: message,
+          envKeys: Object.keys(env)
+        });
+        // Return error but still include the message data
+        return new Response(JSON.stringify({ 
+          error: 'Database error: ' + error.message,
+          message: message 
+        }), {
+          status: 500,
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
       }
+    } else {
+      console.warn('Database (env.DB) is not available. Available env keys:', Object.keys(env || {}));
+      // Return error if database is not configured
+      return new Response(JSON.stringify({ 
+        error: 'Database not configured. Please bind D1 database to Pages project.',
+        message: message 
+      }), {
+        status: 503,
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
     }
     
     return new Response(JSON.stringify({ success: true, message }), {

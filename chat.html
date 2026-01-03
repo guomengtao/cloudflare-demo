@@ -380,20 +380,29 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(message)
                     });
-                    if (response.ok) {
-                        const result = await response.json();
-                        // Immediately display the sent message
-                        if (result.message) {
-                            addMessage(result.message);
-                            const msgTime = new Date(result.message.timestamp).getTime();
-                            if (!lastMessageTime || msgTime > lastMessageTime) {
-                                lastMessageTime = msgTime;
-                            }
+                const result = await response.json();
+                if (response.ok) {
+                    // Immediately display the sent message
+                    if (result.message) {
+                        addMessage(result.message);
+                        const msgTime = new Date(result.message.timestamp).getTime();
+                        if (!lastMessageTime || msgTime > lastMessageTime) {
+                            lastMessageTime = msgTime;
                         }
-                    } else {
-                        const error = await response.json();
-                        alert(`Failed to send message: ${error.error || 'Unknown error'}`);
                     }
+                } else {
+                    // Show error but still display message if available
+                    const errorMsg = result.error || 'Unknown error';
+                    console.error('Send error:', errorMsg, result);
+                    
+                    if (result.message) {
+                        // Still show the message even if save failed
+                        addMessage(result.message);
+                        alert(`Message sent but may not be saved: ${errorMsg}`);
+                    } else {
+                        alert(`Failed to send message: ${errorMsg}`);
+                    }
+                }
                 } catch (error) {
                     console.error('Send error:', error);
                     alert('Failed to send message. Please try again.');
