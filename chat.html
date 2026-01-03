@@ -290,6 +290,22 @@
         let loadedInitialMessages = false;
         
         async function loadInitialMessages() {
+            // Check database status first
+            try {
+                const statusResponse = await fetch('/api/chat/status');
+                if (statusResponse.ok) {
+                    const status = await statusResponse.json();
+                    console.log('Database status:', status);
+                    if (!status.database_available) {
+                        addSystemMessage('⚠️ Database not configured. Messages will not persist. Please bind D1 database in Cloudflare Dashboard.');
+                    } else if (!status.database_working) {
+                        addSystemMessage(`⚠️ Database error: ${status.database_error || 'Unknown error'}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking database status:', error);
+            }
+            
             // Load all historical messages on first connection
             try {
                 const response = await fetch('/api/chat/messages');
