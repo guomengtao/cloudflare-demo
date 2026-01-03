@@ -2,6 +2,12 @@ name = "cloudflare-demo"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "."
 
+# D1 Database configuration
+[[d1_databases]]
+binding = "DB"
+database_name = "cloudflare-demo-db"
+database_id = ""  # Will be set after creating database in dashboard
+
 [env.production]
 name = "cloudflare-demo"
 
