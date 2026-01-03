@@ -492,6 +492,123 @@
                     
                     addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
                     
+                    try {
+                      // 修复前
+                      try {
+                        await env.DB.prepare(
+                          `SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 100`
+                        ).all();  // 缺少赋值给result变量
+                        
+                        messages = result.results || [];  // result未定义
+                      } catch (error) {
+                        console.error('Database error:', error);
+                      }
+                      
+                      // 修复后
+                      try {
+                        const result = await env.DB.prepare(
+                          `SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 100`
+                        ).all();  // 正确赋值给result
+                        
+                        messages = result.results || [];
+                      } catch (error) {
+                        console.error('Database error:', error);
+                      }
+                      
+                      messages = result.results || [];
+                    } catch (error) {
+                      console.error('Database error:', error);
+                    }
+                } catch (error) {
+                    console.error('Error loading initial messages:', error);
+                    addDebugLog({ error: 'Error loading initial messages', message: error.message, stack: error.stack }, 'error');
+                }
+            }
+        }
+    }
+        
+        function startPolling() {
+            // Load initial messages first - ensure it's called
+            if (!loadedInitialMessages) {
+                addDebugLog('Starting to load initial messages...', 'info');
+                loadInitialMessages().then(() => {
+                    addDebugLog('Initial messages loading completed', 'success');
+                }).catch(error => {
+                    addDebugLog({ error: 'Failed to load initial messages', message: error.message }, 'error');
+                });
+            }
+            
+            // Fallback polling mode - check for new messages
+            if (pollingInterval) clearInterval(pollingInterval);
+            
+            pollingInterval = setInterval(async () => {
+                try {
+                    const sinceParam = lastMessageTime ? new Date(lastMessageTime).toISOString() : '0';
+                    const response = await fetch(`/api/chat/messages?since=${sinceParam}`);
+                    if (response.ok) {
+                        const messages = await response.json();
+                        if (messages.length > 0) {
+                            addDebugLog({ action: 'polling_new_messages', count: messages.length }, 'info');
+                        }
+                        messages.forEach(msg => {
+                            if (!document.querySelector(`[data-id="${msg.id}"]`)) {
+                                addMessage(msg);
+                                const msgTime = new Date(msg.timestamp).getTime();
+                                if (!lastMessageTime || msgTime > lastMessageTime) {
+                                    lastMessageTime = msgTime;
+                                }
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
+                    addDebugLog({ error: 'Polling error', message: error.message }, 'error');
+                }
+            }, 2000);
+        }
+        
+        function sendToServer(data) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify(data));
+            } else {
+                // Fallback: use HTTP POST
+                fetch('/api/chat/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                }).catch(error => console.error('Send error:', error));
+            }
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            const message = {
+                type: 'message',
+                username,
+                text,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Try WebSocket first, fallback to HTTP POST
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                sendToServer(message);
+                // Optimistically add message
+                addMessage({ ...message, id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` });
+            } else {
+                // Use HTTP POST
+                try {
+                    addDebugLog({ action: 'sending_message', message }, 'info');
+                    const response = await fetch('/api/chat/send', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(message)
+                    });
+                    
+                    addDebugLog({ action: 'response_received', status: response.status, statusText: response.statusText }, 'info');
+                    
                     let result;
                     try {
                         result = await response.json();
@@ -615,4 +732,3 @@
     </script>
 </body>
 </html>
-
