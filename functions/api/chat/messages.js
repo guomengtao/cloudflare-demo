@@ -2,7 +2,7 @@
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
-  const since = url.searchParams.get('since') || '0';
+  const since = url.searchParams.get('since');
   
   try {
     let messages = [];
@@ -19,22 +19,31 @@ export async function onRequestGet(context) {
           )
         `);
         
-        const result = await env.DB.prepare(
-          'SELECT * FROM chat_messages WHERE timestamp > ? ORDER BY timestamp DESC LIMIT 50'
-        ).bind(since).all();
+        let result;
+        if (since && since !== '0') {
+          // Get messages after a specific timestamp
+          result = await env.DB.prepare(
+            'SELECT * FROM chat_messages WHERE timestamp > ? ORDER BY timestamp ASC LIMIT 50'
+          ).bind(since).all();
+        } else {
+          // Get all recent messages (last 50)
+          result = await env.DB.prepare(
+            'SELECT * FROM chat_messages ORDER BY timestamp ASC LIMIT 50'
+          ).all();
+        }
         
-        messages = (result.results || []).reverse();
+        messages = result.results || [];
       } catch (error) {
         console.error('Database error:', error);
       }
     }
     
-    // If no database or no messages, return demo message
-    if (messages.length === 0) {
+    // If no database or no messages, return welcome message only on first load
+    if (messages.length === 0 && !since) {
       messages = [{
         id: '1',
         username: 'System',
-        text: 'Welcome to the chat! Messages are stored temporarily. Set up D1 database for persistence.',
+        text: 'Welcome to the chat! Start a conversation by sending a message.',
         timestamp: new Date().toISOString()
       }];
     }

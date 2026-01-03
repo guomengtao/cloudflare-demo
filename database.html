@@ -182,12 +182,25 @@
         async function fetchItems() {
             try {
                 const response = await fetch(`${API_BASE}/items`);
-                if (!response.ok) throw new Error('Failed to fetch items');
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to fetch items');
+                }
                 const data = await response.json();
                 displayItems(data);
             } catch (error) {
-                document.getElementById('items').innerHTML = 
-                    `<div class="message error">Error loading items: ${error.message}</div>`;
+                const errorMsg = error.message;
+                if (errorMsg.includes('Database not configured')) {
+                    document.getElementById('items').innerHTML = 
+                        `<div class="message error">
+                            <p><strong>Database not configured</strong></p>
+                            <p style="margin-top: 10px; font-size: 0.9em;">To use the database feature, please set up Cloudflare D1 database. See <a href="/DATABASE_SETUP.md" style="color: white; text-decoration: underline;">DATABASE_SETUP.md</a> for instructions.</p>
+                            <p style="margin-top: 10px; font-size: 0.9em;">You can still view demo items above.</p>
+                        </div>`;
+                } else {
+                    document.getElementById('items').innerHTML = 
+                        `<div class="message error">Error loading items: ${error.message}</div>`;
+                }
             }
         }
         
@@ -248,7 +261,11 @@
                 
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.error || 'Failed to add item');
+                    const errorMsg = error.error || 'Failed to add item';
+                    if (errorMsg.includes('Database not configured')) {
+                        throw new Error('Database not configured. Please set up D1 database to add items. See DATABASE_SETUP.md for instructions.');
+                    }
+                    throw new Error(errorMsg);
                 }
                 
                 showMessage('Item added successfully!');

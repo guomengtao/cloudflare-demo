@@ -14,8 +14,9 @@ export async function onRequestPost(context) {
     }
     
     // Store message in D1 database if available, otherwise use in-memory storage
+    // Generate unique ID with timestamp and random component
     const message = {
-      id: Date.now().toString(),
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       username,
       text,
       type: type || 'message',
@@ -39,11 +40,15 @@ export async function onRequestPost(context) {
         ).bind(message.id, message.username, message.text, message.timestamp).run();
       } catch (error) {
         console.error('Database error:', error);
+        // Continue even if database fails - message will still be returned
       }
     }
     
     return new Response(JSON.stringify({ success: true, message }), {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
