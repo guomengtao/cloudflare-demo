@@ -25,6 +25,7 @@ export async function onRequestPost(context) {
     
     // If D1 is available, store the message
     if (env.DB) {
+      let insertResult = null;
       try {
         // Ensure table exists
         await env.DB.exec(`
@@ -37,7 +38,7 @@ export async function onRequestPost(context) {
         `);
         
         // Insert message - handle D1 database response properly
-        const insertResult = await env.DB.prepare(
+        insertResult = await env.DB.prepare(
           'INSERT INTO chat_messages (id, username, text, timestamp) VALUES (?, ?, ?, ?)'
         ).bind(message.id, message.username, message.text, message.timestamp).run();
         
@@ -71,7 +72,8 @@ export async function onRequestPost(context) {
           messageData: message,
           envKeys: Object.keys(env || {}),
           insertResultType: typeof insertResult,
-          insertResultKeys: insertResult ? Object.keys(insertResult) : null
+          insertResultKeys: insertResult ? Object.keys(insertResult) : null,
+          insertResultValue: insertResult
         };
         console.error('Database error details:', errorDetails);
         
