@@ -1,39 +1,46 @@
 # Database Setup Instructions
 
-This project uses Cloudflare D1 database. To set it up:
+✅ **Database is already configured!**
 
-## 1. Create D1 Database
+The D1 database `cloudflare-demo-db` has been created and initialized.
 
-Run in terminal:
-```bash
-npx wrangler d1 create cloudflare-demo-db
-```
+## Database Information
 
-This will output a database_id. Copy it.
+- **Database Name**: cloudflare-demo-db
+- **Database ID**: 1c5802dd-3bd6-4804-9209-8bc4c26cc40b
+- **Binding**: `DB`
 
-## 2. Update wrangler.toml
+## Tables Created
 
-Replace the empty `database_id = ""` with the actual ID from step 1.
+1. **items** - For database demo page
+2. **chat_messages** - For chat demo page
 
-## 3. Initialize Database Schema
+## For Production Deployment
 
-The API will automatically create the table on first request, but you can also run:
+After deploying to Cloudflare Pages, you need to bind the database:
 
-```bash
-npx wrangler d1 execute cloudflare-demo-db --command "CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
-```
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/) → Pages → cloudflare-demo → Settings
+2. Go to **Functions** → **D1 Database Bindings**
+3. Add binding:
+   - **Variable name**: `DB`
+   - **Database**: `cloudflare-demo-db`
 
-## 4. For Production Deployment
-
-After deploying to Cloudflare Pages, you need to:
-1. Go to Cloudflare Dashboard → Pages → cloudflare-demo → Settings
-2. Go to Functions → D1 Database Bindings
-3. Add binding: Variable name = `DB`, Database = `cloudflare-demo-db`
-
-## 5. Local Development
+## Local Development
 
 Run:
 ```bash
 npx wrangler pages dev . --d1=DB=cloudflare-demo-db
+```
+
+## Manual Database Operations
+
+### Query database:
+```bash
+npx wrangler d1 execute cloudflare-demo-db --remote --command "SELECT * FROM items"
+```
+
+### Execute SQL file:
+```bash
+npx wrangler d1 execute cloudflare-demo-db --remote --file=./schema.sql
 ```
 

@@ -6,8 +6,12 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "DB"
 database_name = "cloudflare-demo-db"
-database_id = ""  # Will be set after creating database in dashboard
+database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
 
 [env.production]
 name = "cloudflare-demo"
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "cloudflare-demo-db"
+database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
 
