@@ -27,9 +27,9 @@ export async function onRequestPost(context) {
     if (env.DB) {
       let insertResult = null;
       try {
-        // Ensure table exists - use try-catch to handle any errors
+        // Ensure table exists - exec() returns an array of results
         try {
-          await env.DB.exec(`
+          const execResult = await env.DB.exec(`
             CREATE TABLE IF NOT EXISTS chat_messages (
               id TEXT PRIMARY KEY,
               username TEXT NOT NULL,
@@ -37,9 +37,13 @@ export async function onRequestPost(context) {
               timestamp TEXT NOT NULL
             )
           `);
+          // exec() returns array: [{ results: [], success: true, meta: {...} }]
+          // We don't need to check the result for CREATE TABLE IF NOT EXISTS
+          console.log('Table creation executed');
         } catch (execError) {
-          // Table might already exist, continue
-          console.log('Table creation result (may already exist):', execError.message);
+          // Table might already exist or other error, log but continue
+          console.log('Table creation note:', execError?.message || 'Unknown');
+          // Don't throw - CREATE TABLE IF NOT EXISTS should be safe
         }
         
         // Insert message - handle D1 database response properly
