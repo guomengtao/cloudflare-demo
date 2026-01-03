@@ -1,17 +1,11 @@
+#:schema node_modules/wrangler/config-schema.json
 name = "cloudflare-demo"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "."
 
-# D1 Database configuration
+# D1 Database 绑定
+# 这样在你的 functions 代码里就可以通过 env.DB 来访问数据库了
 [[d1_databases]]
 binding = "DB"
 database_name = "cloudflare-demo-db"
 database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
-
-[env.production]
-name = "cloudflare-demo"
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "cloudflare-demo-db"
-database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
-
