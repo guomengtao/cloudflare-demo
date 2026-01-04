@@ -24,14 +24,11 @@ function generateAIPrompt(patientData) {
         'none': '无'
     };
     
-    const readableConditions = otherConditions
+    // 使用三元运算符处理默认值，避免常量重新赋值
+    const readableConditions = (otherConditions
         .filter(cond => cond !== 'none' && conditionsMap[cond])
         .map(cond => conditionsMap[cond])
-        .join('、');
-    
-    if (readableConditions === '') {
-        readableConditions = '无';
-    }
+        .join('、')) || '无';
     
     // 将吸烟状态转换为可读格式
     const smokingMap = {
@@ -273,7 +270,7 @@ function getSwellingAnalysis(data) {
     } else if (medication === '利尿剂') {
         return '利尿剂一般不会引起脚肿，反而有减轻水肿的作用。您的脚肿可能与其他因素有关，建议咨询医生进一步检查。';
     } else {
-        return '脚肿可能与多种因素有关，如长时间站立、心力衰竭、肾脏疾病等。建议监测脚肿的变化，如有加重或伴随其他症状（如呼吸困难、尿量减少等），应及时就医。';
+        return '脚肿可能与多种因素有关，如长时间站立、心力衰竭、肾脏疾病等。建议监测脚肿的变化，如有加重或伴随其他症状（如呼吸困难、尿量减少等），及时就医。';
     }
 }
 
