@@ -342,16 +342,57 @@
             margin-top: 20px;
             text-align: center;
         }
+        
+        /* 模型选择器 */
+        .model-selector {
+            margin-bottom: 25px;
+        }
+        
+        .model-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05rem;
+        }
+        
+        .model-selector select {
+            width: 100%;
+            padding: 12px 18px;
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(76, 175, 80, 0.05);
+        }
+        
+        .model-selector select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>高血压病情分析助手</h1>
-            <p>基于《2024中国高血压防治指南》的专业分析</p>
+            <p>基于《2024中国高血压防治指南》的AI智能分析</p>
         </div>
-        
         <div class="content">
+            <!-- 模型选择器 -->
+            <div class="form-group model-selector">
+                <label for="aiModel">AI 分析模型</label>
+                <select id="aiModel" name="aiModel" required>
+                    <option value="@cf/meta/llama-3.1-8b-instruct" selected>主流平衡 - Llama 3.1 8B</option>
+                    <option value="@cf/mistral/mistral-7b-instruct-v0.3">精准报告 - Mistral 7B v0.3</option>
+                    <option value="@cf/google/gemma-7b-it">多语言支持 - Google Gemma 7B</option>
+                    <option value="@cf/qwen/qwen1.5-7b-chat">中文深度 - 通义千问 1.5 7B</option>
+                    <option value="@cf/microsoft/phi-3-mini-4k-instruct">快速初筛 - Phi-3 Mini</option>
+                </select>
+            </div>
+            
             <!-- 患者信息表单 -->
             <form id="hypertensionForm">
                 <div class="form-row">
@@ -427,37 +468,48 @@
                 
                 <div class="form-group">
                     <label for="otherConditions">其他基础疾病</label>
-                    <select id="otherConditions" name="otherConditions" multiple>
-                        <option value="diabetes">糖尿病</option>
-                        <option value="heartDisease">冠心病</option>
-                        <option value="kidneyDisease">肾脏疾病</option>
-                        <option value="stroke">脑卒中</option>
-                        <option value="hyperlipidemia">高脂血症</option>
-                        <option value="none">无</option>
-                    </select>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="otherConditions" value="diabetes">糖尿病
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="otherConditions" value="heartDisease">冠心病
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="otherConditions" value="kidneyDisease">肾脏疾病
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="otherConditions" value="stroke">脑卒中
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="otherConditions" value="hyperlipidemia">高脂血症
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="otherConditions" value="none">无
+                        </label>
+                    </div>
                 </div>
                 
-                <div class="form-group" style="text-align: center; margin-top: 40px;">
+                <div style="text-align: center; margin-top: 30px;">
                     <button type="submit" id="analyzeButton">分析病情</button>
                 </div>
             </form>
             
-            <!-- 分析结果区域 -->
+            <!-- 分析结果 -->
             <div id="analysisResult" style="display: none;"></div>
         </div>
     </div>
-
+    
     <script>
-        const form = document.getElementById('hypertensionForm');
-        const analyzeButton = document.getElementById('analyzeButton');
-        const analysisResult = document.getElementById('analysisResult');
-        
         // 表单提交事件处理
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        document.getElementById('hypertensionForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
             
-            // 收集表单数据
-            const formData = new FormData(form);
+            const formData = new FormData(event.target);
+            const analyzeButton = document.getElementById('analyzeButton');
+            const analysisResult = document.getElementById('analysisResult');
+            
+            // 构建请求数据
             const data = {
                 age: parseInt(formData.get('age')),
                 gender: formData.get('gender'),
@@ -466,7 +518,8 @@
                 medication: formData.get('medication'),
                 smoking: formData.get('smoking'),
                 swelling: formData.get('swelling'),
-                otherConditions: formData.getAll('otherConditions')
+                otherConditions: formData.getAll('otherConditions'),
+                aiModel: formData.get('aiModel') // 添加模型参数
             };
             
             // 显示正在分析状态
@@ -484,7 +537,7 @@
             analysisResult.style.display = 'block';
             
             try {
-                // 调用高血压分析API（这里需要替换为实际的API端点）
+                // 调用高血压分析API
                 const response = await fetch('/api/hypertension-analysis', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -494,7 +547,6 @@
                 const result = await response.json();
                 
                 if (result.error) {
-                    // 显示错误消息
                     throw new Error(result.error);
                 }
                 
@@ -528,58 +580,15 @@
                         <h2>1. 当前风险画像</h2>
                         <div class="report-content">
                             <p>判定：<span class="risk-level ${result.riskLevel.toLowerCase()}">${result.riskLevel}</span></p>
-                            <p>依据：《2024中国高血压防治指南》表3-2 高血压患者心血管风险分层标准</p>
-                            
-                            <div class="guideline-reference">
-                                <strong>指南引用：</strong>根据血压水平、吸烟等危险因素综合评估
-                            </div>
+                            <p>血压：${result.bloodPressure} mmHg 属于 ${result.bloodPressureLevel}</p>
+                            <p>使用模型：${result.selectedModel}</p>
                         </div>
                     </div>
                     
                     <div class="report-section">
-                        <h2>2. 核心预警</h2>
+                        <h2>2. AI 专业分析</h2>
                         <div class="report-content">
-                            <p>血压 <strong>${result.bloodPressure}</strong> mmHg 属于 <strong>${result.bloodPressureLevel}</strong></p>
-                            <p>建议：${result.recommendationPeriod}</p>
-                            
-                            <div class="guideline-reference">
-                                <strong>指南引用：</strong>《2024指南》第4.2章节 高血压分级标准
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <h2>3. 症状解析</h2>
-                        <div class="report-content">
-                            <h3>关于脚肿</h3>
-                            <p>${result.swellingAnalysis}</p>
-                            
-                            <div class="guideline-reference">
-                                <strong>指南引用：</strong>《2024指南》第7.2章节 降压药物不良反应处理
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <h2>4. 生活干预</h2>
-                        <div class="report-content">
-                            <h3>戒烟建议</h3>
-                            <p>${result.smokingAdvice}</p>
-                            
-                            <div class="guideline-reference">
-                                <strong>指南引用：</strong>《2024指南》第6.1章节 生活方式干预
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <h2>5. 综合建议</h2>
-                        <div class="report-content">
-                            <p>${result.comprehensiveAdvice}</p>
-                            
-                            <div class="guideline-reference">
-                                <strong>指南引用：</strong>《2024中国高血压防治指南》第8章节 高血压患者管理
-                            </div>
+                            <pre style="white-space: pre-wrap; font-family: inherit; background: #f9f9f9; padding: 20px; border-radius: 10px;">${escapeHtml(result.aiAnalysis)}</pre>
                         </div>
                     </div>
                 </div>
