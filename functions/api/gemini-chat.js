@@ -37,8 +37,11 @@ export async function onRequestPost(context) {
             });
         }
         
-        // ✅ 修正后的 URL：使用最新模型版本并处理API_KEY
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${encodeURIComponent(API_KEY)}`;
+        // ✅ 修正后的 URL：使用标准模型名称和v1正式版接口
+        const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(API_KEY)}`;
+        
+        // 打印脱敏后的URL用于调试（生产环境可移除）
+        console.log("Full Request URL:", url.replace(API_KEY, "KEY_HIDDEN"));
 
         // 构建发送给 Google 的数据结构
         const googlePayload = {
@@ -77,7 +80,7 @@ export async function onRequestPost(context) {
             console.log('Successfully processed request, returning response');
             return new Response(JSON.stringify({ 
                 response: aiReply,
-                model: 'Gemini 1.5 Flash Latest',
+                model: 'Gemini 1.5 Flash',
                 debug: { 
                     status: 'success',
                     response_length: aiReply.length
