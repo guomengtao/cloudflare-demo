@@ -28,16 +28,16 @@ export async function onRequestPost(context) {
             });
         }
         
-        // 定义可用模型
+        // 定义可用模型（更新为Cloudflare官方推荐的最新版本）
         const availableModels = [
             '@cf/meta/llama-3.1-8b-instruct',
             '@cf/meta/llama-3.2-1b-instruct',
             '@cf/microsoft/phi-2',
             '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
             '@cf/google/gemma-7b-it',
-            '@cf/qwen/qwen-7b-chat',
-            '@cf/mistral/mistral-7b-instruct-v0.2',
-            '@cf/01ai/yi-6b-chat'
+            '@cf/qwen/qwen2.5-7b-instruct',  // 更新：通义千问 2.5 版本
+            '@cf/mistral/mistral-7b-instruct-v0.3',  // 更新：Mistral v0.3 版本
+            '@cf/01ai/yi-34b-chat-awq'  // 更新：01.AI 34B 版本
         ];
         
         // 验证模型
