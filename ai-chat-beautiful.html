@@ -5,257 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 聊天助手</title>
     <style>
+        /* 全局样式 */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
         }
         
+        /* 聊天容器 */
         .chat-container {
-            width: 100%;
             max-width: 800px;
-            height: 80vh;
-            max-height: 700px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            height: 100vh;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            background-color: #2d2d2d;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
         
+        /* 聊天头部 */
         .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
             padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            background-color: #3d3d3d;
+            border-bottom: 1px solid #444;
         }
         
         .chat-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
+            font-size: 24px;
+            color: #ffffff;
+            text-align: center;
         }
         
+        /* 聊天消息区域 */
         .chat-messages {
             flex: 1;
-            padding: 20px;
             overflow-y: auto;
-            background: linear-gradient(180deg, #f8f9ff 0%, #e8e9ff 100%);
-        }
-        
-        /* 滚动条美化 */
-        .chat-messages::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
-        }
-        
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-        }
-        
-        .message {
-            margin-bottom: 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            gap: 15px;
+        }
+        
+        /* 消息样式 */
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            background-color: #4a90e2;
+            color: white;
+        }
+        
+        .message.ai {
+            align-self: flex-start;
+            background-color: #444;
+            color: white;
         }
         
         .message-content {
-            padding: 15px 20px;
-            border-radius: 18px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 75%;
-            align-self: flex-start;
             position: relative;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-        
-        .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            align-self: flex-end;
-        }
-        
-        .message.ai .message-content {
-            background: white;
-            color: #333;
         }
         
         .message-content strong {
-            font-weight: 600;
-            margin-right: 8px;
-        }
-        
-        .message.user .message-content strong {
-            color: white;
-        }
-        
-        .message.ai .message-content strong {
-            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            opacity: 0.9;
         }
         
         .message-time {
-            font-size: 0.75rem;
-            margin-top: 6px;
-            margin-left: 8px;
-            font-weight: 400;
-        }
-        
-        .message.user .message-time {
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
             text-align: right;
-            margin-right: 8px;
-            margin-left: 0;
         }
         
-        .message.ai .message-time {
-            color: #888;
-        }
-        
+        /* 输入区域 */
         .chat-input-area {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid rgba(102, 126, 234, 0.2);
             display: flex;
-            gap: 10px;
             align-items: center;
+            padding: 15px;
+            background-color: #222;
+            border-top: 1px solid #444;
+            gap: 10px;
         }
         
+        /* 输入框 */
         .input-group {
             flex: 1;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .input-group input {
-            flex: 1;
-            padding: 12px 18px;
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 25px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .input-group input::placeholder {
-            color: #aaa;
         }
         
         #messageInput {
-            flex: 1;
-        }
-        
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 25px;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #444;
             border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        #messageInput:focus {
+            border-color: #4a90e2;
+        }
+        
+        /* 模型选择器 */
+        .model-selector {
+            width: 220px;
+        }
+        
+        .model-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            font-size: 14px;
+            outline: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        /* 发送按钮 */
+        #sendButton {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background-color: #4a90e2;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
         
-        button:active {
-            transform: translateY(0);
+        #sendButton:hover {
+            background-color: #357abd;
         }
         
-        button:disabled {
-            opacity: 0.7;
+        #sendButton:disabled {
+            background-color: #666;
             cursor: not-allowed;
-            transform: none;
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
         }
         
         /* 响应式设计 */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .chat-container {
-                height: 95vh;
-                max-height: none;
-                border-radius: 10px;
+                height: 100vh;
+            }
+            
+            .message {
+                max-width: 90%;
             }
             
             .chat-input-area {
                 flex-direction: column;
-                align-items: stretch;
+                gap: 10px;
             }
             
-            .input-group {
-                flex-direction: column;
-            }
-        }
-        
-        /* 加载状态 */
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-            font-style: italic;
-        }
-        
-        .typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 10px;
-            color: #667eea;
-        }
-        
-        .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            background: #667eea;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typing {
-            0%, 60%, 100% {
-                transform: translateY(0);
-                opacity: 0.5;
-            }
-            30% {
-                transform: translateY(-10px);
-                opacity: 1;
+            .model-selector {
+                width: 100%;
             }
         }
     </style>
@@ -279,6 +217,18 @@
             <div class="input-group">
                 <input type="text" id="messageInput" placeholder="输入你的问题...">
             </div>
+            <div class="model-selector">
+                <select id="modelSelect">
+                    <option value="@cf/meta/llama-3.1-8b-instruct" selected>主流平衡 - Llama 3.1 8B</option>
+                    <option value="@cf/meta/llama-3.2-1b-instruct">极致轻量 - Llama 3.2 1B</option>
+                    <option value="@cf/deepseek-ai/deepseek-r1-distill-qwen-32b">重型逻辑 - DeepSeek R1 32B</option>
+                    <option value="@cf/microsoft/phi-2">瞬间秒回 - Microsoft Phi-2</option>
+                    <option value="@cf/google/gemma-7b-it">创意逻辑 - Google Gemma 7B</option>
+                    <option value="@cf/qwen/qwen-7b-chat">中文最强 - 阿里巴巴 Qwen 7B</option>
+                    <option value="@cf/mistral/mistral-7b-instruct-v0.2">欧洲最强 - Mistral 7B</option>
+                    <option value="@cf/01ai/yi-6b-chat">中英平衡 - 01.AI Yi-6B</option>
+                </select>
+            </div>
             <button onclick="sendMessage()" id="sendButton">发送</button>
         </div>
     </div>
@@ -287,6 +237,7 @@
         const chatDiv = document.getElementById('chat');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
+        const modelSelect = document.getElementById('modelSelect');
         
         // 页面加载完成后自动聚焦到消息输入框
         window.addEventListener('DOMContentLoaded', () => {
@@ -296,120 +247,78 @@
         // 发送消息
         async function sendMessage() {
             const text = messageInput.value.trim();
+            const selectedModel = modelSelect.value;
             
             if (!text) {
-                messageInput.focus();
                 return;
             }
             
-            // 添加用户消息到聊天界面
-            const userMessage = createMessageElement(text, 'user', '你');
-            chatDiv.appendChild(userMessage);
+            // 添加用户消息到聊天记录
+            addMessage(text, 'user');
             
-            // 清空输入框并禁用发送按钮
+            // 清空输入框
             messageInput.value = '';
-            sendButton.textContent = '思考中...';
+            
+            // 禁用发送按钮
             sendButton.disabled = true;
-            
-            // 滚动到底部
-            chatDiv.scrollTop = chatDiv.scrollHeight;
-            
-            // 添加打字指示器
-            const typingIndicator = createTypingIndicator();
-            chatDiv.appendChild(typingIndicator);
-            chatDiv.scrollTop = chatDiv.scrollHeight;
+            sendButton.textContent = '发送中...';
             
             try {
-                // 调用AI聊天API
                 const response = await fetch('/api/ai-chat', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: text,
+                        model: selectedModel
+                    })
                 });
                 
                 const data = await response.json();
                 
-                // 移除打字指示器
-                typingIndicator.remove();
-                
-                // 添加AI回复到聊天界面
-                const aiMessage = createMessageElement(data.response, 'ai', 'AI助手');
-                chatDiv.appendChild(aiMessage);
-                
-                // 滚动到底部
-                chatDiv.scrollTop = chatDiv.scrollHeight;
-            } catch (e) {
-                console.error("发送失败:", e);
-                typingIndicator.remove();
-                const errorMessage = createMessageElement('抱歉，我暂时无法回答你的问题，请稍后重试。', 'ai', 'AI助手');
-                chatDiv.appendChild(errorMessage);
-                chatDiv.scrollTop = chatDiv.scrollHeight;
+                if (data.error) {
+                    addMessage(`错误: ${data.error}`, 'ai');
+                } else {
+                    addMessage(data.response, 'ai');
+                }
+            } catch (error) {
+                addMessage(`网络错误: ${error.message}`, 'ai');
             } finally {
-                sendButton.textContent = '发送';
+                // 启用发送按钮
                 sendButton.disabled = false;
-                messageInput.focus();
+                sendButton.textContent = '发送';
+                
+                // 自动滚动到底部
+                chatDiv.scrollTop = chatDiv.scrollHeight;
             }
         }
         
-        // 创建消息元素
-        function createMessageElement(text, type, sender) {
+        // 添加消息到聊天记录
+        function addMessage(text, sender) {
             const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
+            messageDiv.className = `message ${sender}`;
             
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
             
-            const timeSpan = document.createElement('div');
-            timeSpan.className = 'message-time';
-            timeSpan.textContent = new Date().toLocaleTimeString();
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <strong>${sender === 'user' ? '你' : 'AI助手'}</strong>${text}
+                    <div class="message-time">${timeString}</div>
+                </div>
+            `;
             
-            contentDiv.innerHTML = `<strong>${sender}</strong>${escapeHtml(text)}`;
-            contentDiv.appendChild(timeSpan);
-            messageDiv.appendChild(contentDiv);
-            
-            return messageDiv;
+            chatDiv.appendChild(messageDiv);
+            chatDiv.scrollTop = chatDiv.scrollHeight;
         }
         
-        // 创建打字指示器
-        function createTypingIndicator() {
-            const indicatorDiv = document.createElement('div');
-            indicatorDiv.className = 'message ai';
-            
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'typing-indicator';
-            typingDiv.innerHTML = '<span></span><span></span><span></span>';
-            
-            contentDiv.appendChild(typingDiv);
-            indicatorDiv.appendChild(contentDiv);
-            
-            return indicatorDiv;
-        }
-        
-        // 允许按Enter键发送消息
+        // 回车键发送消息
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
-        
-        // 输入框获得焦点时高亮边框
-        messageInput.addEventListener('focus', () => {
-            messageInput.style.borderColor = '#667eea';
-        });
-        
-        messageInput.addEventListener('blur', () => {
-            messageInput.style.borderColor = 'rgba(102, 126, 234, 0.3)';
-        });
-        
-        // HTML转义函数，防止XSS攻击
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
     </script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+import OpenAI from 'openai';
+
 export async function onRequestPost(context) {
     const { request, env } = context;
     
@@ -15,7 +17,7 @@ export async function onRequestPost(context) {
         const data = await request.json();
         console.log('Request body:', data);
         
-        const { message } = data;
+        const { message, model } = data;
         
         if (!message || typeof message !== 'string') {
             console.log('Invalid message received:', message);
@@ -28,14 +30,30 @@ export async function onRequestPost(context) {
             });
         }
         
+        // 定义可用模型
+        const availableModels = [
+            '@cf/meta/llama-3.1-8b-instruct',
+            '@cf/meta/llama-3.2-1b-instruct',
+            '@cf/microsoft/phi-2',
+            '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
+            '@cf/google/gemma-7b-it',
+            '@cf/qwen/qwen-7b-chat',
+            '@cf/mistral/mistral-7b-instruct-v0.2',
+            '@cf/01ai/yi-6b-chat'
+        ];
+        
+        // 验证模型
+        const selectedModel = model && availableModels.includes(model) ? model : '@cf/meta/llama-3.1-8b-instruct';
+        
         // 使用 Cloudflare Workers AI
         console.log('Calling AI model with prompt:', message.substring(0, 50) + '...');
+        console.log('Selected model:', selectedModel);
         
         const aiResponse = await env.AI.run(
-            '@cf/meta/llama-3-8b-instruct',
+            selectedModel,
             {
-                prompt: `You are a helpful AI assistant. Please respond to the user's message:\n\n${message}`,
-                max_tokens: 500,
+                prompt: `你是一个高效的助手，请用最简练的语言回答问题，除非我要求你详细说明。\n\n用户问题：${message}`,
+                max_tokens: 256,
                 temperature: 0.7
             }
         );
@@ -62,6 +80,7 @@ export async function onRequestPost(context) {
         console.log('Successfully processed request, returning response');
         return new Response(JSON.stringify({ 
             response: responseContent,
+            model: selectedModel,
             debug: { 
                 status: 'success',
                 response_length: responseContent.length
