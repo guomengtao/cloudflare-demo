@@ -68,6 +68,18 @@ function generateAIPrompt(patientData) {
 请使用专业、清晰的语言进行分析，严格遵循《2024中国高血压防治指南》的标准。`;
 }
 
+// 处理OPTIONS请求（CORS预检）
+export async function onRequestOptions() {
+    return new Response(null, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400'
+        },
+    });
+}
+
 export async function onRequestPost(context) {
     const { request, env } = context;
     
@@ -89,7 +101,10 @@ export async function onRequestPost(context) {
                 debug: { received: formData }
             }), {
                 status: 400,
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
             });
         }
         
@@ -105,36 +120,56 @@ export async function onRequestPost(context) {
         console.log('Calling AI model:', selectedModel);
         console.log('AI Prompt:', aiPrompt);
         
-        const aiResponse = await env.AI.run(
-            selectedModel,
-            {
-                messages: [
-                    { role: 'system', content: '你是一位严格遵循《2024中国高血压防治指南》的医生。请按照用户要求的格式输出分析结果。' },
-                    { role: 'user', content: aiPrompt }
-                ],
-                max_tokens: 1024,
-                temperature: 0.1
-            }
-        );
+        // 检查env.AI是否可用
+        if (!env.AI) {
+            throw new Error('Cloudflare Workers AI is not available. Please check your environment configuration.');
+        }
+        
+        // 添加超时控制
+        const aiResponse = await Promise.race([
+            env.AI.run(
+                selectedModel,
+                {
+                    messages: [
+                        { role: 'system', content: '你是一位严格遵循《2024中国高血压防治指南》的医生。请按照用户要求的格式输出分析结果。' },
+                        { role: 'user', content: aiPrompt }
+                    ],
+                    max_tokens: 1024,
+                    temperature: 0.1
+                }
+            ),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('AI request timeout')), 30000))
+        ]);
         
         console.log('AI Response:', aiResponse);
         
         // 获取AI响应内容
-        const aiContent = aiResponse.response || aiResponse.answer || JSON.stringify(aiResponse);
+        let aiContent;
+        if (typeof aiResponse === 'object' && aiResponse !== null) {
+            aiContent = aiResponse.response || aiResponse.answer || JSON.stringify(aiResponse);
+        } else {
+            aiContent = String(aiResponse);
+        }
         
         // 同时执行传统分析作为参考
         const traditionalAnalysis = analyzeHypertension(formData);
         
         // 返回分析结果
         console.log('Successfully processed request, returning analysis result');
-        return new Response(JSON.stringify({
+        const responseData = {
             bloodPressure: `${formData.systolic}/${formData.diastolic}`,
             bloodPressureLevel: traditionalAnalysis.bloodPressureLevel,
             riskLevel: traditionalAnalysis.riskLevel,
             aiAnalysis: aiContent,
             selectedModel: selectedModel
-        }), {
-            headers: { 'Content-Type': 'application/json' }
+        };
+        
+        return new Response(JSON.stringify(responseData), {
+            status: 200,
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
         });
 
     } catch (error) {
@@ -143,17 +178,20 @@ export async function onRequestPost(context) {
         console.error('Error message:', error.message);
         console.error('Error stack:', error.stack);
         
-        return new Response(JSON.stringify({ 
+        // 构建更详细的错误响应
+        const errorResponse = {
             error: 'Internal server error',
-            details: error.message,
-            debug: {
-                name: error.name,
-                stack: error.stack.split('\n'),
-                timestamp: new Date().toISOString()
-            }
-        }), {
+            message: error.message,
+            details: process.env.NODE_ENV === 'production' ? undefined : error.stack,
+            timestamp: new Date().toISOString()
+        };
+        
+        return new Response(JSON.stringify(errorResponse), {
             status: 500,
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
         });
     }
 }
