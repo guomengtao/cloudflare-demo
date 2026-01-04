@@ -62,6 +62,9 @@ export async function onRequestPost(context) {
         // 记录完整的AI响应
         console.log('AI response received:', JSON.stringify(aiResponse, null, 2));
         
+        // 智能获取响应内容，兼容不同模型的返回格式
+        const responseContent = aiResponse.response || aiResponse.answer || JSON.stringify(aiResponse);
+        
         // 验证响应格式
         if (!responseContent || (typeof responseContent === 'string' && responseContent.trim() === '')) {
             console.error('Invalid AI response format:', aiResponse);
@@ -74,9 +77,6 @@ export async function onRequestPost(context) {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
-        
-        // 智能获取响应内容，兼容不同模型的返回格式
-        const responseContent = aiResponse.response || aiResponse.answer || JSON.stringify(aiResponse);
         
         // 返回AI回复
         console.log('Successfully processed request, returning response');
