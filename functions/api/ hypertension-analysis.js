@@ -1,3 +1,6 @@
+// 高血压分析 API 实现
+// 基于《2024中国高血压防治指南》的规则引擎分析
+
 export async function onRequestPost(context) {
     const { request, env } = context;
     
@@ -51,25 +54,6 @@ export async function onRequestPost(context) {
             headers: { 'Content-Type': 'application/json' }
         });
     }
-}
-
-// 验证表单数据
-function validateFormData(data) {
-    // 基本验证
-    if (!data || typeof data !== 'object') return false;
-    
-    // 验证必要字段
-    const requiredFields = ['age', 'gender', 'systolic', 'diastolic', 'medication', 'smoking', 'swelling'];
-    for (const field of requiredFields) {
-        if (data[field] === undefined || data[field] === null) return false;
-    }
-    
-    // 验证数值范围
-    if (data.age < 1 || data.age > 120) return false;
-    if (data.systolic < 60 || data.systolic > 250) return false;
-    if (data.diastolic < 40 || data.diastolic > 150) return false;
-    
-    return true;
 }
 
 // 根据《2024中国高血压防治指南》进行分析
