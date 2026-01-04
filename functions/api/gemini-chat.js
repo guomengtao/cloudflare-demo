@@ -30,14 +30,15 @@ export async function onRequestPost(context) {
             console.error('GEMINI_API_KEY environment variable not set');
             return new Response(JSON.stringify({ 
                 error: 'API configuration error',
-                debug: 'GEMINI_API_KEY not set'
+                debug: 'GEMINI_API_KEY not set' 
             }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
         
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        // ✅ 修正后的 URL：使用最新模型版本并处理API_KEY
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${encodeURIComponent(API_KEY)}`;
 
         // 构建发送给 Google 的数据结构
         const googlePayload = {
@@ -63,8 +64,12 @@ export async function onRequestPost(context) {
         // 记录完整的Gemini响应
         console.log('Gemini response received:', JSON.stringify(data, null, 2));
 
+        // ✅ 改进的错误处理：检查API是否返回错误
+        if (data.error) {
+            throw new Error(`Google API 报错: ${data.error.message} (Code: ${data.error.code})`);
+        }
+
         // 重点：清洗 Google 返回的复杂数据
-        // Google 的结构是 data.candidates[0].content.parts[0].text
         if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
             const aiReply = data.candidates[0].content.parts[0].text;
             
@@ -72,7 +77,7 @@ export async function onRequestPost(context) {
             console.log('Successfully processed request, returning response');
             return new Response(JSON.stringify({ 
                 response: aiReply,
-                model: 'Gemini 1.5 Flash',
+                model: 'Gemini 1.5 Flash Latest',
                 debug: { 
                     status: 'success',
                     response_length: aiReply.length
