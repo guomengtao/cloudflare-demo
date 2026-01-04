@@ -44,13 +44,16 @@ export async function onRequestPost(context) {
         const selectedModel = model && availableModels.includes(model) ? model : '@cf/meta/llama-3.1-8b-instruct';
         
         // 使用 Cloudflare Workers AI
-        console.log('Calling AI model with prompt:', message.substring(0, 50) + '...');
+        console.log('Calling AI model with messages:', JSON.stringify({ message: message.substring(0, 50) + '...' }));
         console.log('Selected model:', selectedModel);
         
         const aiResponse = await env.AI.run(
             selectedModel,
             {
-                prompt: `你是一个高效的助手，请用最简练的语言回答问题，除非我要求你详细说明。\n\n用户问题：${message}`,
+                messages: [
+                    { role: 'system', content: '你是一个高效的助手，请用最简练的语言回答问题，除非我要求你详细说明。' },
+                    { role: 'user', content: message }
+                ],
                 max_tokens: 256,
                 temperature: 0.7
             }
@@ -60,19 +63,20 @@ export async function onRequestPost(context) {
         console.log('AI response received:', JSON.stringify(aiResponse, null, 2));
         
         // 验证响应格式
-        if (!aiResponse.response) {
+        if (!responseContent || (typeof responseContent === 'string' && responseContent.trim() === '')) {
             console.error('Invalid AI response format:', aiResponse);
             return new Response(JSON.stringify({ 
                 error: 'Invalid AI response format',
                 details: aiResponse,
-                debug: 'No response field in AI response'
+                debug: 'No valid response content found in AI response'
             }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
         
-        const responseContent = aiResponse.response;
+        // 智能获取响应内容，兼容不同模型的返回格式
+        const responseContent = aiResponse.response || aiResponse.answer || JSON.stringify(aiResponse);
         
         // 返回AI回复
         console.log('Successfully processed request, returning response');
