@@ -13,68 +13,30 @@ export async function onRequestPost(context) {
             });
         }
         
-        // 从Cloudflare环境变量中获取DeepSeek API密钥
-        const deepseekApiKey = env.DEEPSEEK_API_KEY;
+        // 使用 Cloudflare Workers AI
+        // 选择合适的模型，这里使用 Meta 的 Llama-3-8B 指令模型
+        const aiResponse = await env.AI.run(
+            '@cf/meta/llama-3-8b-instruct',
+            {
+                prompt: `You are a helpful AI assistant. Please respond to the user's message:\n\n${message}`,
+                max_tokens: 500,
+                temperature: 0.7
+            }
+        );
         
-        if (!deepseekApiKey) {
-            console.error('DeepSeek API key not found in environment variables');
-            return new Response(JSON.stringify({ 
-                error: 'DeepSeek API key not configured',
-                details: 'Please set DEEPSEEK_API_KEY environment variable'
-            }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
-        
-        // 调用DeepSeek API
-        const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${deepseekApiKey}`
-            },
-            body: JSON.stringify({
-                model: 'deepseek-chat',
-                messages: [
-                    { role: 'system', content: 'You are a helpful AI assistant.' },
-                    { role: 'user', content: message }
-                ],
-                temperature: 0.7,
-                max_tokens: 500
-            })
-        });
-        
-        if (!deepseekResponse.ok) {
-            const errorData = await deepseekResponse.json().catch(() => ({}));
-            console.error('DeepSeek API error:', {
-                status: deepseekResponse.status,
-                statusText: deepseekResponse.statusText,
-                error: errorData
-            });
-            return new Response(JSON.stringify({ 
-                error: 'DeepSeek API error',
-                status: deepseekResponse.status,
-                details: errorData
-            }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
-        
-        const deepseekData = await deepseekResponse.json();
-        if (!deepseekData.choices || !deepseekData.choices[0] || !deepseekData.choices[0].message) {
-            console.error('Invalid DeepSeek API response:', deepseekData);
+        // 验证响应格式
+        if (!aiResponse.response) {
+            console.error('Invalid AI response format:', aiResponse);
             return new Response(JSON.stringify({ 
                 error: 'Invalid AI response format',
-                details: deepseekData
+                details: aiResponse
             }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' }
             });
         }
         
-        const responseContent = deepseekData.choices[0].message.content;
+        const responseContent = aiResponse.response;
         
         // 返回AI回复
         return new Response(JSON.stringify({ response: responseContent }), {

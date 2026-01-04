@@ -9,3 +9,7 @@ pages_build_output_dir = "."
 binding = "DB"
 database_name = "cloudflare-demo-db"
 database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
+
+# AI 绑定 - 用于 Cloudflare Workers AI
+[[ai]]
+binding = "AI"
