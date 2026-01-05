@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国失踪儿童信息 - 公益网站</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* 失踪儿童信息卡片 */
+        .missing-child-section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e40af;
+        }
+        
+        .child-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .child-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .child-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .child-case-number {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .child-content {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .child-photo {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .child-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .info-item {
+            margin-bottom: 1rem;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 0.3rem;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            color: #1e293b;
+        }
+        
+        .missing-details {
+            grid-column: 1 / -1;
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        
+        .missing-details h3 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+        
+        /* 紧急联系信息 */
+        .emergency-section {
+            background: #fef2f2;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .emergency-title {
+            color: #dc2626;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-contact {
+            font-size: 1.5rem;
+            color: #dc2626;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-info {
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 数据来源 */
+        .source-section {
+            padding: 3rem 0;
+            text-align: center;
+            background: #f8fafc;
+        }
+        
+        .source-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .source-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 0.5rem;
+            color: #94a3b8;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .child-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .child-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">🔍 美国失踪儿童信息</div>
+            <div class="nav-links">
+                <a href="#child-info">失踪儿童信息</a>
+                <a href="#emergency">紧急联系</a>
+                <a href="#about">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>帮助寻找失踪儿童</h1>
+            <p class="hero-subtitle">每一份关注都可能帮助一个家庭重聚</p>
+        </div>
+    </section>
+
+    <!-- 失踪儿童信息 -->
+    <section class="missing-child-section" id="child-info">
+        <div class="container">
+            <h2 class="section-title">失踪儿童信息</h2>
+            
+            <div class="child-card">
+                <div class="child-header">
+                    <h1 class="child-name">JAYLEN GRIFFIN</h1>
+                    <div class="child-case-number">案件编号: NCMC 2071796</div>
+                </div>
+                
+                <div class="child-content">
+                    <div class="child-photo-container">
+                        <img src="https://api.missingkids.org/photographs/NCMC2071796c1.jpg" 
+                             alt="Jaylen Griffin 照片" 
+                             class="child-photo"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDMwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjFGNUY5Ii8+Cjx0ZXh0IHg9IjE1MCIgeT0iMjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTRBM0I4IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiPua1i+ivleWbvueJh+WbvueJhzwvdGV4dD4KPC9zdmc+'">
+                    </div>
+                    
+                    <div class="child-info">
+                        <div class="info-item">
+                            <div class="info-label">姓名</div>
+                            <div class="info-value">JAYLEN GRIFFIN</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">案件编号</div>
+                            <div class="info-value">NCMC 2071796</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">失踪日期</div>
+                            <div class="info-value">2024年12月17日</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">失踪地点</div>
+                            <div class="info-value">德克萨斯州，达拉斯</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">年龄</div>
+                            <div class="info-value">15岁</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">性别</div>
+                            <div class="info-value">男</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">身高</div>
+                            <div class="info-value">5英尺8英寸 (约173cm)</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">体重</div>
+                            <div class="info-value">140磅 (约63.5kg)</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">眼睛颜色</div>
+                            <div class="info-value">棕色</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">头发颜色</div>
+                            <div class="info-value">黑色</div>
+                        </div>
+                        
+                        <div class="missing-details">
+                            <h3>失踪详情</h3>
+                            <p>Jaylen于2024年12月17日在德克萨斯州达拉斯市失踪。最后一次被见到时穿着黑色连帽衫和牛仔裤。如有任何相关信息，请立即联系当地警方或国家失踪与受虐儿童中心。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 紧急联系信息 -->
+    <section class="emergency-section" id="emergency">
+        <div class="container">
+            <h2 class="emergency-title">紧急联系信息</h2>
+            <div class="emergency-contact">📞 1-800-THE-LOST (1-800-843-5678)</div>
+            <div class="emergency-info">
+                <p>如果您有任何关于失踪儿童的信息，请立即联系国家失踪与受虐儿童中心。所有信息都将严格保密处理。</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">也可以联系当地警方或拨打911紧急电话</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据来源 -->
+    <section class="source-section" id="about">
+        <div class="container">
+            <h2 class="section-title">数据来源</h2>
+            <p>本页面展示的失踪儿童信息来源于：</p>
+            <p style="margin: 1rem 0;">
+                <a href="https://www.missingkids.org/poster/NCMC/2071796/1" 
+                   class="source-link" 
+                   target="_blank">
+                   国家失踪与受虐儿童中心 (NCMEC)
+                </a>
+            </p>
+            <p style="color: #64748b; font-size: 0.9rem;">
+                我们致力于帮助传播失踪儿童信息，希望借助网络的力量帮助更多家庭重聚。
+            </p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>美国失踪儿童信息公益网站</p>
+            <p>数据来源：国家失踪与受虐儿童中心 (NCMEC)</p>
+            <p>© 2024 失踪儿童信息公益项目. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 图片加载错误处理
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.style.backgroundColor = '#f1f5f9';
+                this.style.padding = '2rem';
+                this.style.textAlign = 'center';
+            });
+        });
+
+        // 页面加载完成后的处理
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('失踪儿童信息页面已加载');
+            console.log('数据来源: https://www.missingkids.org/poster/NCMC/2071796/1');
+        });
+    </script>
+</body>
+</html>
