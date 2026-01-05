@@ -26,12 +26,18 @@ export async function onRequest(context) {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           patient_data TEXT NOT NULL,
           analysis_result TEXT NOT NULL,
-          analysis_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-          analysis_count INTEGER DEFAULT 1
+          analysis_date DATETIME DEFAULT CURRENT_TIMESTAMP
         )
       `);
+      console.log('Hypertension records table created or already exists');
     } catch (error) {
       console.error('Error creating hypertension_records table:', error);
+      return new Response(JSON.stringify({ 
+        error: 'Database table creation failed: ' + error.message 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
   }
   
@@ -75,8 +81,7 @@ async function handleGetRecords(hasDB, env, corsHeaders) {
           riskLevel: '中危',
           aiAnalysis: '这是演示数据，请设置数据库以使用真实数据。'
         }),
-        analysis_date: new Date().toISOString(),
-        analysis_count: 1
+        analysis_date: new Date().toISOString()
       }
     ]), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -85,11 +90,13 @@ async function handleGetRecords(hasDB, env, corsHeaders) {
   
   try {
     const result = await env.DB.prepare('SELECT * FROM hypertension_records ORDER BY analysis_date DESC').all();
+    console.log('Records fetched successfully, count:', result.results ? result.results.length : 0);
     return new Response(JSON.stringify(result.results || []), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Error fetching records:', error);
+    return new Response(JSON.stringify({ error: 'Failed to fetch records: ' + error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -122,6 +129,8 @@ async function handlePostRecord(request, hasDB, env, corsHeaders) {
       'INSERT INTO hypertension_records (patient_data, analysis_result) VALUES (?, ?)'
     ).bind(JSON.stringify(patient_data), JSON.stringify(analysis_result)).run();
     
+    console.log('Record saved successfully, ID:', result.meta.last_row_id);
+    
     return new Response(JSON.stringify({ 
       id: result.meta.last_row_id,
       message: 'Analysis record saved successfully'
@@ -130,7 +139,8 @@ async function handlePostRecord(request, hasDB, env, corsHeaders) {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Error saving record:', error);
+    return new Response(JSON.stringify({ error: 'Failed to save record: ' + error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -141,8 +151,9 @@ async function handlePostRecord(request, hasDB, env, corsHeaders) {
 async function handleStatsRequest(hasDB, env, corsHeaders) {
   if (!hasDB) {
     return new Response(JSON.stringify({
-      total_analyses: 1,
-      today_analyses: 1
+      total_analyses: 0,
+      today_analyses: 0,
+      message: 'Database not configured, using demo data'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -159,6 +170,8 @@ async function handleStatsRequest(hasDB, env, corsHeaders) {
     ).first();
     const todayAnalyses = todayResult ? todayResult.count : 0;
     
+    console.log('Stats fetched - Total:', totalAnalyses, 'Today:', todayAnalyses);
+    
     return new Response(JSON.stringify({
       total_analyses: totalAnalyses,
       today_analyses: todayAnalyses
@@ -166,10 +179,11 @@ async function handleStatsRequest(hasDB, env, corsHeaders) {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('Error fetching stats:', error);
     return new Response(JSON.stringify({ 
       total_analyses: 0,
       today_analyses: 0,
-      error: error.message 
+      error: 'Failed to fetch stats: ' + error.message 
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
