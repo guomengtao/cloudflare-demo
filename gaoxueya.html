@@ -5,17 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>高血压病情分析助手</title>
     <style>
-        // ... existing code ...
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        /* 多选复选框样式 */
-        .checkbox-group {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .disclaimer {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        /* 表单样式 */
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .blood-pressure-inputs {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .blood-pressure-inputs input {
+            flex: 1;
+        }
+        
+        .slash {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .radio-group, .checkbox-group {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
             margin-top: 10px;
         }
         
-        .checkbox-option {
+        .radio-option, .checkbox-option {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -26,11 +130,11 @@
             transition: all 0.3s ease;
         }
         
-        .checkbox-option:hover {
+        .radio-option:hover, .checkbox-option:hover {
             background: rgba(76, 175, 80, 0.2);
         }
         
-        .checkbox-option input[type="checkbox"] {
+        .radio-option input[type="radio"], .checkbox-option input[type="checkbox"] {
             width: 18px;
             height: 18px;
             accent-color: #4CAF50;
@@ -67,7 +171,7 @@
             padding: 15px 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
+            display: none;
             justify-content: space-between;
             align-items: center;
             font-size: 0.95rem;
@@ -106,6 +210,98 @@
         .view-records-btn:hover {
             background: rgba(33, 150, 243, 0.2);
             border-color: #2196F3;
+        }
+        
+        /* 按钮样式 */
+        button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 分析结果样式 */
+        #analysisResult {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+        }
+        
+        .result-section {
+            margin-bottom: 25px;
+        }
+        
+        .result-section h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .result-section p {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        
+        .risk-low { background: #e8f5e9; color: #4CAF50; }
+        .risk-medium { background: #fff3e0; color: #FF9800; }
+        .risk-high { background: #ffebee; color: #F44336; }
+        .risk-very-high { background: #ffcdd2; color: #D32F2F; }
+        
+        .error {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+            padding: 20px;
+            border-radius: 10px;
+            color: #d32f2f;
         }
         
         /* 记录查看模态框样式 */
@@ -371,29 +567,119 @@
         // 页面加载时获取分析统计信息
         document.addEventListener('DOMContentLoaded', function() {
             loadAnalysisStats();
+            
+            // 显示/隐藏自定义用药输入框
+            document.getElementById('otherMedication').addEventListener('change', function() {
+                const customMedication = document.getElementById('customMedication');
+                customMedication.style.display = this.checked ? 'block' : 'none';
+            });
         });
         
         // 加载分析统计信息
         async function loadAnalysisStats() {
             try {
                 const response = await fetch('/api/hypertension-records');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 
-                if (data.total_analyses > 0) {
-                    document.getElementById('totalAnalyses').textContent = data.total_analyses;
-                    document.getElementById('todayAnalyses').textContent = data.today_analyses;
+                // 检查返回的数据结构
+                if (data.total_analyses !== undefined) {
+                    document.getElementById('totalAnalyses').textContent = data.total_analyses || 0;
+                    document.getElementById('todayAnalyses').textContent = data.today_analyses || 0;
                     document.getElementById('analysisStats').style.display = 'flex';
                 }
             } catch (error) {
                 console.error('Failed to load analysis stats:', error);
+                // 设置默认值
+                document.getElementById('totalAnalyses').textContent = 0;
+                document.getElementById('todayAnalyses').textContent = 0;
+                document.getElementById('analysisStats').style.display = 'flex';
             }
         }
         
-        // 显示/隐藏自定义用药输入框
-        document.getElementById('otherMedication').addEventListener('change', function() {
-            const customMedication = document.getElementById('customMedication');
-            customMedication.style.display = this.checked ? 'block' : 'none';
-        });
+        // 显示分析记录
+        async function showRecords() {
+            const modal = document.getElementById('recordsModal');
+            const recordsList = document.getElementById('recordsList');
+            
+            try {
+                const response = await fetch('/api/hypertension-records');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                // 处理返回的数据结构
+                let recordsArray = [];
+                if (Array.isArray(data)) {
+                    recordsArray = data;
+                } else if (data.records && Array.isArray(data.records)) {
+                    recordsArray = data.records;
+                }
+                
+                if (recordsArray.length === 0) {
+                    recordsList.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">暂无分析记录</p>';
+                } else {
+                    recordsList.innerHTML = recordsArray.map(record => {
+                        try {
+                            const patientData = typeof record.patient_data === 'string' ? 
+                                JSON.parse(record.patient_data) : record.patient_data;
+                            const analysisResult = typeof record.analysis_result === 'string' ? 
+                                JSON.parse(record.analysis_result) : record.analysis_result;
+                            const date = new Date(record.analysis_date).toLocaleString('zh-CN');
+                            
+                            return `
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <strong>分析记录 #${record.id}</strong>
+                                        <span class="record-date">${date}</span>
+                                    </div>
+                                    <div class="record-content">
+                                        <p><strong>患者信息：</strong>${patientData.age}岁 ${patientData.gender === 'male' ? '男' : '女'}，血压 ${patientData.systolic}/${patientData.diastolic} mmHg</p>
+                                        <p><strong>用药情况：</strong>${Array.isArray(patientData.medication) ? patientData.medication.join('、') : patientData.medication}</p>
+                                        <p><strong>风险等级：</strong><span class="record-risk risk-${(analysisResult.riskLevel || 'unknown').toLowerCase()}">${analysisResult.riskLevel || '未知'}</span></p>
+                                        <p><strong>血压分级：</strong>${analysisResult.bloodPressureLevel || '未知'}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } catch (parseError) {
+                            console.error('Error parsing record:', parseError);
+                            return `
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <strong>分析记录 #${record.id}</strong>
+                                        <span class="record-date">${new Date(record.analysis_date).toLocaleString('zh-CN')}</span>
+                                    </div>
+                                    <div class="record-content">
+                                        <p style="color: #f44336;">数据解析错误，请检查记录格式</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }).join('');
+                }
+                
+                modal.style.display = 'flex';
+            } catch (error) {
+                console.error('Error loading records:', error);
+                recordsList.innerHTML = `<p style="text-align: center; color: #f44336; padding: 40px;">加载记录失败: ${error.message}</p>`;
+                modal.style.display = 'flex';
+            }
+        }
+        
+        // 隐藏记录模态框
+        function hideRecords() {
+            document.getElementById('recordsModal').style.display = 'none';
+        }
+        
+        // HTML转义函数
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
         
         // 表单提交事件处理
         document.getElementById('hypertensionForm').addEventListener('submit', async (event) => {
@@ -498,106 +784,76 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error('Failed to save analysis record');
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to save analysis record');
                 }
                 
-                console.log('Analysis record saved successfully');
+                const result = await response.json();
+                console.log('Analysis record saved successfully:', result);
+                return result;
             } catch (error) {
                 console.error('Failed to save analysis record:', error);
+                // 不抛出错误，避免影响主流程
+                return null;
             }
         }
         
         // 显示分析结果
         function displayAnalysisResult(result) {
-            const reportHtml = `
-                <div class="analysis-report">
-                    <div class="report-section">
-                        <h2>1. 当前风险画像</h2>
-                        <div class="report-content">
-                            <p>判定：<span class="risk-level ${result.riskLevel.toLowerCase()}">${result.riskLevel}</span></p>
-                            <p>血压：${result.bloodPressure} mmHg 属于 ${result.bloodPressureLevel}</p>
-                            <p>使用模型：${result.selectedModel}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="report-section">
-                        <h2>2. AI 专业分析</h2>
-                        <div class="report-content">
-                            <pre style="white-space: pre-wrap; font-family: inherit; background: #f9f9f9; padding: 20px; border-radius: 10px;">${escapeHtml(result.aiAnalysis)}</pre>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="result-actions" style="margin-top: 20px; text-align: center;">
-                    <button onclick="downloadPDF()" style="margin-right: 20px;">下载PDF报告</button>
-                    <button onclick="shareReport()">分享报告</button>
-                </div>
-            `;
+            const analysisResult = document.getElementById('analysisResult');
             
-            analysisResult.innerHTML = reportHtml;
-        }
-        
-        // 显示分析记录
-        async function showRecords() {
-            const modal = document.getElementById('recordsModal');
-            const recordsList = document.getElementById('recordsList');
-            
-            try {
-                const response = await fetch('/api/hypertension-records');
-                const records = await response.json();
-                
-                if (records.length === 0) {
-                    recordsList.innerHTML = '<p style="text-align: center; color: #666;">暂无分析记录</p>';
-                } else {
-                    recordsList.innerHTML = records.map(record => {
-                        const patientData = JSON.parse(record.patient_data);
-                        const analysisResult = JSON.parse(record.analysis_result);
-                        const date = new Date(record.analysis_date).toLocaleString('zh-CN');
-                        
-                        return `
-                            <div class="record-item">
-                                <div class="record-header">
-                                    <strong>分析记录 #${record.id}</strong>
-                                    <span class="record-date">${date}</span>
-                                </div>
-                                <div class="record-content">
-                                    <p><strong>患者信息：</strong>${patientData.age}岁 ${patientData.gender === 'male' ? '男' : '女'}，血压 ${patientData.systolic}/${patientData.diastolic} mmHg</p>
-                                    <p><strong>用药情况：</strong>${Array.isArray(patientData.medication) ? patientData.medication.join('、') : patientData.medication}</p>
-                                    <p><strong>风险等级：</strong><span class="record-risk risk-${analysisResult.riskLevel.toLowerCase()}">${analysisResult.riskLevel}</span></p>
-                                    <p><strong>血压分级：</strong>${analysisResult.bloodPressureLevel}</p>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-                
-                modal.style.display = 'flex';
-            } catch (error) {
-                recordsList.innerHTML = `<p style="text-align: center; color: #f44336;">加载记录失败: ${error.message}</p>`;
-                modal.style.display = 'flex';
+            let riskClass = 'risk-unknown';
+            if (result.riskLevel) {
+                const riskLevel = result.riskLevel.toLowerCase();
+                if (riskLevel.includes('低')) riskClass = 'risk-low';
+                else if (riskLevel.includes('中')) riskClass = 'risk-medium';
+                else if (riskLevel.includes('高')) riskClass = 'risk-high';
+                else if (riskLevel.includes('极高')) riskClass = 'risk-very-high';
             }
-        }
-        
-        // 隐藏分析记录
-        function hideRecords() {
-            document.getElementById('recordsModal').style.display = 'none';
-        }
-        
-        // 下载PDF报告（模拟功能）
-        function downloadPDF() {
-            alert('PDF下载功能将在后续版本中实现');
-        }
-        
-        // 分享报告（模拟功能）
-        function shareReport() {
-            alert('报告分享功能将在后续版本中实现');
-        }
-        
-        // HTML转义函数，防止XSS攻击
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+            
+            analysisResult.innerHTML = `
+                <div class="result-section">
+                    <h3>血压分级</h3>
+                    <p>${result.bloodPressureLevel || '未知'}</p>
+                </div>
+                
+                <div class="result-section">
+                    <h3>风险等级</h3>
+                    <p><span class="risk-level ${riskClass}">${result.riskLevel || '未知'}</span></p>
+                </div>
+                
+                <div class="result-section">
+                    <h3>症状分析</h3>
+                    <p>${result.symptomAnalysis || '无特殊症状分析'}</p>
+                </div>
+                
+                <div class="result-section">
+                    <h3>生活干预建议</h3>
+                    <p>${result.lifestyleAdvice || '无具体生活干预建议'}</p>
+                </div>
+                
+                <div class="result-section">
+                    <h3>戒烟建议</h3>
+                    <p>${result.smokingAdvice || '无具体戒烟建议'}</p>
+                </div>
+                
+                <div class="result-section">
+                    <h3>综合建议</h3>
+                    <p>${result.comprehensiveAdvice || '无具体综合建议'}</p>
+                </div>
+                
+                <div class="result-section">
+                    <h3>达标时间建议</h3>
+                    <p>${result.targetTime || '未提供具体达标时间建议'}</p>
+                </div>
+                
+                ${result.aiAnalysis ? `
+                <div class="result-section">
+                    <h3>AI深度分析</h3>
+                    <p>${result.aiAnalysis}</p>
+                </div>
+                ` : ''}
+            `;
         }
     </script>
 </body>

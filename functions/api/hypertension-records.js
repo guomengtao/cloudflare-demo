@@ -35,86 +35,16 @@ export async function onRequest(context) {
     }
   }
   
+  // 处理统计信息请求
+  const url = new URL(request.url);
+  if (url.pathname === '/api/hypertension-records/stats') {
+    return handleStatsRequest(hasDB, env, corsHeaders);
+  }
+  
   if (request.method === 'GET') {
-    // 获取所有分析记录
-    if (!hasDB) {
-      return new Response(JSON.stringify([
-        { 
-          id: 1, 
-          patient_data: JSON.stringify({
-            age: 45,
-            gender: 'male',
-            systolic: 140,
-            diastolic: 90,
-            medication: ['none'],
-            smoking: 'no',
-            swelling: 'no',
-            otherConditions: ['none']
-          }),
-          analysis_result: JSON.stringify({
-            bloodPressure: '140/90',
-            bloodPressureLevel: '1级高血压',
-            riskLevel: '中危',
-            aiAnalysis: '这是演示数据，请设置数据库以使用真实数据。'
-          }),
-          analysis_date: new Date().toISOString(),
-          analysis_count: 1
-        }
-      ]), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-    
-    try {
-      const result = await env.DB.prepare('SELECT * FROM hypertension_records ORDER BY analysis_date DESC').all();
-      return new Response(JSON.stringify(result.results || []), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    } catch (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
+    return handleGetRecords(hasDB, env, corsHeaders);
   } else if (request.method === 'POST') {
-    // 添加新的分析记录
-    if (!hasDB) {
-      return new Response(JSON.stringify({ 
-        error: 'Database not configured. Please set up D1 database to save records.' 
-      }), {
-        status: 503,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-    
-    try {
-      const data = await request.json();
-      const { patient_data, analysis_result } = data;
-      
-      if (!patient_data || !analysis_result) {
-        return new Response(JSON.stringify({ error: 'Patient data and analysis result are required' }), {
-          status: 400,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        });
-      }
-      
-      const result = await env.DB.prepare(
-        'INSERT INTO hypertension_records (patient_data, analysis_result) VALUES (?, ?)'
-      ).bind(JSON.stringify(patient_data), JSON.stringify(analysis_result)).run();
-      
-      return new Response(JSON.stringify({ 
-        id: result.meta.last_row_id,
-        message: 'Analysis record saved successfully'
-      }), {
-        status: 201,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    } catch (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
+    return handlePostRecord(request, hasDB, env, corsHeaders);
   }
   
   return new Response(JSON.stringify({ error: 'Method not allowed' }), {
@@ -123,22 +53,92 @@ export async function onRequest(context) {
   });
 }
 
-// 获取分析统计信息
-export async function onRequestGet(context) {
-  const { request, env } = context;
-  
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-  
-  if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+// 处理获取记录请求
+async function handleGetRecords(hasDB, env, corsHeaders) {
+  if (!hasDB) {
+    return new Response(JSON.stringify([
+      { 
+        id: 1, 
+        patient_data: JSON.stringify({
+          age: 45,
+          gender: 'male',
+          systolic: 140,
+          diastolic: 90,
+          medication: ['none'],
+          smoking: 'no',
+          swelling: 'no',
+          otherConditions: ['none']
+        }),
+        analysis_result: JSON.stringify({
+          bloodPressure: '140/90',
+          bloodPressureLevel: '1级高血压',
+          riskLevel: '中危',
+          aiAnalysis: '这是演示数据，请设置数据库以使用真实数据。'
+        }),
+        analysis_date: new Date().toISOString(),
+        analysis_count: 1
+      }
+    ]), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
   
-  const hasDB = env.DB !== undefined;
+  try {
+    const result = await env.DB.prepare('SELECT * FROM hypertension_records ORDER BY analysis_date DESC').all();
+    return new Response(JSON.stringify(result.results || []), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// 处理保存记录请求
+async function handlePostRecord(request, hasDB, env, corsHeaders) {
+  if (!hasDB) {
+    return new Response(JSON.stringify({ 
+      error: 'Database not configured. Please set up D1 database to save records.' 
+    }), {
+      status: 503,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
   
+  try {
+    const data = await request.json();
+    const { patient_data, analysis_result } = data;
+    
+    if (!patient_data || !analysis_result) {
+      return new Response(JSON.stringify({ error: 'Patient data and analysis result are required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    
+    const result = await env.DB.prepare(
+      'INSERT INTO hypertension_records (patient_data, analysis_result) VALUES (?, ?)'
+    ).bind(JSON.stringify(patient_data), JSON.stringify(analysis_result)).run();
+    
+    return new Response(JSON.stringify({ 
+      id: result.meta.last_row_id,
+      message: 'Analysis record saved successfully'
+    }), {
+      status: 201,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// 处理统计信息请求
+async function handleStatsRequest(hasDB, env, corsHeaders) {
   if (!hasDB) {
     return new Response(JSON.stringify({
       total_analyses: 1,
