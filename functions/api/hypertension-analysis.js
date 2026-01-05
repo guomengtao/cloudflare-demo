@@ -302,26 +302,15 @@ function getSwellingAnalysis(data) {
         return '目前无脚肿症状，建议继续观察。';
     }
     
-    // 根据用药情况分析脚肿原因
-    if (medication === '地平类') {
+    // 根据用药情况分析脚肿原因（支持多选用药）
+    const medications = Array.isArray(medication) ? medication : [medication];
+    
+    if (medications.includes('地平类')) {
         return '您服用的地平类药物可能引起脚肿的不良反应。地平类药物通过扩张小动脉降低血压，但可能导致体液在下肢潴留，引起脚肿。建议咨询医生是否需要调整用药方案，如联用ACEI或ARB类药物，或更换其他类型的降压药物。';
-    } else if (medication === '利尿剂') {
+    } else if (medications.includes('利尿剂')) {
         return '利尿剂一般不会引起脚肿，反而有减轻水肿的作用。您的脚肿可能与其他因素有关，建议咨询医生进一步检查。';
     } else {
         return '脚肿可能与多种因素有关，如长时间站立、心力衰竭、肾脏疾病等。建议监测脚肿的变化，如有加重或伴随其他症状（如呼吸困难、尿量减少等），及时就医。';
-    }
-}
-
-// 戒烟建议
-function getSmokingAdvice(data) {
-    const { smoking } = data;
-    
-    if (smoking === 'no') {
-        return '您目前不吸烟，建议继续保持，避免二手烟暴露。';
-    } else if (smoking === 'quit') {
-        return '恭喜您已经戒烟！戒烟可以显著降低心血管疾病风险，建议继续保持，并定期进行健康检查。';
-    } else {
-        return '吸烟是心血管疾病的重要危险因素，会使血管弹性下降，增加卒中风险约2-4倍。根据《2024中国高血压防治指南》，戒烟是高血压患者生活方式干预的I级推荐措施。建议您立即戒烟，并避免二手烟暴露。';
     }
 }
 
@@ -336,14 +325,24 @@ function getComprehensiveAdvice(data, riskLevel) {
         advice += '您的高血压风险等级为低危，建议采取生活方式干预，包括：控制钠盐摄入（每日不超过5g）、增加钾盐摄入（多吃新鲜蔬菜和水果）、控制体重（BMI目标值18.5-23.9kg/m²）、适量运动（每周至少150分钟中等强度有氧运动）、戒烟限酒、保持心理平衡。';
     } else if (riskLevel === '中危') {
         advice += '您的高血压风险等级为中危，建议在生活方式干预的基础上，';
-        if (medication === 'none') {
+        
+        // 检查是否服用任何降压药物
+        const medications = Array.isArray(medication) ? medication : [medication];
+        const isTakingMedication = medications.some(med => med !== 'none' && med !== '未服用降压药物');
+        
+        if (!isTakingMedication) {
             advice += '考虑启动降压药物治疗。';
         } else {
             advice += '继续规范服用降压药物。';
         }
     } else {
         advice += '您的高血压风险等级为' + (riskLevel === '高危' ? '高危' : '很高危') + '，';
-        if (medication === 'none') {
+        
+        // 检查是否服用任何降压药物
+        const medications = Array.isArray(medication) ? medication : [medication];
+        const isTakingMedication = medications.some(med => med !== 'none' && med !== '未服用降压药物');
+        
+        if (!isTakingMedication) {
             advice += '建议立即启动降压药物治疗，并严格进行生活方式干预。';
         } else {
             advice += '建议严格按照医嘱服用降压药物，并加强生活方式干预。';
@@ -360,18 +359,7 @@ function getComprehensiveAdvice(data, riskLevel) {
     return advice;
 }
 
-// 达标建议时间
-function getRecommendationPeriod(riskLevel) {
-    if (riskLevel === '低危') {
-        return '建议3-6个月内将血压控制在目标范围内（<140/90 mmHg，如合并糖尿病或肾脏疾病，目标<130/80 mmHg）。';
-    } else if (riskLevel === '中危') {
-        return '建议2-3个月内将血压控制在目标范围内（<140/90 mmHg，如合并糖尿病或肾脏疾病，目标<130/80 mmHg）。';
-    } else {
-        return '建议1个月内将血压控制在目标范围内（<140/90 mmHg，如合并糖尿病或肾脏疾病，目标<130/80 mmHg）。';
-    }
-}
-
-// 验证表单数据
+// 验证表单数据（更新以支持多选用药）
 function validateFormData(data) {
     const { age, gender, systolic, diastolic, medication, smoking, swelling, otherConditions } = data;
     
@@ -388,14 +376,26 @@ function validateFormData(data) {
     
     // 选项验证
     const validGenders = ['male', 'female'];
-    const validMedications = ['none', '地平类', 'ACEI', 'ARB', '利尿剂', 'β受体阻滞剂', '其他'];
+    const validMedications = ['none', '地平类', 'ACEI', 'ARB', '利尿剂', 'β受体阻滞剂', '其他', '未服用降压药物'];
     const validSmoking = ['yes', 'no', 'quit'];
     const validSwelling = ['yes', 'no'];
     
     if (!validGenders.includes(gender)) return false;
-    if (!validMedications.includes(medication)) return false;
     if (!validSmoking.includes(smoking)) return false;
     if (!validSwelling.includes(swelling)) return false;
+    
+    // 验证 medication 字段（支持数组或字符串）
+    if (Array.isArray(medication)) {
+        for (const med of medication) {
+            if (!validMedications.includes(med)) {
+                return false;
+            }
+        }
+    } else {
+        if (!validMedications.includes(medication)) {
+            return false;
+        }
+    }
     
     // 验证 otherConditions 字段
     if (otherConditions !== undefined && !Array.isArray(otherConditions)) {
@@ -403,4 +403,28 @@ function validateFormData(data) {
     }
     
     return true;
+}
+
+// 戒烟建议
+function getSmokingAdvice(data) {
+    const { smoking } = data;
+    
+    if (smoking === 'no') {
+        return '您目前不吸烟，建议继续保持，避免二手烟暴露。';
+    } else if (smoking === 'quit') {
+        return '恭喜您已经戒烟！戒烟可以显著降低心血管疾病风险，建议继续保持，并定期进行健康检查。';
+    } else {
+        return '吸烟是心血管疾病的重要危险因素，会使血管弹性下降，增加卒中风险约2-4倍。根据《2024中国高血压防治指南》，戒烟是高血压患者生活方式干预的I级推荐措施。建议您立即戒烟，并避免二手烟暴露。';
+    }
+}
+
+// 达标建议时间
+function getRecommendationPeriod(riskLevel) {
+    if (riskLevel === '低危') {
+        return '建议3-6个月内将血压控制在目标范围内（<140/90 mmHg，如合并糖尿病或肾脏疾病，目标<130/80 mmHg）。';
+    } else if (riskLevel === '中危') {
+        return '建议2-3个月内将血压控制在目标范围内（<140/90 mmHg，如合并糖尿病或肾脏疾病，目标<130/80 mmHg）。';
+    } else {
+        return '建议1个月内将血压控制在目标范围内（<140/90 mmHg，如合并糖尿病或肾脏疾病，目标<130/80 mmHg）。';
+    }
 }
