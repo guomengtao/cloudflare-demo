@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫头鹰智能网页订阅 - 智能网站订阅服务</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 功能区域 */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3a8a;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a8a;
+        }
+        
+        /* 场景展示 */
+        .scenarios {
+            background: #f1f5f9;
+        }
+        
+        .scenario-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            gap: 1rem;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .scenario-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #1e3a8a;
+        }
+        
+        /* 统计数据 */
+        .stats {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            opacity: 0.9;
+        }
+        
+        .stat-trend {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        .trend-up {
+            color: #10b981;
+        }
+        
+        /* 用户评价 */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #64748b;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+        
+        /* 底部CTA */
+        .final-cta {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .final-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .robot-statement {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">🐱 猫头鹰智能网页订阅</div>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#scenarios">场景</a>
+                <a href="#pricing">定价</a>
+                <a href="#about">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>猫头鹰智能网页订阅</h1>
+            <p class="hero-subtitle">智能网站订阅服务 - 一句话搞定网页订阅</p>
+            <div class="cta-buttons">
+                <a href="#free-trial" class="btn btn-primary">开始订阅</a>
+                <a href="#features" class="btn btn-secondary">免费体验</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心功能 -->
+    <section class="section" id="features">
+        <div class="container">
+            <h2 class="section-title">强大功能，简单操作</h2>
+            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.2rem; color: #64748b;">
+                我们的智能订阅系统提供全方位的功能，满足您的各种订阅需求
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">一句话完成配置</h3>
+                    <p>无需复杂设置，只需用一句话描述您想要订阅的内容，系统自动完成配置</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="tag">智能语义理解</span>
+                        <span class="tag">自动完成订阅</span>
+                        <span class="tag">灵活配置</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">精准过滤噪音</h3>
+                    <p>AI智能算法自动过滤无关信息，只推送您真正关心的内容变化</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="tag">智能降噪技术</span>
+                        <span class="tag">精准过滤</span>
+                        <span class="tag">智能提取</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">随时随地接收通知</h3>
+                    <p>多平台通知系统，确保您无论身在何处都能及时获取重要信息</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="tag">短信通知</span>
+                        <span class="tag">邮件通知</span>
+                        <span class="tag">Webhook通知</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 适用场景 -->
+    <section class="section scenarios" id="scenarios">
+        <div class="container">
+            <h2 class="section-title">适用多种场景</h2>
+            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.2rem; color: #64748b;">
+                无论是商业用途还是个人需求，我们的订阅系统都能满足您的要求
+            </p>
+            
+            <div class="scenario-tabs">
+                <button class="tab-btn active" onclick="showScenario('business')">商业场景</button>
+                <button class="tab-btn" onclick="showScenario('personal')">个人场景</button>
+            </div>
+            
+            <div id="business-scenarios" class="scenario-grid">
+                <div class="scenario-card">
+                    <h3 class="scenario-title">价格订阅</h3>
+                    <p>实时跟踪竞争对手价格变化，及时调整策略，保持市场竞争力</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">库存订阅</h3>
+                    <p>订阅关键商品库存状态，避免缺货风险，确保供应链稳定</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">内容订阅</h3>
+                    <p>订阅行业动态和竞品内容更新，把握市场趋势，抢占先机</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">数据订阅</h3>
+                    <p>实时订阅业务数据变化，异常情况及时预警，降低运营风险</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">舆情订阅</h3>
+                    <p>订阅品牌声誉和用户反馈，及时响应负面信息，维护品牌形象</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">竞品订阅</h3>
+                    <p>全方位订阅竞争对手动态，产品更新、价格策略一网打尽</p>
+                </div>
+            </div>
+            
+            <div id="personal-scenarios" class="scenario-grid" style="display: none;">
+                <div class="scenario-card">
+                    <h3 class="scenario-title">比赛订阅</h3>
+                    <p>订阅比赛信息、报名时间、赛程安排，不错过任何重要信息</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">商品订阅</h3>
+                    <p>跟踪心仪商品价格变化，降价、促销活动及时通知，省钱利器</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">内容更新</h3>
+                    <p>订阅喜欢的博客、网站更新，新文章、新资源第一时间掌握</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">活动通知</h3>
+                    <p>订阅各类活动信息，演唱会、展览、讲座等，及时获取报名机会</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">房源订阅</h3>
+                    <p>订阅租房、二手房信息，好房源立即推送，抢占先机</p>
+                </div>
+                <div class="scenario-card">
+                    <h3 class="scenario-title">优惠订阅</h3>
+                    <p>订阅电商平台优惠券、满减活动，羊毛党必备神器</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 统计数据 -->
+    <section class="section stats">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">订阅数据概览</h2>
+            <p style="text-align: center; margin-bottom: 3rem; color: rgba(255,255,255,0.9);">
+                直观展示我们平台的订阅覆盖范围和用户满意度
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">180K+</div>
+                    <div class="stat-label">活跃订阅项目</div>
+                    <div class="stat-trend trend-up">12.5% vs 上月</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">85K+</div>
+                    <div class="stat-label">日活跃用户</div>
+                    <div class="stat-trend trend-up">8.3% vs 上月</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1.2M+</div>
+                    <div class="stat-label">每日通知</div>
+                    <div class="stat-trend trend-up">15.2% vs 上月</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">97%</div>
+                    <div class="stat-label">用户满意度</div>
+                    <div class="stat-trend trend-up">2.1% vs 上季度</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户评价 -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">用户怎么说</h2>
+            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.2rem; color: #64748b;">
+                听听我们的用户如何评价智能订阅服务
+            </p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"以前盯18个竞品价格，每天熬到凌晨还会漏。现在价格一变动就收到提醒，定价反应速度快了3倍，销售额提升40%。"</p>
+                    <div class="testimonial-author">张先生，市场经理 @ 某跨境电商平台</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"追踪arXiv论文，以前RSS每天200多篇推送筛选到头大。现在设置关键词后只推送5-8篇真正相关的，准确率惊人。"</p>
+                    <div class="testimonial-author">李女士，博士研究生 @ 某985高校</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"演唱会门票开售，凌晨2点订阅把我叫醒，成功抢到前排！朋友们第二天看已经售罄，二手票炒到3倍。"</p>
+                    <div class="testimonial-author">小王，设计师 | 数码爱好者</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 最终CTA -->
+    <section class="final-cta" id="free-trial">
+        <div class="container">
+            <h2>开始您的智能之旅</h2>
+            <p style="margin-bottom: 2rem; font-size: 1.2rem; opacity: 0.9;">
+                立即注册，赠送免费积分大礼包。体验猫头鹰的便捷与高效，不错过任何重要信息。
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">免费试用</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">积分礼包</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">24/7技术支持</span>
+            </div>
+            <a href="https://www.mtywatch.com/" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 40px;">
+                立即免费体验
+            </a>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#home">首页</a>
+                <a href="#scenarios">场景</a>
+                <a href="#pricing">定价</a>
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">服务条款</a>
+                <a href="#about">关于我们</a>
+            </div>
+            
+            <p style="margin-bottom: 1rem; color: #94a3b8;">
+                智能网页订阅服务，让您轻松掌握网络动态，不错过任何重要变化。
+            </p>
+            
+            <p style="margin-bottom: 2rem; color: #94a3b8;">
+                京公网安备11011402055087号 | 京ICP备2022024617号-7<br>
+                © 2025 猫头鹰智能网页订阅. 保留所有权利。
+            </p>
+            
+            <div class="robot-statement">
+                <p>机器人声明：与其他优秀的机器人（如Google、Alexa等）一样，猫头鹰智能网页订阅遵循当前互联网协议，以尊重、非侵入和道德的方式访问网站。我们的机器人仅以低频率获取页面内容以保护网站带宽，系统不会尝试解决验证码或规避旨在保护网站免受不当访问的机制。我们的服务仅存储网站的公开信息，严格遵守版权法律，纯粹用于替代用户希望在有变化时收到通知的目的。猫头鹰智能网页订阅绝不会打包转售数据或爬取网站来训练AI模型。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 场景切换功能
+        function showScenario(type) {
+            const businessTab = document.querySelector('.tab-btn:nth-child(1)');
+            const personalTab = document.querySelector('.tab-btn:nth-child(2)');
+            const businessScenarios = document.getElementById('business-scenarios');
+            const personalScenarios = document.getElementById('personal-scenarios');
+            
+            if (type === 'business') {
+                businessTab.classList.add('active');
+                personalTab.classList.remove('active');
+                businessScenarios.style.display = 'grid';
+                personalScenarios.style.display = 'none';
+            } else {
+                businessTab.classList.remove('active');
+                personalTab.classList.add('active');
+                businessScenarios.style.display = 'none';
+                personalScenarios.style.display = 'grid';
+            }
+        }
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // 标签样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .tag {
+                display: inline-block;
+                background: #e0f2fe;
+                color: #0369a1;
+                padding: 0.3rem 0.8rem;
+                border-radius: 15px;
+                font-size: 0.8rem;
+                margin: 0.2rem;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
