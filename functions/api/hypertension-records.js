@@ -17,28 +17,8 @@ export async function onRequest(context) {
   
   // 检查数据库是否可用
   const hasDB = env.DB !== undefined;
-  
-  // 初始化高血压分析记录表
-  if (hasDB) {
-    try {
-      await env.DB.exec(`
-        CREATE TABLE IF NOT EXISTS hypertension_records (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          patient_data TEXT NOT NULL,
-          analysis_result TEXT NOT NULL,
-          analysis_date DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-      `);
-      console.log('Hypertension records table created or already exists');
-    } catch (error) {
-      console.error('Error creating hypertension_records table:', error);
-      return new Response(JSON.stringify({ 
-        error: 'Database table creation failed: ' + error.message 
-      }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
+  if (!hasDB) {
+    console.warn('Database not configured. Using demo mode.');
   }
   
   // 处理统计信息请求
@@ -96,6 +76,15 @@ async function handleGetRecords(hasDB, env, corsHeaders) {
     });
   } catch (error) {
     console.error('Error fetching records:', error);
+    // 检查是否是表不存在错误
+    if (error.message && error.message.includes('no such table')) {
+      return new Response(JSON.stringify({ 
+        error: '数据库表未创建，请执行初始化命令：npx wrangler d1 execute cloudflare-demo-db --file=schema.sql' 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
     return new Response(JSON.stringify({ error: 'Failed to fetch records: ' + error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -140,6 +129,15 @@ async function handlePostRecord(request, hasDB, env, corsHeaders) {
     });
   } catch (error) {
     console.error('Error saving record:', error);
+    // 检查是否是表不存在错误
+    if (error.message && error.message.includes('no such table')) {
+      return new Response(JSON.stringify({ 
+        error: '数据库表未创建，请执行初始化命令：npx wrangler d1 execute cloudflare-demo-db --file=schema.sql' 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
     return new Response(JSON.stringify({ error: 'Failed to save record: ' + error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -180,6 +178,17 @@ async function handleStatsRequest(hasDB, env, corsHeaders) {
     });
   } catch (error) {
     console.error('Error fetching stats:', error);
+    // 检查是否是表不存在错误
+    if (error.message && error.message.includes('no such table')) {
+      return new Response(JSON.stringify({ 
+        total_analyses: 0,
+        today_analyses: 0,
+        error: '数据库表未创建，请执行初始化命令：npx wrangler d1 execute cloudflare-demo-db --file=schema.sql'
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
     return new Response(JSON.stringify({ 
       total_analyses: 0,
       today_analyses: 0,
