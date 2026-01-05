@@ -21,12 +21,6 @@ export async function onRequest(context) {
     console.warn('Database not configured. Using demo mode.');
   }
   
-  // 处理统计信息请求
-  const url = new URL(request.url);
-  if (url.pathname === '/api/hypertension-records/stats') {
-    return handleStatsRequest(hasDB, env, corsHeaders);
-  }
-  
   if (request.method === 'GET') {
     return handleGetRecords(hasDB, env, corsHeaders);
   } else if (request.method === 'POST') {
@@ -139,61 +133,6 @@ async function handlePostRecord(request, hasDB, env, corsHeaders) {
       });
     }
     return new Response(JSON.stringify({ error: 'Failed to save record: ' + error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  }
-}
-
-// 处理统计信息请求
-async function handleStatsRequest(hasDB, env, corsHeaders) {
-  if (!hasDB) {
-    return new Response(JSON.stringify({
-      total_analyses: 0,
-      today_analyses: 0,
-      message: 'Database not configured, using demo data'
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  }
-  
-  try {
-    // 获取总分析次数
-    const totalResult = await env.DB.prepare('SELECT COUNT(*) as count FROM hypertension_records').first();
-    const totalAnalyses = totalResult ? totalResult.count : 0;
-    
-    // 获取今日分析次数
-    const todayResult = await env.DB.prepare(
-      'SELECT COUNT(*) as count FROM hypertension_records WHERE DATE(analysis_date) = DATE("now")'
-    ).first();
-    const todayAnalyses = todayResult ? todayResult.count : 0;
-    
-    console.log('Stats fetched - Total:', totalAnalyses, 'Today:', todayAnalyses);
-    
-    return new Response(JSON.stringify({
-      total_analyses: totalAnalyses,
-      today_analyses: todayAnalyses
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  } catch (error) {
-    console.error('Error fetching stats:', error);
-    // 检查是否是表不存在错误
-    if (error.message && error.message.includes('no such table')) {
-      return new Response(JSON.stringify({ 
-        total_analyses: 0,
-        today_analyses: 0,
-        error: '数据库表未创建，请执行初始化命令：npx wrangler d1 execute cloudflare-demo-db --file=schema.sql'
-      }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-    return new Response(JSON.stringify({ 
-      total_analyses: 0,
-      today_analyses: 0,
-      error: 'Failed to fetch stats: ' + error.message 
-    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
