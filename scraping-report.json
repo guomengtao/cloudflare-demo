@@ -1,0 +1,16 @@
+{
+  "scrapingSession": {
+    "startTime": "2026-01-06T05:30:55.283Z",
+    "endTime": "2026-01-06T05:31:25.334Z",
+    "duration": "0分30秒",
+    "totalPages": 0,
+    "failedPages": 1,
+    "totalCases": 0
+  },
+  "dataQuality": {
+    "casesWithPhotos": 0,
+    "casesWithDetailUrl": 0,
+    "casesWithAge": 0
+  },
+  "fileLocation": "/Users/Banner/Documents/tom/missingkids-enhanced-data.json"
+}

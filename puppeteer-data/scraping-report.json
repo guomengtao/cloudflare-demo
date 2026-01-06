@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-01-06T06:40:43.879Z",
+  "framework": "Puppeteer",
+  "totalCases": 0,
+  "uniqueCases": 0,
+  "pagesScraped": 0,
+  "casesByType": {
+    "NCMC": 0,
+    "AMBER": 0
+  },
+  "allCases": []
+}
