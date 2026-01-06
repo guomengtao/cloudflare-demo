@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allen Fischer 失踪 - AMBER警报 | 13岁男孩在爱达荷州Monteview失踪 | AMBER 31547</title>
     <meta name="description" content="Allen Fischer, 13岁男孩，AMBER警报案件，于2025年6月22日在爱达荷州Monteview市失踪。身高5英尺9英寸，体重135磅，蓝色眼睛，金色头发。如有线索请立即联系警方。">
-    <meta name="keywords" content="Allen Fischer, AMBER警报, 失踪儿童, Monteview失踪, 爱达荷州, AMBER 31547, 13岁男孩失踪, Rachelle Fischer">
+    <meta name="keywords" content="Allen Fischer, AMBER警报, 失踪儿童, Monteview失踪, 爱达荷州, AMBER 31547, 13岁男孩失踪, Rachelle Fischer, 长期未结安珀警报">
     
     <!-- Schema.org 结构化数据 -->
     <script type="application/ld+json">
@@ -21,6 +21,7 @@
         "eyeColor": "蓝色",
         "hairColor": "金色",
         "missingSince": "2025-06-22",
+        "missingDays": "197",
         "missingLocation": {
             "@type": "Place",
             "name": "Monteview市, 爱达荷州"
@@ -172,13 +173,51 @@
             animation: blink 1s infinite;
         }
         
+        .status-badge.long-term {
+            background: #7c2d12;
+            animation: pulse-long-term 2s infinite;
+        }
+        
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0.7; }
         }
         
+        @keyframes pulse-long-term {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
         .status-badge.found {
             background: #10b981;
+        }
+        
+        /* 失踪天数计数器 */
+        .missing-days-counter {
+            background: linear-gradient(135deg, #7c2d12 0%, #dc2626 100%);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 1rem auto;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+            animation: heartbeat 2s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .days-number {
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 0 0.5rem;
         }
         
         /* 失踪儿童信息卡片 */
@@ -354,6 +393,23 @@
             color: #94a3b8;
         }
         
+        .legal-notice {
+            font-size: 0.8rem;
+            color: #64748b;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+        
+        .legal-notice a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+        
+        .legal-notice a:hover {
+            text-decoration: underline;
+        }
+        
         /* 响应式设计 */
         @media (max-width: 768px) {
             .child-content {
@@ -380,6 +436,15 @@
             .amber-alert-banner {
                 font-size: 1rem;
                 padding: 0.8rem 0;
+            }
+            
+            .missing-days-counter {
+                font-size: 1.1rem;
+                padding: 0.6rem 1rem;
+            }
+            
+            .days-number {
+                font-size: 1.6rem;
             }
         }
     </style>
@@ -417,6 +482,13 @@
         <div class="container">
             <h1>AMBER警报：寻找Allen Fischer <span class="status-badge amber" id="caseStatus">AMBER警报激活</span></h1>
             <p class="hero-subtitle">紧急寻人 - 13岁男孩在爱达荷州Monteview市失踪</p>
+            
+            <!-- 失踪天数计数器 -->
+            <div class="missing-days-counter" id="missingDaysCounter">
+                <span>已经失踪</span>
+                <span class="days-number" id="daysNumber">197</span>
+                <span>天</span>
+            </div>
         </div>
     </section>
 
@@ -458,6 +530,11 @@
                         <div class="info-item">
                             <div class="info-label">失踪日期</div>
                             <div class="info-value">2025年6月22日</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">失踪天数</div>
+                            <div class="info-value"><span id="infoMissingDays">197</span> 天</div>
                         </div>
                         
                         <div class="info-item">
@@ -503,6 +580,9 @@
                         <div class="missing-details">
                             <h3>失踪详情</h3>
                             <p>Allen Fischer于2025年6月22日晚上7点在爱达荷州Monteview市失踪。最后一次被见到时穿着蓝色衬衫和蓝色牛仔裤。</p>
+                            <p style="margin-top: 0.5rem; font-weight: bold; color: #dc2626;">
+                                ⏰ 已失踪 <span id="detailMissingDays">197</span> 天 - 时间紧迫，急需线索！
+                            </p>
                         </div>
                         
                         <div class="update-info">
@@ -541,7 +621,7 @@
                     <strong>紧急情况:</strong> 立即拨打911
                 </p>
                 <p style="margin-top: 1rem; color: #dc2626; font-weight: bold;">
-                    ⚠️ 这是AMBER警报案件，如有任何线索请立即报告！
+                    ⚠️ 这是AMBER警报案件，已失踪 <span id="emergencyMissingDays">197</span> 天，如有任何线索请立即报告！
                 </p>
             </div>
         </div>
@@ -562,7 +642,7 @@
             </p>
             <div style="color: #64748b; font-size: 0.9rem; max-width: 600px; margin: 0 auto;">
                 <p>我们致力于帮助传播AMBER警报信息，希望借助网络的力量帮助紧急寻人。</p>
-                <p style="margin-top: 1rem;">最后更新时间: 2025年6月23日</p>
+                <p style="margin-top: 1rem;">最后更新时间: <span id="lastUpdateDate">2025年6月23日</span></p>
                 <p style="margin-top: 0.5rem; font-size: 0.8rem;">
                     <strong>图片CDN:</strong> 使用weserv.nl免费图片代理服务进行加速
                 </p>
@@ -576,10 +656,82 @@
             <p>美国失踪儿童信息公益网站 - AMBER警报: Allen Fischer</p>
             <p>官方数据来源：国家失踪与受虐儿童中心 (NCMEC)</p>
             <p>© 2025 失踪儿童信息公益项目. 保留所有权利.</p>
+            <div class="legal-notice">
+                <p>本站为公益性质，信息同步自官方。若有侵权或信息过时，请联系 <a href="mailto:guomengtao+missing-31547@gmail.com">guomengtao+missing-31547@gmail.com</a> 处理。</p>
+            </div>
         </div>
     </footer>
 
     <script>
+        // 案件信息配置
+        const CASE_CONFIG = {
+            missingDate: '2025-06-22', // 失踪日期
+            caseNumber: '31547',       // 案件编号
+            caseType: 'AMBER'          // 案件类型
+        };
+
+        // 计算失踪天数
+        function calculateMissingDays() {
+            const missingDate = new Date(CASE_CONFIG.missingDate);
+            const today = new Date();
+            const timeDiff = today.getTime() - missingDate.getTime();
+            const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+            return Math.max(0, daysDiff);
+        }
+
+        // 更新状态标签
+        function updateStatusBadge(missingDays) {
+            const statusBadge = document.getElementById('caseStatus');
+            
+            if (missingDays > 7) {
+                statusBadge.textContent = '长期未结安珀警报';
+                statusBadge.className = 'status-badge long-term';
+                // 更新页面标题和描述
+                document.title = `Allen Fischer 失踪 - 长期未结安珀警报 | 已失踪${missingDays}天 | AMBER 31547`;
+                document.querySelector('meta[name="description"]').setAttribute('content', 
+                    `Allen Fischer, 13岁男孩，AMBER警报案件，已失踪${missingDays}天。长期未结安珀警报，急需线索。身高5英尺9英寸，体重135磅，蓝色眼睛，金色头发。`);
+            } else {
+                statusBadge.textContent = 'AMBER警报激活';
+                statusBadge.className = 'status-badge amber';
+            }
+        }
+
+        // 更新所有位置的失踪天数显示
+        function updateMissingDaysDisplay(missingDays) {
+            // 更新计数器
+            document.getElementById('daysNumber').textContent = missingDays;
+            document.getElementById('missingDaysCounter').innerHTML = `
+                <span>已经失踪</span>
+                <span class="days-number">${missingDays}</span>
+                <span>天</span>
+            `;
+            
+            // 更新信息卡片
+            document.getElementById('infoMissingDays').textContent = missingDays;
+            document.getElementById('detailMissingDays').textContent = missingDays;
+            document.getElementById('emergencyMissingDays').textContent = missingDays;
+            
+            // 更新Schema结构化数据
+            const schemaScript = document.querySelector('script[type="application/ld+json"]');
+            if (schemaScript) {
+                try {
+                    const schemaData = JSON.parse(schemaScript.textContent);
+                    schemaData.missingDays = missingDays.toString();
+                    schemaScript.textContent = JSON.stringify(schemaData, null, 2);
+                } catch (e) {
+                    console.warn('无法更新Schema数据:', e);
+                }
+            }
+        }
+
+        // 更新最后更新时间
+        function updateLastUpdateDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('zh-CN', options);
+            document.getElementById('lastUpdateDate').textContent = formattedDate;
+        }
+
         // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -605,9 +757,11 @@
         // AMBER警报闪烁效果
         function animateAmberAlert() {
             const badge = document.getElementById('caseStatus');
-            setInterval(() => {
-                badge.style.opacity = badge.style.opacity === '0.7' ? '1' : '0.7';
-            }, 1000);
+            if (badge.classList.contains('amber')) {
+                setInterval(() => {
+                    badge.style.opacity = badge.style.opacity === '0.7' ? '1' : '0.7';
+                }, 1000);
+            }
         }
 
         // 页面加载完成后的处理
@@ -615,6 +769,19 @@
             console.log('Allen Fischer AMBER警报页面已加载 - 案件编号 31547');
             console.log('数据来源: https://www.missingkids.org/poster/AMBER/31547/15284/screen');
             console.log('文件名策略: 名字-地点-案件号.html - SEO优化');
+            
+            // 计算并显示失踪天数
+            const missingDays = calculateMissingDays();
+            console.log(`失踪天数计算: ${missingDays}天`);
+            
+            // 更新状态标签
+            updateStatusBadge(missingDays);
+            
+            // 更新失踪天数显示
+            updateMissingDaysDisplay(missingDays);
+            
+            // 更新最后更新时间
+            updateLastUpdateDate();
             
             // 启动AMBER警报动画
             animateAmberAlert();
@@ -625,7 +792,8 @@
                     'page_title': 'Allen Fischer AMBER警报',
                     'page_location': window.location.href,
                     'case_id': 'AMBER31547',
-                    'alert_type': 'AMBER'
+                    'alert_type': 'AMBER',
+                    'missing_days': missingDays
                 });
             }
         });
