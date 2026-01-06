@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allen Fischer 失踪 - AMBER警报 | 13岁男孩在爱达荷州Monteview失踪 | AMBER 31547</title>
+    <meta name="description" content="Allen Fischer, 13岁男孩，AMBER警报案件，于2025年6月22日在爱达荷州Monteview市失踪。身高5英尺9英寸，体重135磅，蓝色眼睛，金色头发。如有线索请立即联系警方。">
+    <meta name="keywords" content="Allen Fischer, AMBER警报, 失踪儿童, Monteview失踪, 爱达荷州, AMBER 31547, 13岁男孩失踪, Rachelle Fischer">
+    
+    <!-- Schema.org 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "ALLEN FISCHER",
+        "description": "13岁男孩，AMBER警报案件，于2025年6月22日在爱达荷州Monteview市失踪",
+        "birthDate": "2012",
+        "gender": "Male",
+        "height": "5英尺9英寸 (约175cm)",
+        "weight": "135磅 (约61kg)",
+        "eyeColor": "蓝色",
+        "hairColor": "金色",
+        "missingSince": "2025-06-22",
+        "missingLocation": {
+            "@type": "Place",
+            "name": "Monteview市, 爱达荷州"
+        },
+        "identifier": "AMBER 31547",
+        "image": [
+            "https://images.weserv.nl/?url=amberimages.ncmec.org/31547/p63572.jpg&w=600&h=800&fit=cover",
+            "https://images.weserv.nl/?url=www.missingkids.org/photographs/AMBER31547c1.jpg&w=600&h=800&fit=cover"
+        ],
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.missingkids.org/poster/AMBER/31547/15284/screen"
+        }
+    }
+    </script>
+    
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* AMBER警报特殊样式 */
+        .amber-alert-banner {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        
+        /* 面包屑导航 */
+        .breadcrumb {
+            background: #f1f5f9;
+            padding: 1rem 0;
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb span {
+            color: #64748b;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* 状态标记 */
+        .status-badge {
+            display: inline-block;
+            background: #dc2626;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+        
+        .status-badge.amber {
+            background: #dc2626;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.7; }
+        }
+        
+        .status-badge.found {
+            background: #10b981;
+        }
+        
+        /* 失踪儿童信息卡片 */
+        .missing-child-section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #1e40af;
+        }
+        
+        .child-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .child-header {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .child-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .child-case-number {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .child-content {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .photo-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .child-photo {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .child-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .info-item {
+            margin-bottom: 1rem;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            color: #1e293b;
+        }
+        
+        .missing-details {
+            grid-column: 1 / -1;
+            background: #fef2f2;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border-left: 4px solid #dc2626;
+        }
+        
+        .missing-details h3 {
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+        
+        .update-info {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        /* 相关失踪人员 */
+        .related-missing {
+            background: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-top: 1rem;
+        }
+        
+        .related-missing h4 {
+            color: #0ea5e9;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 紧急联系信息 */
+        .emergency-section {
+            background: #fef2f2;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .emergency-title {
+            color: #dc2626;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-contact {
+            font-size: 1.5rem;
+            color: #dc2626;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .emergency-info {
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 数据来源 */
+        .source-section {
+            padding: 3rem 0;
+            text-align: center;
+            background: #f8fafc;
+        }
+        
+        .source-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .source-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 0.5rem;
+            color: #94a3b8;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .child-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .child-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .photo-gallery {
+                order: -1;
+            }
+            
+            .amber-alert-banner {
+                font-size: 1rem;
+                padding: 0.8rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AMBER警报横幅 -->
+    <div class="amber-alert-banner">
+        ⚠️ AMBER警报激活 - 如有线索请立即联系警方 ⚠️
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">🔍 美国失踪儿童信息</div>
+            <div class="nav-links">
+                <a href="#child-info">失踪儿童信息</a>
+                <a href="#emergency">紧急联系</a>
+                <a href="#about">数据来源</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="/">首页</a> &gt; 
+            <a href="/idaho/">爱达荷州</a> &gt; 
+            <a href="/idaho/monteview/">Monteview市</a> &gt; 
+            <span>ALLEN FISCHER</span>
+        </div>
+    </div>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>AMBER警报：寻找Allen Fischer <span class="status-badge amber" id="caseStatus">AMBER警报激活</span></h1>
+            <p class="hero-subtitle">紧急寻人 - 13岁男孩在爱达荷州Monteview市失踪</p>
+        </div>
+    </section>
+
+    <!-- 失踪儿童信息 -->
+    <section class="missing-child-section" id="child-info">
+        <div class="container">
+            <h2 class="section-title">AMBER警报案件详情</h2>
+            
+            <div class="child-card">
+                <div class="child-header">
+                    <h1 class="child-name">ALLEN FISCHER</h1>
+                    <div class="child-case-number">AMBER警报编号: 31547</div>
+                </div>
+                
+                <div class="child-content">
+                    <div class="photo-gallery">
+                        <img src="https://images.weserv.nl/?url=amberimages.ncmec.org/31547/p63572.jpg&w=600&h=800&fit=cover" 
+                             alt="Allen Fischer, 13岁男孩，AMBER警报案件，失踪于爱达荷州Monteview市，2025年6月22日 - AMBER 31547" 
+                             class="child-photo"
+                             onerror="handleImageError(this)">
+                        
+                        <img src="https://images.weserv.nl/?url=www.missingkids.org/photographs/AMBER31547c1.jpg&w=600&h=800&fit=cover" 
+                             alt="Allen Fischer 附加照片，13岁，AMBER警报失踪儿童 - 案件编号 31547" 
+                             class="child-photo"
+                             onerror="handleImageError(this)">
+                    </div>
+                    
+                    <div class="child-info">
+                        <div class="info-item">
+                            <div class="info-label">姓名</div>
+                            <div class="info-value">ALLEN FISCHER</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">AMBER警报编号</div>
+                            <div class="info-value">31547</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">失踪日期</div>
+                            <div class="info-value">2025年6月22日</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">失踪地点</div>
+                            <div class="info-value">爱达荷州，Monteview市</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">年龄</div>
+                            <div class="info-value">13岁</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">性别</div>
+                            <div class="info-value">男</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">种族</div>
+                            <div class="info-value">白人</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">身高</div>
+                            <div class="info-value">5英尺9英寸 (约175cm)</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">体重</div>
+                            <div class="info-value">135磅 (约61kg)</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">眼睛颜色</div>
+                            <div class="info-value">蓝色</div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-label">头发颜色</div>
+                            <div class="info-value">金色</div>
+                        </div>
+                        
+                        <div class="missing-details">
+                            <h3>失踪详情</h3>
+                            <p>Allen Fischer于2025年6月22日晚上7点在爱达荷州Monteview市失踪。最后一次被见到时穿着蓝色衬衫和蓝色牛仔裤。</p>
+                        </div>
+                        
+                        <div class="update-info">
+                            <h3>最新更新</h3>
+                            <p><strong>出行方式不明。</strong> AMBER警报涉及Allen Fischer（13岁，5英尺9英寸，135磅，蓝眼睛，金发，蓝色衬衫，蓝色牛仔裤）和Rachelle Fischer（15岁，5英尺5英寸，135磅，蓝眼睛，棕色头发，绿色连衣裙）。</p>
+                            <p>最后出现时间为2025年6月22日晚上7点，在爱达荷州Monteview市。可能前往犹他州Mendon的FLDS团体。出行方式不明，可能与成年兄弟姐妹在一起。</p>
+                        </div>
+                        
+                        <!-- 相关失踪人员 -->
+                        <div class="related-missing">
+                            <h4>相关失踪人员</h4>
+                            <div class="info-item">
+                                <div class="info-label">Rachelle Fischer</div>
+                                <div class="info-value">15岁，女性，同时失踪</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">关系</div>
+                                <div class="info-value">可能与成年兄弟姐妹在一起</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 紧急联系信息 -->
+    <section class="emergency-section" id="emergency">
+        <div class="container">
+            <h2 class="emergency-title">紧急联系信息</h2>
+            <div class="emergency-contact">📞 1-800-THE-LOST (1-800-843-5678)</div>
+            <div class="emergency-info">
+                <p>如果您有任何关于Allen Fischer失踪的信息，请立即联系国家失踪与受虐儿童中心或当地警方。AMBER警报案件需要紧急处理。</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    <strong>当地警方:</strong> 爱达荷州警方 - 紧急联系电话<br>
+                    <strong>紧急情况:</strong> 立即拨打911
+                </p>
+                <p style="margin-top: 1rem; color: #dc2626; font-weight: bold;">
+                    ⚠️ 这是AMBER警报案件，如有任何线索请立即报告！
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据来源 -->
+    <section class="source-section" id="about">
+        <div class="container">
+            <h2 class="section-title">数据来源与认证</h2>
+            <p>本页面展示的AMBER警报信息来源于国家失踪与受虐儿童中心官方数据：</p>
+            <p style="margin: 1rem 0;">
+                <a href="https://www.missingkids.org/poster/AMBER/31547/15284/screen" 
+                   class="source-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                   国家失踪与受虐儿童中心 (NCMEC) - AMBER警报 31547
+                </a>
+            </p>
+            <div style="color: #64748b; font-size: 0.9rem; max-width: 600px; margin: 0 auto;">
+                <p>我们致力于帮助传播AMBER警报信息，希望借助网络的力量帮助紧急寻人。</p>
+                <p style="margin-top: 1rem;">最后更新时间: 2025年6月23日</p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                    <strong>图片CDN:</strong> 使用weserv.nl免费图片代理服务进行加速
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>美国失踪儿童信息公益网站 - AMBER警报: Allen Fischer</p>
+            <p>官方数据来源：国家失踪与受虐儿童中心 (NCMEC)</p>
+            <p>© 2025 失踪儿童信息公益项目. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 图片加载错误处理
+        function handleImageError(img) {
+            img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDMwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjFGNUY5Ii8+Cjx0ZXh0IHg9IjE1MCIgeT0iMjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTRBM0I4IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiPua1i+ivleWbvueJh+WbvueJhzwvdGV4dD4KPC9zdmc+';
+            img.style.backgroundColor = '#f1f5f9';
+            img.style.padding = '2rem';
+            img.style.textAlign = 'center';
+        }
+
+        // AMBER警报闪烁效果
+        function animateAmberAlert() {
+            const badge = document.getElementById('caseStatus');
+            setInterval(() => {
+                badge.style.opacity = badge.style.opacity === '0.7' ? '1' : '0.7';
+            }, 1000);
+        }
+
+        // 页面加载完成后的处理
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Allen Fischer AMBER警报页面已加载 - 案件编号 31547');
+            console.log('数据来源: https://www.missingkids.org/poster/AMBER/31547/15284/screen');
+            console.log('文件名策略: 名字-地点-案件号.html - SEO优化');
+            
+            // 启动AMBER警报动画
+            animateAmberAlert();
+            
+            // 记录页面访问（用于分析）
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    'page_title': 'Allen Fischer AMBER警报',
+                    'page_location': window.location.href,
+                    'case_id': 'AMBER31547',
+                    'alert_type': 'AMBER'
+                });
+            }
+        });
+
+        // 图片状态监控
+        function monitorImageStatus() {
+            const images = document.querySelectorAll('img[src*="weserv.nl"]');
+            images.forEach(img => {
+                const originalUrl = img.src.replace('https://images.weserv.nl/?url=', '').split('&')[0];
+                console.log('监控图片:', originalUrl);
+            });
+        }
+
+        // 延迟执行图片状态检查
+        setTimeout(monitorImageStatus, 3000);
+    </script>
+</body>
+</html>
