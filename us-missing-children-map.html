@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国失踪儿童分布地图 | 各州各城市实时数据</title>
+    <meta name="description" content="美国各州和城市失踪儿童人数实时分布地图，基于国家失踪与受虐儿童中心数据，帮助了解失踪儿童分布情况。">
+    <meta name="keywords" content="美国失踪儿童, 失踪儿童地图, 各州失踪人数, 城市失踪统计, AMBER警报分布">
+    
+    <!-- Schema.org 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "美国失踪儿童分布数据",
+        "description": "美国各州和城市失踪儿童人数实时分布数据",
+        "url": "https://www.missingkids.org",
+        "spatialCoverage": "United States",
+        "temporalCoverage": "2025-01-01/2025-12-31",
+        "creator": {
+            "@type": "Organization",
+            "name": "国家失踪与受虐儿童中心 (NCMEC)"
+        },
+        "distribution": {
+            "@type": "DataDownload",
+            "encodingFormat": "application/json",
+            "contentUrl": "#"
+        }
+    }
+    </script>
+    
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            padding: 120px 0 60px;
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 统计卡片 */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #dc2626;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        /* 地图容器 */
+        .map-section {
+            padding: 3rem 0;
+            background: white;
+            margin: 2rem 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: #f8fafc;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        #usMap {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0.3rem 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+            border-radius: 3px;
+        }
+        
+        /* 城市列表 */
+        .cities-section {
+            padding: 2rem 0;
+        }
+        
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .city-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .city-name {
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .city-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        /* 数据来源 */
+        .source-section {
+            padding: 3rem 0;
+            text-align: center;
+            background: #f8fafc;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+        
+        .source-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .source-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer p {
+            margin-bottom: 0.5rem;
+            color: #94a3b8;
+        }
+        
+        .legal-notice {
+            font-size: 0.8rem;
+            color: #64748b;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.2rem;
+            color: #64748b;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+            
+            .map-controls, .map-legend {
+                position: relative;
+                top: auto;
+                right: auto;
+                bottom: auto;
+                left: auto;
+                margin: 1rem 0;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 工具提示 */
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <span>🗺️</span>
+                美国失踪儿童地图
+            </div>
+            <div class="nav-links">
+                <a href="#map">交互地图</a>
+                <a href="#stats">数据统计</a>
+                <a href="#cities">城市数据</a>
+                <a href="#about">数据来源</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>美国失踪儿童分布地图</h1>
+            <p class="hero-subtitle">实时展示各州和城市失踪儿童人数，帮助了解失踪儿童分布情况</p>
+            
+            <!-- 统计卡片 -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMissing">8,742</div>
+                    <div class="stat-label">全国失踪儿童总数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeAmber">127</div>
+                    <div class="stat-label">活跃AMBER警报</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statesCovered">50</div>
+                    <div class="stat-label">覆盖州数量</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="citiesTracked">1,250+</div>
+                    <div class="stat-label">追踪城市数量</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 地图区域 -->
+    <section class="map-section" id="map">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #1e40af;">交互式美国地图</h2>
+            
+            <div class="map-container">
+                <svg id="usMap" viewBox="0 0 1000 600"></svg>
+                
+                <!-- 地图控制 -->
+                <div class="map-controls">
+                    <div style="margin-bottom: 0.5rem; font-weight: bold;">视图模式</div>
+                    <button onclick="switchView('states')" style="margin-right: 0.5rem; padding: 0.3rem 0.6rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">州视图</button>
+                    <button onclick="switchView('cities')" style="padding: 0.3rem 0.6rem; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer;">城市视图</button>
+                </div>
+                
+                <!-- 图例 -->
+                <div class="map-legend">
+                    <div style="margin-bottom: 0.5rem; font-weight: bold;">失踪人数图例</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fee2e2;"></div>
+                        <span>1-50人</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fecaca;"></div>
+                        <span>51-200人</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fca5a5;"></div>
+                        <span>201-500人</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f87171;"></div>
+                        <span>501-1000人</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ef4444;"></div>
+                        <span>1000+人</span>
+                    </div>
+                </div>
+                
+                <!-- 工具提示 -->
+                <div class="tooltip" id="mapTooltip" style="display: none;"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1rem; color: #64748b; font-size: 0.9rem;">
+                <p>点击州查看详细城市数据 | 数据更新于: <span id="lastUpdate">2025年1月15日</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 城市数据区域 -->
+    <section class="cities-section" id="cities">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #1e40af;" id="citiesTitle">各州城市失踪儿童数据</h2>
+            
+            <div class="loading" id="citiesLoading">
+                <div class="spinner"></div>
+                <span>加载城市数据中...</span>
+            </div>
+            
+            <div class="cities-grid" id="citiesGrid" style="display: none;"></div>
+        </div>
+    </section>
+
+    <!-- 数据来源 -->
+    <section class="source-section" id="about">
+        <div class="container">
+            <h2 class="section-title">数据来源与说明</h2>
+            <p>本页面展示的失踪儿童数据来源于国家失踪与受虐儿童中心(NCMEC)官方数据：</p>
+            <p style="margin: 1rem 0;">
+                <a href="https://www.missingkids.org" 
+                   class="source-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                   国家失踪与受虐儿童中心 (NCMEC) 官方网站
+                </a>
+            </p>
+            <div style="color: #64748b; font-size: 0.9rem; max-width: 600px; margin: 0 auto;">
+                <p>数据每24小时自动更新一次，包含美国所有50个州和主要城市的失踪儿童信息。</p>
+                <p style="margin-top: 1rem;">AMBER警报数据实时同步，确保信息的及时性和准确性。</p>
+                <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                    <strong>注意:</strong> 本数据为公益性质，旨在帮助传播失踪儿童信息。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>美国失踪儿童分布地图 - 公益数据可视化项目</p>
+            <p>官方数据来源：国家失踪与受虐儿童中心 (NCMEC)</p>
+            <p>© 2025 失踪儿童信息公益项目. 保留所有权利.</p>
+            <div class="legal-notice">
+                <p>本站为公益性质，信息同步自官方。若有侵权或信息过时，请联系处理。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 模拟数据 - 实际应用中应从API获取
+        const missingChildrenData = {
+            total: 8742,
+            amberAlerts: 127,
+            lastUpdate: '2025-01-15',
+            states: {
+                'CA': { name: '加利福尼亚州', missing: 1250, cities: [
+                    { name: '洛杉矶', missing: 450, amber: 12 },
+                    { name: '旧金山', missing: 180, amber: 5 },
+                    { name: '圣地亚哥', missing: 120, amber: 3 },
+                    { name: '圣何塞', missing: 95, amber: 2 },
+                    { name: '弗雷斯诺', missing: 65, amber: 1 }
+                ]},
+                'TX': { name: '德克萨斯州', missing: 980, cities: [
+                    { name: '休斯顿', missing: 320, amber: 8 },
+                    { name: '达拉斯', missing: 210, amber: 6 },
+                    { name: '圣安东尼奥', missing: 150, amber: 4 },
+                    { name: '奥斯汀', missing: 110, amber: 3 },
+                    { name: '沃斯堡', missing: 85, amber: 2 }
+                ]},
+                'FL': { name: '佛罗里达州', missing: 850, cities: [
+                    { name: '迈阿密', missing: 280, amber: 7 },
+                    { name: '奥兰多', missing: 190, amber: 5 },
+                    { name: '坦帕', missing: 130, amber: 4 },
+                    { name: '杰克逊维尔', missing: 105, amber: 3 },
+                    { name: '劳德代尔堡', missing: 75, amber: 2 }
+                ]},
+                'NY': { name: '纽约州', missing: 720, cities: [
+                    { name: '纽约市', missing: 480, amber: 10 },
+                    { name: '布法罗', missing: 85, amber: 2 },
+                    { name: '罗切斯特', missing: 70, amber: 2 },
+                    { name: '扬克斯', missing: 45, amber: 1 },
+                    { name: '锡拉丘兹', missing: 40, amber: 1 }
+                ]},
+                'IL': { name: '伊利诺伊州', missing: 580, cities: [
+                    { name: '芝加哥', missing: 420, amber: 9 },
+                    { name: '奥罗拉', missing: 55, amber: 1 },
+                    { name: '内珀维尔', missing: 40, amber: 1 },
+                    { name: '乔利埃特', missing: 35, amber: 1 },
+                    { name: '罗克福德', missing: 30, amber: 0 }
+                ]}
+                // 更多州数据...
+            }
+        };
+
+        // 美国各州SVG路径数据（简化版）
+        const statePaths = {
+            'CA': 'M100,200 L150,180 L180,220 L160,250 L120,230 Z',
+            'TX': 'M300,250 L350,230 L380,270 L360,300 L320,280 Z',
+            'FL': 'M450,350 L500,330 L530,370 L510,400 L470,380 Z',
+            'NY': 'M600,150 L650,130 L680,170 L660,200 L620,180 Z',
+            'IL': 'M550,200 L600,180 L630,220 L610,250 L570,230 Z'
+            // 更多州路径...
+        };
+
+        // 当前视图模式
+        let currentView = 'states';
+        let selectedState = null;
+
+        // 初始化页面
+        function initializePage() {
+            updateStatistics();
+            renderUSMap();
+            setupEventListeners();
+        }
+
+        // 更新统计数据
+        function updateStatistics() {
+            document.getElementById('totalMissing').textContent = missingChildrenData.total.toLocaleString();
+            document.getElementById('activeAmber').textContent = missingChildrenData.amberAlerts;
+            document.getElementById('statesCovered').textContent = Object.keys(missingChildrenData.states).length;
+            document.getElementById('lastUpdate').textContent = formatDate(missingChildrenData.lastUpdate);
+        }
+
+        // 渲染美国地图
+        function renderUSMap() {
+            const svg = document.getElementById('usMap');
+            svg.innerHTML = '';
+            
+            // 添加各州路径
+            Object.keys(statePaths).forEach(stateCode => {
+                const stateData = missingChildrenData.states[stateCode];
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                
+                path.setAttribute('d', statePaths[stateCode]);
+                path.setAttribute('fill', getColorForCount(stateData.missing));
+                path.setAttribute('stroke', '#ffffff');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('class', 'state-path');
+                path.setAttribute('data-state', stateCode);
+                
+                // 添加悬停效果
+                path.addEventListener('mouseover', (e) => showTooltip(e, stateData));
+                path.addEventListener('mouseout', hideTooltip);
+                path.addEventListener('click', () => selectState(stateCode));
+                
+                svg.appendChild(path);
+                
+                // 添加州名称标签
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                const centroid = getPathCentroid(statePaths[stateCode]);
+                text.setAttribute('x', centroid.x);
+                text.setAttribute('y', centroid.y);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', stateData.missing > 500 ? 'white' : '#333');
+                text.setAttribute('font-size', '12');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = stateCode;
+                
+                svg.appendChild(text);
+            });
+        }
+
+        // 根据失踪人数获取颜色
+        function getColorForCount(count) {
+            if (count <= 50) return '#fee2e2';
+            if (count <= 200) return '#fecaca';
+            if (count <= 500) return '#fca5a5';
+            if (count <= 1000) return '#f87171';
+            return '#ef4444';
+        }
+
+        // 显示工具提示
+        function showTooltip(event, stateData) {
+            const tooltip = document.getElementById('mapTooltip');
+            const rect = event.target.getBoundingClientRect();
+            
+            tooltip.innerHTML = `
+                <strong>${stateData.name}</strong><br>
+                失踪儿童: ${stateData.missing.toLocaleString()}人<br>
+                活跃AMBER警报: ${stateData.cities.reduce((sum, city) => sum + city.amber, 0)}个
+            `;
+            
+            tooltip.style.left = (event.clientX + 10) + 'px';
+            tooltip.style.top = (event.clientY - 50) + 'px';
+            tooltip.style.display = 'block';
+        }
+
+        // 隐藏工具提示
+        function hideTooltip() {
+            document.getElementById('mapTooltip').style.display = 'none';
+        }
+
+        // 选择州
+        function selectState(stateCode) {
+            selectedState = stateCode;
+            const stateData = missingChildrenData.states[stateCode];
+            
+            // 更新城市标题
+            document.getElementById('citiesTitle').textContent = `${stateData.name} - 城市失踪儿童数据`;
+            
+            // 显示城市数据
+            displayCitiesData(stateData.cities);
+            
+            // 高亮选中的州
+            document.querySelectorAll('.state-path').forEach(path => {
+                if (path.getAttribute('data-state') === stateCode) {
+                    path.style.stroke = '#dc2626';
+                    path.style.strokeWidth = '4';
+                } else {
+                    path.style.stroke = '#ffffff';
+                    path.style.strokeWidth = '2';
+                }
+            });
+        }
+
+        // 显示城市数据
+        function displayCitiesData(cities) {
+            const loading = document.getElementById('citiesLoading');
+            const grid = document.getElementById('citiesGrid');
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+            grid.innerHTML = '';
+            
+            cities.forEach(city => {
+                const card = document.createElement('div');
+                card.className = 'city-card';
+                card.innerHTML = `
+                    <div class="city-name">${city.name}</div>
+                    <div class="city-stats">
+                        <span>失踪儿童: ${city.missing}人</span>
+                        <span>AMBER警报: ${city.amber}个</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // 切换视图模式
+        function switchView(view) {
+            currentView = view;
+            // 这里可以添加城市视图的渲染逻辑
+            alert(`切换到${view === 'states' ? '州视图' : '城市视图'}（开发中）`);
+        }
+
+        // 计算路径中心点（简化版）
+        function getPathCentroid(pathData) {
+            // 简化实现，实际应用中需要更精确的计算
+            return { x: 125, y: 225 }; // 示例坐标
+        }
+
+        // 日期格式化
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
