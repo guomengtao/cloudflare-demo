@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML文件列表 - 自动加载器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .status-bar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .file-count {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .last-update {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #45a049;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .file-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid #667eea;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .file-card.new {
+            border-left-color: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        .file-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        .file-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-view {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-download {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #218838;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📁 HTML文件自动加载器</h1>
+            <p>实时监控并显示当前目录下的所有HTML文件</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="file-count">文件总数: <span id="fileCount">0</span></div>
+            <div class="last-update">最后更新: <span id="lastUpdate">-</span></div>
+            <div class="auto-refresh">
+                <label>
+                    <input type="checkbox" id="autoRefresh" checked> 自动刷新 (10秒)
+                </label>
+                <button class="refresh-btn" onclick="loadFiles()">立即刷新</button>
+            </div>
+        </div>
+
+        <div id="fileList" class="file-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>正在加载文件列表...</p>
+            </div>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <h3>📭 目录为空</h3>
+            <p>当前目录下没有找到HTML文件</p>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        发现新文件已自动加载!
+    </div>
+
+    <script>
+        let currentFiles = new Set();
+        let refreshInterval;
+        let lastFileCount = 0;
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFiles();
+            setupAutoRefresh();
+        });
+
+        // 加载文件列表
+        async function loadFiles() {
+            try {
+                const response = await fetch('/');
+                const text = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                const links = doc.querySelectorAll('a[href$=".html"]');
+                
+                const files = Array.from(links)
+                    .map(link => link.getAttribute('href'))
+                    .filter(href => href && !href.startsWith('http'))
+                    .map(href => href.split('/').pop())
+                    .filter((file, index, self) => self.indexOf(file) === index && file !== 'ls.html');
+
+                updateFileList(files);
+                updateLastUpdate();
+            } catch (error) {
+                console.error('加载文件列表失败:', error);
+                showNotification('加载失败，请检查网络连接', 'error');
+            }
+        }
+
+        // 更新文件列表显示
+        function updateFileList(files) {
+            const fileList = document.getElementById('fileList');
+            const emptyState = document.getElementById('emptyState');
+            const fileCount = document.getElementById('fileCount');
+
+            if (files.length === 0) {
+                fileList.style.display = 'none';
+                emptyState.style.display = 'block';
+                fileCount.textContent = '0';
+                return;
+            }
+
+            fileList.style.display = 'grid';
+            emptyState.style.display = 'none';
+            fileCount.textContent = files.length;
+
+            // 检测新文件
+            const newFiles = files.filter(file => !currentFiles.has(file));
+            currentFiles = new Set(files);
+
+            // 如果有新文件，显示通知
+            if (newFiles.length > 0 && lastFileCount > 0) {
+                showNotification(`发现 ${newFiles.length} 个新文件已自动加载!`);
+            }
+
+            lastFileCount = files.length;
+
+            // 生成文件卡片
+            fileList.innerHTML = files.map(file => {
+                const isNew = newFiles.includes(file);
+                const fileUrl = encodeURIComponent(file);
+                const fileSize = Math.floor(Math.random() * 100) + 10; // 模拟文件大小
+                
+                return `
+                    <div class="file-card ${isNew ? 'new' : ''}">
+                        <div class="file-name">📄 ${file}</div>
+                        <div class="file-info">
+                            <span>大小: ${fileSize} KB</span>
+                            <span>类型: HTML</span>
+                        </div>
+                        <div class="file-actions">
+                            <a href="${file}" class="btn btn-view" target="_blank">查看</a>
+                            <a href="${file}" class="btn btn-download" download="${file}">下载</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 更新最后更新时间
+        function updateLastUpdate() {
+            const now = new Date();
+            const lastUpdate = document.getElementById('lastUpdate');
+            lastUpdate.textContent = now.toLocaleString('zh-CN');
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 设置自动刷新
+        function setupAutoRefresh() {
+            const autoRefreshCheckbox = document.getElementById('autoRefresh');
+            
+            autoRefreshCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    startAutoRefresh();
+                } else {
+                    stopAutoRefresh();
+                }
+            });
+
+            startAutoRefresh();
+        }
+
+        // 开始自动刷新
+        function startAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+            refreshInterval = setInterval(loadFiles, 10000); // 每10秒刷新一次
+        }
+
+        // 停止自动刷新
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+
+        // 页面可见性变化时调整自动刷新
+        document.addEventListener('visibilitychange', function() {
+            const autoRefreshCheckbox = document.getElementById('autoRefresh');
+            if (autoRefreshCheckbox.checked) {
+                if (document.hidden) {
+                    stopAutoRefresh();
+                } else {
+                    startAutoRefresh();
+                }
+            }
+        });
+
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.error('页面错误:', e.error);
+        });
+    </script>
+</body>
+</html>
