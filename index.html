@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT 内嵌页面</title>
+    <title>AI 聊天平台导航</title>
     <style>
         * {
             margin: 0;
@@ -15,263 +15,195 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
+            max-width: 500px;
+            width: 100%;
         }
         
-        .header h1 {
-            font-size: 2.5em;
+        .logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
             margin-bottom: 10px;
-            font-weight: 300;
+            font-size: 2.2em;
         }
         
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
         
-        .controls {
-            background: #f8f9fa;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
-            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 30px;
         }
         
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: #007bff;
-            color: white;
-            font-size: 14px;
+        .platform-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px 15px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
         }
         
-        .btn:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: #007bff;
         }
         
-        .btn-secondary {
-            background: #6c757d;
+        .platform-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
         
-        .btn-secondary:hover {
-            background: #545b62;
+        .platform-name {
+            font-weight: 600;
+            color: #333;
         }
         
-        .iframe-container {
-            position: relative;
-            height: 70vh;
-            min-height: 600px;
-        }
-        
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-        }
-        
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: #666;
-        }
-        
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #007bff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .footer {
-            background: #343a40;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-        }
-        
-        .url-input {
-            flex: 1;
-            max-width: 400px;
-            padding: 12px;
-            border: 1px solid #ddd;
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
             border-radius: 8px;
-            font-size: 14px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #856404;
+            font-size: 0.9em;
         }
         
-        .chat-platforms {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
+        .quick-access {
+            margin-top: 20px;
         }
         
-        .platform-btn {
-            padding: 8px 16px;
-            background: #495057;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        
-        .platform-btn.active {
+        .quick-btn {
+            display: inline-block;
             background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 5px;
+            transition: background 0.3s;
         }
         
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .url-input {
-                max-width: 100%;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .iframe-container {
-                height: 60vh;
-                min-height: 400px;
-            }
+        .quick-btn:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🤖 AI 聊天平台内嵌页面</h1>
-            <p>在 iframe 中安全访问各种 AI 聊天平台</p>
+        <div class="logo">🤖</div>
+        <h1>AI 聊天平台导航</h1>
+        <p class="description">选择您要访问的 AI 聊天平台，将直接跳转到官方页面</p>
+        
+        <div class="platform-grid">
+            <a href="https://chat.openai.com" target="_blank" class="platform-card">
+                <div class="platform-icon">💬</div>
+                <div class="platform-name">ChatGPT</div>
+            </a>
+            
+            <a href="https://claude.ai" target="_blank" class="platform-card">
+                <div class="platform-icon">🧠</div>
+                <div class="platform-name">Claude</div>
+            </a>
+            
+            <a href="https://bard.google.com" target="_blank" class="platform-card">
+                <div class="platform-icon">🔍</div>
+                <div class="platform-name">Google Bard</div>
+            </a>
+            
+            <a href="https://bing.com/chat" target="_blank" class="platform-card">
+                <div class="platform-icon">🌐</div>
+                <div class="platform-name">Bing Chat</div>
+            </a>
+            
+            <a href="https://poe.com" target="_blank" class="platform-card">
+                <div class="platform-icon">📚</div>
+                <div class="platform-name">Poe</div>
+            </a>
+            
+            <a href="https://huggingface.co/chat" target="_blank" class="platform-card">
+                <div class="platform-icon">🤗</div>
+                <div class="platform-name">HuggingChat</div>
+            </a>
         </div>
         
-        <div class="controls">
-            <input type="text" id="urlInput" class="url-input" 
-                   placeholder="输入要加载的网址..." 
-                   value="https://chat.openai.com">
-            <button class="btn" onclick="loadIframe()">🚀 加载页面</button>
-            <button class="btn btn-secondary" onclick="refreshIframe()">🔄 刷新</button>
-            <button class="btn btn-secondary" onclick="openInNewTab()">🔗 新标签页打开</button>
+        <div class="quick-access">
+            <a href="https://chat.openai.com" target="_blank" class="quick-btn">🚀 直接访问 ChatGPT</a>
+            <a href="javascript:void(0)" onclick="openAllPlatforms()" class="quick-btn">🌈 一键打开所有平台</a>
         </div>
         
-        <div class="chat-platforms">
-            <button class="platform-btn" onclick="setUrl('https://chat.openai.com')">ChatGPT</button>
-            <button class="platform-btn" onclick="setUrl('https://claude.ai')">Claude</button>
-            <button class="platform-btn" onclick="setUrl('https://bard.google.com')">Google Bard</button>
-            <button class="platform-btn" onclick="setUrl('https://bing.com/chat')">Bing Chat</button>
-        </div>
-        
-        <div class="iframe-container">
-            <div class="loading" id="loading">
-                <div class="loading-spinner"></div>
-                <p>正在加载 ChatGPT...</p>
-            </div>
-            <iframe id="chatFrame" src="https://chat.openai.com" 
-                    onload="hideLoading()" 
-                    onerror="showError()"></iframe>
-        </div>
-        
-        <div class="footer">
-            <p>© 2024 AI 聊天平台内嵌页面 | 安全访问，便捷使用</p>
-            <p style="opacity: 0.7; margin-top: 5px; font-size: 12px;">
-                注意：某些网站可能限制 iframe 嵌入，这是正常的安全策略
-            </p>
+        <div class="warning">
+            <strong>注意：</strong>由于安全策略限制，无法在 iframe 中直接嵌入这些平台。
+            点击上方卡片将在新标签页中打开官方页面，这是最稳定的访问方式。
         </div>
     </div>
 
     <script>
-        // 显示/隐藏加载动画
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
-        }
-        
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
-        
-        function showError() {
-            const loading = document.getElementById('loading');
-            loading.innerHTML = '<p style="color: #dc3545;">❌ 加载失败，网站可能限制了 iframe 嵌入</p>';
-        }
-        
-        // 加载 iframe
-        function loadIframe() {
-            const url = document.getElementById('urlInput').value;
-            if (url) {
-                showLoading();
-                document.getElementById('chatFrame').src = url;
-            }
-        }
-        
-        // 刷新 iframe
-        function refreshIframe() {
-            showLoading();
-            document.getElementById('chatFrame').src = document.getElementById('chatFrame').src;
-        }
-        
-        // 新标签页打开
-        function openInNewTab() {
-            const url = document.getElementById('urlInput').value;
-            window.open(url, '_blank');
-        }
-        
-        // 设置预设 URL
-        function setUrl(url) {
-            document.getElementById('urlInput').value = url;
-            loadIframe();
+        // 一键打开所有平台
+        function openAllPlatforms() {
+            const platforms = [
+                'https://chat.openai.com',
+                'https://claude.ai', 
+                'https://bard.google.com',
+                'https://bing.com/chat',
+                'https://poe.com',
+                'https://huggingface.co/chat'
+            ];
             
-            // 激活按钮样式
-            document.querySelectorAll('.platform-btn').forEach(btn => {
-                btn.classList.remove('active');
+            platforms.forEach(url => {
+                window.open(url, '_blank');
             });
-            event.target.classList.add('active');
+            
+            alert('正在打开所有 AI 平台...');
         }
         
-        // 回车键加载
-        document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loadIframe();
+        // 添加键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case '1':
+                        window.open('https://chat.openai.com', '_blank');
+                        break;
+                    case '2':
+                        window.open('https://claude.ai', '_blank');
+                        break;
+                    case '3':
+                        window.open('https://bard.google.com', '_blank');
+                        break;
+                }
             }
         });
         
-        // 页面加载时显示加载状态
+        // 页面加载动画
         window.addEventListener('load', function() {
-            setTimeout(hideLoading, 3000); // 3秒后隐藏加载动画
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
         });
     </script>
 </body>

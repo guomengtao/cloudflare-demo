@@ -1,0 +1,9 @@
+name = "chatgpt-proxy"
+compatibility_date = "2024-01-01"
+
+[[routers]]
+rule = "hostname=chatgpt-proxy.yourdomain.workers.dev"
+script_name = "chatgpt-proxy"
+
+[env.production]
+zone_id = "YOUR_ZONE_ID"
