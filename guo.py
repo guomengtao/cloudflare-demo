@@ -1,20 +1,10 @@
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-    return arr
-
-# 简单测试
-if __name__ == "__main__":
-
-    # 定一个数组
-    arr = [64, 34, 25, 12, 22, 11, 90]
-
-    arr[6] = 256
-
-   
-
-    # 调用一下冒泡排序 ，从小到大输出，tom弄的
-    print(bubble_sort(arr))
+while True: 
+        a = int(input("请输入一个整数: "))
+        b = int(input("请输入另一个整数: "))
+        result = a / b
+        print(f"{a} 除以 {b} 的结果是: {result}")
+        if a==99:
+            break
+        if result==66:
+            print("nihen6")
+            break
