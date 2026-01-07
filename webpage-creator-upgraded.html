@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页制作工具 - 专业升级版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            height: 95vh;
+        }
+        
+        .sidebar {
+            width: 400px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-header h1 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-header p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .template-section {
+            margin-bottom: 30px;
+        }
+        
+        .template-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .template-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .template-btn {
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        
+        .template-btn:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .template-btn.english {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+        
+        .template-btn.empty {
+            background: #51cf66;
+            color: white;
+            border-color: #51cf66;
+        }
+        
+        .requirements-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .requirements-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .requirements-input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        
+        .additional-input-section {
+            margin-top: 20px;
+        }
+        
+        .additional-input-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .additional-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        
+        .demo-section {
+            margin-top: 20px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .demo-section h3 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .demo-content {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #856404;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .chat-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+        
+        .message {
+            margin-bottom: 25px;
+            max-width: 90%;
+        }
+        
+        .user-message {
+            margin-left: auto;
+            background: #007bff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 18px 18px 4px 18px;
+        }
+        
+        .ai-message {
+            background: white;
+            color: #333;
+            padding: 0;
+            border-radius: 18px 18px 18px 4px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .message-content {
+            padding: 20px;
+        }
+        
+        .html-code-section {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 0;
+            border-top: 1px solid #333;
+        }
+        
+        .html-header {
+            background: #2d2d30;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .html-title {
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .code-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .code-btn {
+            padding: 5px 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.3s;
+        }
+        
+        .code-btn:hover {
+            background: #0056b3;
+        }
+        
+        .code-btn.secondary {
+            background: #6c757d;
+        }
+        
+        .code-btn.secondary:hover {
+            background: #545b62;
+        }
+        
+        .html-code {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .preview-section {
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 0;
+        }
+        
+        .preview-header {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .preview-title {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .preview-iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+        
+        .message-time {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        .chat-input-container {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            background: white;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .message-input:focus {
+            border-color: #007bff;
+        }
+        
+        .send-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+        
+        .send-button:hover {
+            background: #0056b3;
+        }
+        
+        .send-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e9ecef;
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #666;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .template-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .template-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .code-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>🚀 网页制作工具</h1>
+                <p>专业升级版 - 支持大量信息输入</p>
+            </div>
+            
+            <div class="template-section">
+                <h3>📋 快速模板</h3>
+                <div class="template-buttons">
+                    <button class="template-btn english" onclick="loadEnglishTemplate()">美式纯英文</button>
+                    <button class="template-btn empty" onclick="loadEmptyTemplate()">空模板</button>
+                    <button class="template-btn" onclick="loadTemplate('landing')">落地页</button>
+                    <button class="template-btn" onclick="loadTemplate('portfolio')">作品集</button>
+                    <button class="template-btn" onclick="loadTemplate('blog')">博客</button>
+                    <button class="template-btn" onclick="loadTemplate('ecommerce')">电商</button>
+                    <button class="template-btn" onclick="loadTemplate('dashboard')">仪表板</button>
+                    <button class="template-btn" onclick="loadTemplate('contact')">联系表单</button>
+                </div>
+            </div>
+            
+            <div class="requirements-section">
+                <h3>✍️ 详细需求描述</h3>
+                <textarea class="requirements-input" id="requirementsInput" placeholder="请详细描述您的网页需求，包括：
+• 页面类型（落地页、博客、电商等）
+• 主要功能需求
+• 设计风格偏好
+• 颜色方案
+• 响应式要求
+• 特殊交互需求
+• 内容结构
+
+示例：我需要一个科技公司的落地页，要求现代简约风格，蓝色主题，包含导航栏、英雄区块、产品介绍、团队展示和联系表单。需要支持移动端响应式布局。"></textarea>
+            </div>
+            
+            <div class="additional-input-section">
+                <h3>📝 补充说明</h3>
+                <textarea class="additional-input" id="additionalInput" placeholder="输入补充说明、特殊要求或修改意见...
+支持大量文字输入，可以详细描述具体需求。"></textarea>
+            </div>
+            
+            <div class="demo-section">
+                <h3>🔍 失踪人员字段参考</h3>
+                <div class="demo-content" id="missingPersonDemo">
+                    Dorothy P. Goroshko 
+                    Goroshko, circa 1975; Goroshko's 1970 Ford Maverick; John "Jack" Boulton in the 1960s 
+                    Missing Since 06/04/1975 
+                    Missing From Boston, Massachusetts 
+                    Classification Endangered Missing 
+                    Sex Female 
+                    Race White 
+                    Age 40 years old 
+                    Height and Weight 5'6, 130 pounds 
+                    Associated Vehicle(s) Gold and black 1970 Ford Maverick with the Massachusetts license plate number 9K7755 
+                    Distinguishing Characteristics White female. Blonde hair, brown eyes. Goroshko's maiden name is Carbone. Her hair was shoulder-length at the time of her disappearance, and her ears are pierced. All her teeth have been removed and she wears a full set of dentures. 
+                    Details of Disappearance 
+                    Goroshko was last seen at The Penalty Box, a bar on Causeway Street in the North Station area of Boston, Massachusetts, on June 4, 1975. She has never been heard from again and her car, a gold and black 1970 Ford Maverick with the Massachusetts license plate number 9K7755, has not been found either. A photo of the car is posted with this case summary. 
+                    
+                    At the time of her disappearance, Goroshko was dating John "Jack" Boulton, a convicted felon. A photo of him is posted with this case summary. He told police he and Goroshko were out drinking that night, and went to Brighton, Massachusetts together, where they got into an argument and ended their relationship. 
+                    
+                    He said he walked from Brighton to his family home in Roslindale, Massachusetts, and on the way, Goroshko followed him in her car, yelling and trying to hit him with the car. When he reached the Arnold Arboretum in Jamaica Plain, Massachusetts, he took a shortcut through the park to get away from her. He never saw her again after that. 
+                    
+                    Authorities stated Boulton's story doesn't match up with other evidence of the night of Goroshko's disappearance, however. He has a violent history, including convictions for armed robbery and the manslaughter of a previous girlfriend's two-year-old daughter, and Goroshko's sons stated he mistreated their mother. 
+                    
+                    Boulton now lives in Florida. Authorities re-interviewed him about Goroshko's case decades after she disappeared, and he said he had no idea what happened to her. When interviewed by a news reporter in 2019, he described the incident where Goroshko followed him home and tried to hit him with her car, but said that wasn't the night of her disappearance, only the night he himself last saw her. He has not been named as a suspect in her disappearance. 
+                    
+                    At the time of her disappearance, Goroshko lived in the 50 block of Monastery Road in Brighton, Massachusetts. Her mother died in 1992 and her sister in 2008, and in both their obituaries, Goroshko is listed as having predeceased them. Both police and her sons do not believe she left of her own accord. Her case remains unsolved. 
+                    Investigating Agency 
+                    Boston Police Department 617-343-4470 
+                    Source Information 
+                    NamUs 
+                    The Boston Globe
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="chat-header">
+                <h2>💬 网页生成助手</h2>
+                <p>基于 Gemini AI 的智能网页制作 - 升级版</p>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai-message">
+                        <div class="message-content">
+                            <p>👋 欢迎使用网页制作工具专业升级版！</p>
+                            <p>我可以根据您的详细需求生成完整的 HTML 代码，并提供：</p>
+                            <ul>
+                                <li>📝 <strong>大量信息输入</strong> - 支持长篇详细描述</li>
+                                <li>💻 <strong>完整的 HTML 代码</strong> - 语法高亮显示</li>
+                                <li>📋 <strong>一键复制功能</strong> - 方便代码重用</li>
+                                <li>👀 <strong>独立预览窗口</strong> - 新窗口全屏预览</li>
+                                <li>🔍 <strong>参考模板</strong> - 包含失踪人员字段示例</li>
+                            </ul>
+                            <p>请在左侧输入您的详细需求，或点击模板按钮快速开始！</p>
+                        </div>
+                        <div class="message-time" id="welcomeTime"></div>
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="chat-input">
+                        <input type="text" 
+                               id="messageInput" 
+                               class="message-input" 
+                               placeholder="输入补充说明或修改要求..."
+                               maxlength="5000">
+                        <button id="sendButton" class="send-button">生成网页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API 配置 - 使用 Cloudflare Pages Functions 代理
+        const API_CONFIG = {
+            baseUrl: '/gemini'
+        };
+
+        // DOM 元素
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const requirementsInput = document.getElementById('requirementsInput');
+        const additionalInput = document.getElementById('additionalInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const welcomeTime = document.getElementById('welcomeTime');
+        const missingPersonDemo = document.getElementById('missingPersonDemo');
+
+        // 设置欢迎消息时间
+        welcomeTime.textContent = getCurrentTime();
+
+        // 允许编辑失踪人员参考内容
+        missingPersonDemo.contentEditable = true;
+        missingPersonDemo.style.cursor = 'text';
+
+        // 模板数据
+        const templates = {
+            landing: `我需要一个科技公司的落地页，要求：
+• 现代简约设计风格
+• 蓝色主题配色方案
+• 包含：导航栏、英雄区块、产品特性、客户评价、联系表单
+• 完全响应式设计，支持移动端
+• 添加适当的动画效果
+• 使用现代 CSS 特性（Flexbox/Grid）`,
+            
+            portfolio: `个人作品集网站需求：
+• 创意设计风格，突出个性
+• 深色主题，搭配亮色点缀
+• 包含：关于我、技能展示、项目作品集、联系方式
+• 作品集部分要有图片展示和项目描述
+• 添加平滑滚动和过渡动画
+• 移动端友好的导航菜单`,
+            
+            blog: `技术博客网站需求：
+• 简洁专业的阅读体验
+• 浅色主题，良好的可读性
+• 包含：文章列表、文章详情页、分类标签、搜索功能
+• 代码高亮显示支持
+• 响应式设计，适合各种屏幕阅读
+• 社交分享功能`
+        };
+
+        // 加载模板
+        function loadTemplate(templateKey) {
+            if (templates[templateKey]) {
+                requirementsInput.value = templates[templateKey];
+                additionalInput.value = '';
+                messageInput.placeholder = "输入对模板的补充要求或修改...";
+                showNotification(`已加载 ${templateKey} 模板`);
+            }
+        }
+
+        // 加载美式纯英文模板
+        function loadEnglishTemplate() {
+            requirementsInput.value = `Create a modern American-style website with the following requirements:
+• Clean, professional design with English content only
+• Responsive layout that works on all devices
+• Modern typography and spacing
+• Professional color scheme (blues, grays, or corporate colors)
+• Include: Header with navigation, Hero section, Features/Products, About section, Contact form
+• Optimized for SEO and fast loading
+• Cross-browser compatible
+• Use modern CSS (Flexbox/Grid) and semantic HTML5`;
+            additionalInput.value = '';
+            messageInput.placeholder = "Enter additional requirements or modifications...";
+            showNotification('已加载美式纯英文模板');
+        }
+
+        // 加载空模板
+        function loadEmptyTemplate() {
+            requirementsInput.value = '';
+            additionalInput.value = '';
+            messageInput.placeholder = "请输入您的网页需求...";
+            showNotification('已加载空模板，请输入您的需求');
+        }
+
+        // 发送消息函数
+        async function sendMessage() {
+            const requirements = requirementsInput.value.trim();
+            const additional = additionalInput.value.trim();
+            const message = messageInput.value.trim();
+            
+            if (!requirements && !additional && !message) {
+                showNotification('请输入需求描述');
+                return;
+            }
+
+            // 组合完整的需求描述
+            let fullMessage = '';
+            if (requirements) fullMessage += `主要需求：\n${requirements}\n\n`;
+            if (additional) fullMessage += `补充说明：\n${additional}\n\n`;
+            if (message) fullMessage += `具体要求：\n${message}`;
+
+            // 禁用输入和按钮
+            messageInput.disabled = true;
+            requirementsInput.disabled = true;
+            additionalInput.disabled = true;
+            sendButton.disabled = true;
+
+            // 添加用户消息
+            addMessage(fullMessage, 'user');
+
+            // 清空输入框
+            messageInput.value = '';
+
+            // 显示打字指示器
+            showTypingIndicator();
+
+            try {
+                // 调用 Gemini API 生成网页代码
+                const response = await generateWebpage(fullMessage);
+                
+                // 隐藏打字指示器
+                hideTypingIndicator();
+                
+                // 添加 AI 回复（包含代码和预览）
+                addWebpageResponse(response);
+                
+            } catch (error) {
+                // 隐藏打字指示器
+                hideTypingIndicator();
+                
+                // 显示错误消息
+                addMessage(`抱歉，生成网页时出现错误：${error.message}`, 'ai');
+                
+                console.error('API 调用错误:', error);
+            }
+
+            // 重新启用输入和按钮
+            messageInput.disabled = false;
+            requirementsInput.disabled = false;
+            additionalInput.disabled = false;
+            messageInput.focus();
+        }
+
+        // 生成网页代码
+        async function generateWebpage(requirements) {
+            const prompt = `请根据以下需求生成一个完整的 HTML 网页代码。要求：
+
+1. 生成完整的、可运行的 HTML 文件代码
+2. 包含完整的 <!DOCTYPE html> 声明
+3. 包含完整的 HTML 结构（html, head, body）
+4. 包含必要的 CSS 样式（放在 <style> 标签中）
+5. 包含必要的 JavaScript（放在 <script> 标签中）
+6. 代码要美观、规范、有注释
+7. 确保代码可以直接复制运行
+8. 支持响应式设计
+9. 使用现代 CSS 特性
+
+用户需求：${requirements}
+
+请直接返回完整的 HTML 代码，不要额外的解释文字。`;
+
+            const response = await fetch(API_CONFIG.baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: prompt }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                return data.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error('无效的 API 响应格式');
+            }
+        }
+
+        // 添加网页生成响应
+        function addWebpageResponse(htmlCode) {
+            // 提取纯 HTML 代码（去除可能的说明文字）
+            const cleanHtmlCode = extractHtmlCode(htmlCode);
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            
+            // 消息内容部分
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = `
+                <p>✅ 网页代码已生成完成！</p>
+                <p>以下是根据您的需求生成的完整 HTML 代码：</p>
+                <ul>
+                    <li>📄 <strong>完整 HTML 结构</strong> - 包含所有必要标签</li>
+                    <li>🎨 <strong>内联 CSS 样式</strong> - 无需外部文件</li>
+                    <li>⚡ <strong>响应式设计</strong> - 支持移动端</li>
+                    <li>📱 <strong>独立预览</strong> - 新窗口全屏查看</li>
+                </ul>
+                <p style="color: #666; font-size: 0.9em; margin-top: 10px;">
+                    💡 提示：点击"预览"按钮在新窗口中查看完整效果
+                </p>
+            `;
+            
+            // HTML 代码部分
+            const htmlSection = document.createElement('div');
+            htmlSection.className = 'html-code-section';
+            
+            const htmlHeader = document.createElement('div');
+            htmlHeader.className = 'html-header';
+            htmlHeader.innerHTML = `
+                <span class="html-title">📄 生成的 HTML 代码</span>
+                <div class="code-actions">
+                    <button class="code-btn secondary" onclick="copyCode(this)">📋 复制代码</button>
+                    <button class="code-btn" onclick="openPreview()">👀 预览</button>
+                </div>
+            `;
+            
+            const htmlCodeElement = document.createElement('pre');
+            htmlCodeElement.className = 'html-code';
+            htmlCodeElement.textContent = cleanHtmlCode;
+            htmlCodeElement.id = 'generatedCode';
+            
+            htmlSection.appendChild(htmlHeader);
+            htmlSection.appendChild(htmlCodeElement);
+            
+            // 时间戳
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = getCurrentTime();
+            
+            // 组装消息
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(htmlSection);
+            messageDiv.appendChild(messageTime);
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 提取纯 HTML 代码
+        function extractHtmlCode(text) {
+            // 尝试提取 ```html 代码块
+            const htmlBlockMatch = text.match(/```html\n([\s\S]*?)\n```/);
+            if (htmlBlockMatch) {
+                return htmlBlockMatch[1];
+            }
+            
+            // 尝试提取 ``` 代码块
+            const codeBlockMatch = text.match(/```\n([\s\S]*?)\n```/);
+            if (codeBlockMatch) {
+                return codeBlockMatch[1];
+            }
+            
+            // 如果没有代码块标记，返回原始文本
+            return text;
+        }
+
+        // 复制代码
+        function copyCode(button) {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ 已复制';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        // 打开独立预览
+        function openPreview() {
+            const code = document.getElementById('generatedCode').textContent;
+            const previewWindow = window.open('', '_blank', 'width=1200,height=800,scrollbars=yes');
+            previewWindow.document.write(code);
+            previewWindow.document.close();
+            previewWindow.focus();
+        }
+
+        // 添加普通消息
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.textContent = text;
+            
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = getCurrentTime();
+            
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(messageTime);
+            chatMessages.appendChild(messageDiv);
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 显示打字指示器
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 隐藏打字指示器
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        // 获取当前时间
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('zh-CN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            // 创建自定义通知
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #007bff;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                font-size: 14px;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        // 事件监听器
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // 页面加载后自动聚焦输入框
+        window.addEventListener('load', () => {
+            messageInput.focus();
+        });
+    </script>
+</body>
+</html>
