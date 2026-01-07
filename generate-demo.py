@@ -3,8 +3,8 @@ import random
 import string
 from datetime import datetime
 
-# 1. 配置：定义目标文件夹
-TARGET_DIR = "./case-urls"
+# 1. 配置：定义目标文件夹 ，注意这里你虚拟机上的路径，要和你github actions 里的路径一致。从哪里复制到哪里去是一个文件夹，不是一个文件路径
+TARGET_DIR = "./case" 
 
 def generate_random_name(length=8):
     """生成一个短的随机字符串，比如 'a7k9b2x1'"""
