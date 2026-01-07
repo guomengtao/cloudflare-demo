@@ -12,319 +12,448 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            height: 90vh;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-header h1 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-header p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .api-status {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.9em;
         }
         
         .chat-container {
-            width: 100%;
-            max-width: 800px;
-            height: 80vh;
-            max-height: 700px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
         
         .chat-header {
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             padding: 20px;
             text-align: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
         
-        .chat-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
+        .chat-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
         }
         
         .chat-messages {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            background: linear-gradient(180deg, #f8f9ff 0%, #e8f4e9 100%);
-        }
-        
-        /* 滚动条美化 */
-        .chat-messages::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
-        }
-        
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
-            border-radius: 10px;
+            background: #fafafa;
         }
         
         .message {
             margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
+            max-width: 80%;
         }
         
-        .message.user .message-content {
-            background: #e3f2fd;
-            align-self: flex-end;
-            border-color: rgba(66, 133, 244, 0.2);
+        .user-message {
+            margin-left: auto;
+            background: #007bff;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 18px 18px 4px 18px;
         }
         
-        .message.ai .message-content {
-            background: #e8f5e9;
-            align-self: flex-start;
-            border-color: rgba(52, 168, 83, 0.2);
-        }
-        
-        .message-content {
-            padding: 15px 20px;
-            border-radius: 18px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            max-width: 75%;
-            position: relative;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-        
-        .message-content strong {
-            font-weight: 600;
-            margin-right: 8px;
-        }
-        
-        .message.user .message-content strong {
-            color: #4285F4;
-        }
-        
-        .message.ai .message-content strong {
-            color: #34A853;
+        .ai-message {
+            background: white;
+            color: #333;
+            padding: 12px 16px;
+            border-radius: 18px 18px 18px 4px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .message-time {
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 6px;
-            margin-left: 8px;
-            font-weight: 400;
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-top: 5px;
         }
         
-        .chat-input-area {
+        .chat-input-container {
             padding: 20px;
+            border-top: 1px solid #e9ecef;
             background: white;
-            border-top: 1px solid rgba(66, 133, 244, 0.2);
-            display: flex;
-            gap: 10px;
-            align-items: center;
         }
         
-        .input-group {
-            flex: 1;
+        .chat-input {
             display: flex;
             gap: 10px;
         }
         
-        .input-group input {
+        .message-input {
             flex: 1;
-            padding: 12px 18px;
-            border: 2px solid rgba(66, 133, 244, 0.3);
+            padding: 12px 16px;
+            border: 1px solid #ddd;
             border-radius: 25px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: rgba(66, 133, 244, 0.05);
-        }
-        
-        .input-group input:focus {
+            font-size: 14px;
             outline: none;
-            border-color: #4285F4;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+            transition: border-color 0.3s;
         }
         
-        .input-group input::placeholder {
-            color: #aaa;
+        .message-input:focus {
+            border-color: #007bff;
         }
         
-        button {
-            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+        .send-button {
+            background: #007bff;
             color: white;
             border: none;
-            padding: 12px 25px;
             border-radius: 25px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 12px 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+            transition: background 0.3s;
         }
         
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+        .send-button:hover {
+            background: #0056b3;
         }
         
-        button:active {
-            transform: translateY(0);
+        .send-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
         }
         
-        /* 响应式设计 */
+        .typing-indicator {
+            display: none;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e9ecef;
+            max-width: 80px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #666;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .api-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: auto;
+            font-size: 0.8em;
+            color: #666;
+        }
+        
         @media (max-width: 768px) {
-            .chat-container {
-                height: 95vh;
-                max-height: none;
-                border-radius: 10px;
+            .container {
+                flex-direction: column;
+                height: auto;
             }
             
-            .chat-input-area {
-                flex-direction: column;
-                align-items: stretch;
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
             }
             
-            .input-group {
-                flex-direction: column;
+            .message {
+                max-width: 90%;
             }
-        }
-        
-        /* 加载状态 */
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #34A853;
-            font-style: italic;
-        }
-        
-        /* 错误状态 */
-        .error {
-            text-align: center;
-            padding: 20px;
-            color: #ea4335;
-            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>Gemini AI 聊天助手</h1>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>🤖 Gemini AI</h1>
+                <p>基于 Google Gemini 3 Flash</p>
+            </div>
+            
+            <div class="api-status" id="apiStatus">
+                ✅ API 连接正常
+            </div>
+            
+            <div class="api-info">
+                <strong>API 信息：</strong><br>
+                模型: gemini-3-flash-preview<br>
+                端点: Cloudflare Worker<br>
+                状态: 在线
+            </div>
         </div>
         
-        <div class="chat-messages" id="chat">
-            <div class="message ai">
-                <div class="message-content">
-                    <strong>Gemini AI</strong>你好！我是你的Gemini AI助手，有什么可以帮助你的吗？
-                    <div class="message-time">${new Date().toLocaleTimeString()}</div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>💬 Gemini AI 聊天助手</h2>
+                <p>与最新的 Gemini 3 Flash 模型对话</p>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div>你好！我是基于 Google Gemini 3 Flash 模型的 AI 助手。我可以帮助你解答问题、编写代码、进行创意写作等。有什么我可以帮你的吗？</div>
+                    <div class="message-time" id="welcomeTime"></div>
                 </div>
             </div>
-        </div>
-        
-        <div class="chat-input-area">
-            <div class="input-group">
-                <input type="text" id="messageInput" placeholder="输入你的问题...">
+            
+            <div class="chat-input-container">
+                <div class="chat-input">
+                    <input type="text" 
+                           id="messageInput" 
+                           class="message-input" 
+                           placeholder="输入你的问题..."
+                           maxlength="1000">
+                    <button id="sendButton" class="send-button">发送</button>
+                </div>
             </div>
-            <button onclick="sendMessage()" id="sendButton">发送</button>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        const chatDiv = document.getElementById('chat');
+        // API 配置 - 使用 Cloudflare Pages Functions 代理
+        const API_CONFIG = {
+            // 使用相对路径，指向 Pages Function
+            baseUrl: '/gemini'
+        };
+
+        // DOM 元素
+        const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
-        
-        // 页面加载完成后自动聚焦到消息输入框
-        window.addEventListener('DOMContentLoaded', () => {
-            messageInput.focus();
-        });
-        
-        // 添加消息到聊天界面
-        function addMessage(content, isUser) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-content">
-                    <strong>${isUser ? '我' : 'Gemini AI'}</strong>${escapeHtml(content)}
-                    <div class="message-time">${new Date().toLocaleTimeString()}</div>
-                </div>
-            `;
-            
-            chatDiv.appendChild(messageDiv);
-            
-            // 平滑滚动到底部
-            chatDiv.scrollTop = chatDiv.scrollHeight;
-        }
-        
-        // 发送消息
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const apiStatus = document.getElementById('apiStatus');
+        const welcomeTime = document.getElementById('welcomeTime');
+
+        // 设置欢迎消息时间
+        welcomeTime.textContent = getCurrentTime();
+
+        // 发送消息函数
         async function sendMessage() {
-            const text = messageInput.value.trim();
-            
-            if (!text) {
-                messageInput.focus();
-                return;
-            }
-            
-            // 显示用户消息
-            addMessage(text, true);
-            
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // 禁用输入和按钮
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+
+            // 添加用户消息
+            addMessage(message, 'user');
+
             // 清空输入框
             messageInput.value = '';
-            messageInput.focus();
-            
-            // 显示正在发送状态
-            const sendButton = document.getElementById('sendButton');
-            const originalText = sendButton.textContent;
-            sendButton.textContent = '思考中...';
-            sendButton.disabled = true;
-            
+
+            // 显示打字指示器
+            showTypingIndicator();
+
             try {
-                // 调用Gemini API
-                const response = await fetch('/api/gemini-chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
-                });
+                // 调用 Gemini API（通过 Functions 代理）
+                const response = await callGeminiAPI(message);
                 
-                const data = await response.json();
+                // 隐藏打字指示器
+                hideTypingIndicator();
                 
-                if (data.error) {
-                    // 显示错误消息
-                    addMessage(`出错了：${data.error}`, false);
-                } else {
-                    // 显示AI回复
-                    addMessage(data.response, false);
-                }
-            } catch (e) {
-                console.error("发送失败:", e);
-                addMessage('网络错误，请稍后重试', false);
-            } finally {
-                // 恢复发送按钮状态
-                sendButton.textContent = originalText;
-                sendButton.disabled = false;
+                // 添加 AI 回复
+                addMessage(response, 'ai');
+                
+                // 更新 API 状态
+                apiStatus.textContent = '✅ API 连接正常';
+                apiStatus.style.background = '#d4edda';
+                apiStatus.style.color = '#155724';
+                
+            } catch (error) {
+                // 隐藏打字指示器
+                hideTypingIndicator();
+                
+                // 显示错误消息
+                addMessage(`抱歉，出现了错误：${error.message}`, 'ai');
+                
+                // 更新 API 状态
+                apiStatus.textContent = '❌ API 连接失败';
+                apiStatus.style.background = '#f8d7da';
+                apiStatus.style.color = '#721c24';
+                
+                console.error('API 调用错误:', error);
+            }
+
+            // 重新启用输入和按钮
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+            messageInput.focus();
+        }
+
+        // 调用 Gemini API（通过 Functions 代理）
+        async function callGeminiAPI(message) {
+            const response = await fetch(API_CONFIG.baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: message }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                return data.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error('无效的 API 响应格式');
             }
         }
+
+        // 添加消息到聊天界面
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.textContent = text;
+            
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = getCurrentTime();
+            
+            messageDiv.appendChild(messageContent);
+            messageDiv.appendChild(messageTime);
+            chatMessages.appendChild(messageDiv);
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 显示打字指示器
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 隐藏打字指示器
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        // 获取当前时间
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('zh-CN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 事件监听器
+        sendButton.addEventListener('click', sendMessage);
         
-        // 允许按Enter键发送消息
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
             }
         });
-        
-        // HTML转义函数，防止XSS攻击
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
+
+        // 页面加载后自动聚焦输入框
+        window.addEventListener('load', () => {
+            messageInput.focus();
+        });
+
+        // 测试 API 连接
+        async function testAPIConnection() {
+            try {
+                const testResponse = await callGeminiAPI('你好，测试连接');
+                console.log('API 连接测试成功');
+            } catch (error) {
+                console.warn('API 连接测试失败:', error);
+                apiStatus.textContent = '⚠️ API 连接测试失败';
+                apiStatus.style.background = '#fff3cd';
+                apiStatus.style.color = '#856404';
+            }
         }
+
+        // 页面加载时测试 API 连接
+        testAPIConnection();
     </script>
 </body>
 </html>
