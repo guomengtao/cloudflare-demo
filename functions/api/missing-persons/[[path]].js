@@ -84,16 +84,20 @@ async function handleScrape(request, env) {
             });
         }
         
+        // 从URL中提取案件ID
+        const caseId = extractCaseIdFromUrl(caseUrl);
+        
         // 检查是否已存在该案件
         const existingCase = await env.DB.prepare(
-            'SELECT * FROM missing_persons_cases WHERE case_url = ?'
-        ).bind(caseUrl).first();
+            'SELECT * FROM missing_persons_cases WHERE case_url = ? OR case_id = ?'
+        ).bind(caseUrl, caseId).first();
         
         if (existingCase) {
             return new Response(JSON.stringify({
                 success: true,
                 content: existingCase.scraped_content,
                 characterCount: existingCase.scraped_content.length,
+                caseId: existingCase.case_id || caseId,
                 message: '案件已存在，使用缓存内容'
             }), {
                 headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -117,16 +121,16 @@ Dorothy P. Goroshko于1999年5月15日在纽约市失踪。她最后一次被看
 
 如有任何信息，请联系纽约市警察局失踪人口部门。`;
         
-        // 保存到数据库
+        // 保存到数据库（包含case_id字段）
         const result = await env.DB.prepare(
-            'INSERT INTO missing_persons_cases (case_url, case_title, scraped_content) VALUES (?, ?, ?)'
-        ).bind(caseUrl, 'Dorothy P. Goroshko 失踪案件', mockContent).run();
+            'INSERT INTO missing_persons_cases (case_url, case_id, case_title, scraped_content) VALUES (?, ?, ?, ?)'
+        ).bind(caseUrl, caseId, 'Dorothy P. Goroshko 失踪案件', mockContent).run();
         
         return new Response(JSON.stringify({
             success: true,
             content: mockContent,
             characterCount: mockContent.length,
-            caseId: result.meta.last_row_id,
+            caseId: caseId,
             message: '网页内容抓取成功'
         }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -142,6 +146,21 @@ Dorothy P. Goroshko于1999年5月15日在纽约市失踪。她最后一次被看
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
     }
+}
+
+// 从URL中提取案件ID的辅助函数
+function extractCaseIdFromUrl(url) {
+    try {
+        const urlObj = new URL(url);
+        const pathParts = urlObj.pathname.split('/');
+        const caseIndex = pathParts.indexOf('case');
+        if (caseIndex !== -1 && caseIndex < pathParts.length - 1) {
+            return pathParts[caseIndex + 1];
+        }
+    } catch (error) {
+        console.error('URL解析错误:', error);
+    }
+    return '';
 }
 
 // 处理案件分析

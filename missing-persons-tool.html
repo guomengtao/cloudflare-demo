@@ -178,7 +178,7 @@
             margin-top: 20px;
         }
         
-        .history-section {
+.history-section {
             margin-top: 20px;
         }
         
@@ -438,7 +438,7 @@
         // 抓取网页内容
         async function scrapeWebsite() {
             const caseUrl = document.getElementById('caseUrl').value.trim();
-            const caseId = document.getElementById('caseId').value.trim();
+            const caseIdInput = document.getElementById('caseId').value.trim();
             const scrapeMethod = document.querySelector('input[name="scrapeMethod"]:checked').value;
             
             if (!caseUrl) {
@@ -469,7 +469,8 @@
                 hideLoading();
                 
                 if (result.success) {
-                    currentCaseId = result.caseId;
+                    // 修复案件ID处理逻辑：优先使用API返回的caseId，如果没有则使用输入框的值
+                    currentCaseId = result.caseId || caseIdInput || extractCaseIdFromUrl(caseUrl);
                     window.scrapedText = result.content;
                     
                     // 显示抓取的内容
@@ -477,8 +478,8 @@
                         result.content.substring(0, 500) + (result.content.length > 500 ? '...' : '');
                     
                     addMessage(`抓取成功！字符数: ${result.characterCount}`);
-                    addMessage(`案件ID: ${result.caseId}`);
-                    updateDebugInfo(`抓取成功，字符数: ${result.characterCount}`);
+                    addMessage(`案件ID: ${currentCaseId}`);
+                    updateDebugInfo(`抓取成功，字符数: ${result.characterCount}, 案件ID: ${currentCaseId}`);
                 } else {
                     addMessage(`抓取失败：${result.error}`);
                     updateDebugInfo(`抓取错误: ${result.error}`);
@@ -494,6 +495,21 @@
                     updateDebugInfo('建议执行: npx wrangler d1 execute cloudflare-demo-db --remote --file=./create-missing-persons-table.sql');
                 }
             }
+        }
+
+        // 从URL中提取案件ID
+        function extractCaseIdFromUrl(url) {
+            try {
+                const urlObj = new URL(url);
+                const pathParts = urlObj.pathname.split('/');
+                const caseIndex = pathParts.indexOf('case');
+                if (caseIndex !== -1 && caseIndex < pathParts.length - 1) {
+                    return pathParts[caseIndex + 1];
+                }
+            } catch (error) {
+                console.error('URL解析错误:', error);
+            }
+            return '';
         }
 
         // 显示重试按钮
