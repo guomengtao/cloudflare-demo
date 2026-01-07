@@ -3,20 +3,89 @@ export async function onRequest(context) {
     const url = new URL(request.url);
     const path = url.pathname;
     
-    // 处理不同的API端点
-    if (path.endsWith('/api/missing-persons/scrape')) {
-        return handleScrape(request, env);
-    } else if (path.endsWith('/api/missing-persons/analyze')) {
-        return handleAnalyze(request, env);
-    } else if (path.endsWith('/api/missing-persons/generate')) {
-        return handleGenerate(request, env);
-    } else if (path.endsWith('/api/missing-persons/history')) {
-        return handleHistory(request, env);
-    } else if (path.endsWith('/api/missing-persons/cases')) {
-        return handleCases(request, env);
+    // 处理CORS预检请求
+    if (request.method === 'OPTIONS') {
+        return new Response(null, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            },
+        });
     }
     
-    return new Response('Not Found', { status: 404 });
+    // 处理不同的API端点
+    const pathParts = path.split('/').filter(Boolean);
+    const endpoint = pathParts[pathParts.length - 1];
+    
+    try {
+        let result;
+        
+        switch (endpoint) {
+            case 'scrape':
+                if (request.method === 'POST') {
+                    result = await handleScrape(request, env);
+                } else {
+                    return new Response('Method Not Allowed', { status: 405 });
+                }
+                break;
+                
+            case 'analyze':
+                if (request.method === 'POST') {
+                    result = await handleAnalyze(request, env);
+                } else {
+                    return new Response('Method Not Allowed', { status: 405 });
+                }
+                break;
+                
+            case 'generate':
+                if (request.method === 'POST') {
+                    result = await handleGenerate(request, env);
+                } else {
+                    return new Response('Method Not Allowed', { status: 405 });
+                }
+                break;
+                
+            case 'history':
+                if (request.method === 'POST') {
+                    result = await handleHistory(request, env);
+                } else {
+                    return new Response('Method Not Allowed', { status: 405 });
+                }
+                break;
+                
+            case 'cases':
+                if (request.method === 'GET') {
+                    result = await handleCases(request, env);
+                } else {
+                    return new Response('Method Not Allowed', { status: 405 });
+                }
+                break;
+                
+            default:
+                return new Response('Not Found', { status: 404 });
+        }
+        
+        // 添加CORS头
+        result.headers.set('Access-Control-Allow-Origin', '*');
+        result.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        result.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        
+        return result;
+        
+    } catch (error) {
+        console.error('API Error:', error);
+        return new Response(JSON.stringify({ 
+            success: false, 
+            error: error.message 
+        }), {
+            status: 500,
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    }
 }
 
 // 网页抓取功能
@@ -81,7 +150,16 @@ ${sourceText}
             })
         });
         
+        if (!geminiResponse.ok) {
+            throw new Error(`Gemini API error: ${geminiResponse.status}`);
+        }
+        
         const result = await geminiResponse.json();
+        
+        if (!result.candidates || !result.candidates[0]) {
+            throw new Error('Invalid response from Gemini API');
+        }
+        
         const analysis = result.candidates[0].content.parts[0].text;
         
         // 保存分析结果到数据库
@@ -118,7 +196,7 @@ async function handleGenerate(request, env) {
         `).bind(caseId).first();
         
         if (!caseData) {
-            throw new Error('案件不存在');
+            throw new Error('案件不存在，请先进行案件分析');
         }
         
         // 使用Gemini API生成对应语言的网页
@@ -137,7 +215,16 @@ async function handleGenerate(request, env) {
             })
         });
         
+        if (!geminiResponse.ok) {
+            throw new Error(`Gemini API error: ${geminiResponse.status}`);
+        }
+        
         const result = await geminiResponse.json();
+        
+        if (!result.candidates || !result.candidates[0]) {
+            throw new Error('Invalid response from Gemini API');
+        }
+        
         const webpageCode = result.candidates[0].content.parts[0].text;
         
         // 保存生成的网页代码
