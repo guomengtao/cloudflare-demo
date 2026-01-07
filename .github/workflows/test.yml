@@ -20,7 +20,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} # 在GitHub Secret里存Key，安全！
         run: |
-          python generate_html.py # 运行你的提取和生成脚本
+          python generate-html.py # 运行你的提取和生成脚本
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
