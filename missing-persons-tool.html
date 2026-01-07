@@ -265,18 +265,44 @@
                            placeholder="dorothy-p-goroshko" value="dorothy-p-goroshko">
                 </div>
                 
+                <!-- 新增：抓取方式选择 -->
+                <div class="scrape-methods">
+                    <label><strong>选择抓取方式：</strong></label>
+                    <div class="method-option">
+                        <input type="radio" id="method1" name="scrapeMethod" value="api" checked>
+                        <label for="method1">API抓取（推荐）</label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" id="method2" name="scrapeMethod" value="proxy">
+                        <label for="method2">代理抓取</label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" id="method3" name="scrapeMethod" value="simulate">
+                        <label for="method3">模拟抓取</label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" id="method4" name="scrapeMethod" value="fallback">
+                        <label for="method4">备用抓取</label>
+                    </div>
+                </div>
+                
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="scrapeWebsite()">抓取网页内容</button>
                     <button class="btn btn-primary" onclick="analyzeCase()">AI案件分析</button>
+                    <button class="btn btn-primary" onclick="toggleDebug()">显示调试信息</button>
                 </div>
                 
+                <!-- 新增：抓取内容显示区域 -->
                 <div class="form-group">
-                    <label>生成网页语言版本</label>
-                    <div class="btn-group">
-                        <button class="btn btn-success" onclick="generateWebpage('zh')">简体中文</button>
-                        <button class="btn btn-success" onclick="generateWebpage('en')">英文</button>
-                        <button class="btn btn-success" onclick="generateWebpage('es')">西班牙语</button>
+                    <label>抓取到的内容：</label>
+                    <div class="content-display" id="scrapedContentDisplay">
+                        抓取的内容将显示在这里...
                     </div>
+                </div>
+                
+                <!-- 新增：调试信息区域 -->
+                <div class="debug-info" id="debugInfo">
+                    // 调试信息将显示在这里
                 </div>
                 
                 <div class="chat-area" id="chatArea">
@@ -314,6 +340,8 @@
     <script>
         let currentCaseId = '';
         let currentWebpageCode = '';
+        let debugEnabled = false;
+        let lastError = null;
         
         // 添加消息到聊天区域
         function addMessage(text, isUser = false) {
@@ -345,15 +373,48 @@
             if (loading) loading.remove();
         }
         
-        // 更新所有API调用路径，从：
-        // '/api/missing-persons/scrape' 
-        // 改为：
-        // '/api/missing-persons/scrape'
+        // 切换调试信息显示
+        function toggleDebug() {
+            debugEnabled = !debugEnabled;
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.style.display = debugEnabled ? 'block' : 'none';
+            updateDebugInfo('调试模式 ' + (debugEnabled ? '已开启' : '已关闭'));
+        }
         
-        // 抓取网页内容
+        // 更新调试信息
+        function updateDebugInfo(info) {
+            if (!debugEnabled) return;
+            
+            const debugInfo = document.getElementById('debugInfo');
+            const timestamp = new Date().toLocaleTimeString();
+            debugInfo.innerHTML += `[${timestamp}] ${info}\n`;
+            debugInfo.scrollTop = debugInfo.scrollHeight;
+        }
+        
+        // 显示抓取内容
+        function displayScrapedContent(content) {
+            const display = document.getElementById('scrapedContentDisplay');
+            const truncated = content.length > 1000 ? content.substring(0, 1000) + '...' : content;
+            display.textContent = truncated;
+            display.style.display = 'block';
+        }
+        
+        // 获取选中的抓取方式
+        function getSelectedScrapeMethod() {
+            const methods = document.getElementsByName('scrapeMethod');
+            for (const method of methods) {
+                if (method.checked) {
+                    return method.value;
+                }
+            }
+            return 'api';
+        }
+        
+        // 抓取网页内容 - 改进版本
         async function scrapeWebsite() {
             const url = document.getElementById('caseUrl').value;
             const caseId = document.getElementById('caseId').value;
+            const method = getSelectedScrapeMethod();
             currentCaseId = caseId;
             
             if (!url || !caseId) {
@@ -361,33 +422,105 @@
                 return;
             }
             
-            showLoading('正在抓取网页内容...');
+            showLoading(`正在使用${getMethodName(method)}抓取网页内容...`);
             addMessage(`开始抓取案件网页：${url}`, true);
+            updateDebugInfo(`开始抓取: ${url}, 方法: ${method}`);
             
             try {
-                const response = await fetch('/api/missing-persons/scrape', {
+                // 根据选择的抓取方式调用不同的API端点
+                const apiEndpoints = {
+                    'api': '/api/missing-persons/scrape',
+                    'proxy': '/api/missing-persons/scrape-proxy',
+                    'simulate': '/api/missing-persons/scrape-simulate',
+                    'fallback': '/api/missing-persons/scrape-fallback'
+                };
+                
+                const endpoint = apiEndpoints[method] || apiEndpoints.api;
+                
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url })
+                    body: JSON.stringify({ 
+                        caseUrl: url,
+                        scrapeMethod: method 
+                    })
                 });
                 
+                updateDebugInfo(`请求端点: ${endpoint}, 状态: ${response.status}`);
+                
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    const errorText = await response.text();
+                    updateDebugInfo(`错误响应: ${errorText}`);
+                    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
                 }
                 
                 const result = await response.json();
+                updateDebugInfo(`响应数据: ${JSON.stringify(result).substring(0, 200)}...`);
+                
                 hideLoading();
                 
                 if (result.success) {
-                    addMessage(`网页内容抓取成功！获取了 ${result.text.length} 个字符的文本内容。`);
-                    window.scrapedText = result.text;
+                    const charCount = result.content ? result.content.length : 0;
+                    addMessage(`网页内容抓取成功！获取了 ${charCount} 个字符的文本内容。`);
+                    window.scrapedText = result.content;
+                    displayScrapedContent(result.content);
+                    
+                    // 显示详细调试信息
+                    if (debugEnabled) {
+                        updateDebugInfo(`抓取成功: ${charCount}字符, CaseID: ${result.caseId}`);
+                    }
                 } else {
                     addMessage(`抓取失败：${result.error}`);
+                    lastError = result.error;
+                    showRetryButton();
                 }
             } catch (error) {
                 hideLoading();
                 addMessage(`网络错误：${error.message}`);
+                lastError = error.message;
+                updateDebugInfo(`捕获错误: ${error.message}`);
+                showRetryButton();
             }
+        }
+        
+        // 显示重试按钮
+        function showRetryButton() {
+            const chatArea = document.getElementById('chatArea');
+            const retryDiv = document.createElement('div');
+            retryDiv.className = 'message ai-message';
+            retryDiv.innerHTML = `
+                抓取失败，是否尝试其他抓取方式？
+                <button class="retry-button" onclick="retryWithDifferentMethod()">重试其他方式</button>
+            `;
+            chatArea.appendChild(retryDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        
+        // 使用不同的抓取方式重试
+        async function retryWithDifferentMethod() {
+            const methods = ['api', 'proxy', 'simulate', 'fallback'];
+            const currentMethod = getSelectedScrapeMethod();
+            const currentIndex = methods.indexOf(currentMethod);
+            const nextMethod = methods[(currentIndex + 1) % methods.length];
+            
+            // 切换到下一个方法
+            document.getElementById(`method${methods.indexOf(nextMethod) + 1}`).checked = true;
+            
+            updateDebugInfo(`切换到抓取方式: ${nextMethod}`);
+            addMessage(`尝试使用${getMethodName(nextMethod)}重新抓取...`, true);
+            
+            await scrapeWebsite();
+        }
+        
+        // 获取抓取方式名称
+        function getMethodName(method) {
+            const names = {
+                'api': 'API抓取',
+                'proxy': '代理抓取',
+                'simulate': '模拟抓取',
+                'fallback': '备用抓取'
+            };
+            return names[method] || method;
         }
         
         // AI案件分析
@@ -399,6 +532,7 @@
             
             showLoading('AI正在分析案件...');
             addMessage('开始进行AI案件分析...', true);
+            updateDebugInfo('开始AI案件分析');
             
             try {
                 const response = await fetch('/api/missing-persons/analyze', {
@@ -406,9 +540,11 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         caseId: currentCaseId, 
-                        sourceText: window.scrapedText 
+                        content: window.scrapedText 
                     })
                 });
+                
+                updateDebugInfo(`分析请求状态: ${response.status}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -420,12 +556,15 @@
                 if (result.success) {
                     addMessage('AI案件分析完成！');
                     addMessage(`分析结果：${result.analysis.substring(0, 200)}...`);
+                    updateDebugInfo('AI分析完成');
                 } else {
                     addMessage(`分析失败：${result.error}`);
+                    updateDebugInfo(`分析错误: ${result.error}`);
                 }
             } catch (error) {
                 hideLoading();
                 addMessage(`网络错误：${error.message}`);
+                updateDebugInfo(`分析错误: ${error.message}`);
             }
         }
         
@@ -439,6 +578,7 @@
             const languageNames = { zh: '简体中文', en: '英文', es: '西班牙语' };
             showLoading(`正在生成${languageNames[language]}网页...`);
             addMessage(`开始生成${languageNames[language]}版本网页...`, true);
+            updateDebugInfo(`开始生成${language}版本网页`);
             
             try {
                 const response = await fetch('/api/missing-persons/generate', {
@@ -446,9 +586,11 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         caseId: currentCaseId, 
-                        language: language 
+                        targetLanguage: language 
                     })
                 });
+                
+                updateDebugInfo(`生成请求状态: ${response.status}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -459,16 +601,19 @@
                 
                 if (result.success) {
                     addMessage(`${languageNames[language]}网页生成成功！`);
-                    currentWebpageCode = result.webpageCode;
-                    displayCode(result.webpageCode);
+                    currentWebpageCode = result.content;
+                    displayCode(result.content);
                     updatePreview();
                     loadHistory();
+                    updateDebugInfo(`${language}网页生成成功`);
                 } else {
                     addMessage(`生成失败：${result.error}`);
+                    updateDebugInfo(`生成错误: ${result.error}`);
                 }
             } catch (error) {
                 hideLoading();
                 addMessage(`网络错误：${error.message}`);
+                updateDebugInfo(`生成错误: ${error.message}`);
             }
         }
         
@@ -524,17 +669,17 @@
             
             try {
                 const response = await fetch('/api/missing-persons/history', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ caseId: currentCaseId })
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
                 });
                 
                 const result = await response.json();
                 if (result.success) {
-                    displayHistory(result.history);
+                    displayHistory(result.histories);
                 }
             } catch (error) {
                 console.error('加载历史记录失败:', error);
+                updateDebugInfo(`历史记录错误: ${error.message}`);
             }
         }
         
@@ -543,7 +688,7 @@
             const historyList = document.getElementById('historyList');
             historyList.innerHTML = '';
             
-            if (history.length === 0) {
+            if (!history || history.length === 0) {
                 historyList.innerHTML = '<p>暂无生成历史</p>';
                 return;
             }
@@ -552,12 +697,12 @@
                 const historyItem = document.createElement('div');
                 historyItem.className = 'history-item';
                 historyItem.innerHTML = `
-                    <strong>${getLanguageName(item.language_code)}</strong>
+                    <strong>${getLanguageName(item.target_language)}</strong>
                     <br>生成时间：${new Date(item.created_at).toLocaleString()}
                 `;
                 historyItem.onclick = () => {
-                    currentWebpageCode = item.webpage_code;
-                    displayCode(item.webpage_code);
+                    currentWebpageCode = item.generated_content;
+                    displayCode(item.generated_content);
                     updatePreview();
                 };
                 historyList.appendChild(historyItem);
@@ -566,13 +711,13 @@
         
         // 获取语言名称
         function getLanguageName(code) {
-            const names = { zh: '简体中文', en: '英文', es: '西班牙语' };
+            const names = { 'zh-CN': '简体中文', en: '英文', es: '西班牙语' };
             return names[code] || code;
         }
         
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
-            // 可以添加一些初始化逻辑
+            updateDebugInfo('页面加载完成，工具已就绪');
         });
     </script>
 </body>
