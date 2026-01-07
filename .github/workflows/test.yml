@@ -26,5 +26,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./case  # 或者你指定的文件夹
+          publish_dir: ./case/case  # 或者你指定的文件夹
           keep_files: true # <--- 重点！加上这行，它就不会删除分支里原有的文件了
