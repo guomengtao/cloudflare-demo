@@ -41,20 +41,39 @@ export async function onRequest(context) {
     
     try {
         // 根据路径路由到不同的处理函数
-        if (pathname.endsWith('/scrape') && request.method === 'POST') {
-            return await handleScrape(request, env);
-        } else if (pathname.endsWith('/analyze') && request.method === 'POST') {
-            return await handleAnalyze(request, env);
-        } else if (pathname.endsWith('/generate') && request.method === 'POST') {
-            return await handleGenerate(request, env);
-        } else if (pathname.endsWith('/history') && request.method === 'GET') {
-            return await handleHistory(request, env);
-        } else if (pathname.endsWith('/cases') && request.method === 'GET') {
-            return await handleCases(request, env);
+        // 修复路径匹配逻辑，使用更精确的匹配
+        const pathSegments = pathname.split('/').filter(segment => segment);
+        
+        // 检查是否是 /api/missing-persons 下的请求
+        if (pathSegments.length >= 3 && 
+            pathSegments[0] === 'api' && 
+            pathSegments[1] === 'missing-persons') {
+            
+            const endpoint = pathSegments[pathSegments.length - 1];
+            
+            if (endpoint === 'scrape' && request.method === 'POST') {
+                return await handleScrape(request, env);
+            } else if (endpoint === 'analyze' && request.method === 'POST') {
+                return await handleAnalyze(request, env);
+            } else if (endpoint === 'generate' && request.method === 'POST') {
+                return await handleGenerate(request, env);
+            } else if (endpoint === 'history' && request.method === 'GET') {
+                return await handleHistory(request, env);
+            } else if (endpoint === 'cases' && request.method === 'GET') {
+                return await handleCases(request, env);
+            } else {
+                return new Response(JSON.stringify({ 
+                    error: '接口不存在',
+                    available_endpoints: ['/api/missing-persons/scrape', '/api/missing-persons/analyze', '/api/missing-persons/generate', '/api/missing-persons/history', '/api/missing-persons/cases']
+                }), {
+                    status: 404,
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                });
+            }
         } else {
             return new Response(JSON.stringify({ 
-                error: '接口不存在',
-                available_endpoints: ['/scrape', '/analyze', '/generate', '/history', '/cases']
+                error: '路径格式不正确',
+                expected_path: '/api/missing-persons/{endpoint}'
             }), {
                 status: 404,
                 headers: { ...corsHeaders, 'Content-Type': 'application/json' }
