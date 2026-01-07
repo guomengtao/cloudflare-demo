@@ -4,7 +4,7 @@ import string
 from datetime import datetime
 
 # 1. 配置：定义目标文件夹
-TARGET_DIR = "./case"
+TARGET_DIR = "./case/case"
 
 def generate_random_name(length=8):
     """生成一个短的随机字符串，比如 'a7k9b2x1'"""
