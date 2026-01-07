@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>失踪人口网页生成工具</title>
     <style>
-        // ... existing code ...
-        
         /* 新增样式 */
         .content-display {
             background: #f8f9fa;
@@ -224,54 +223,29 @@
             display.style.display = 'block';
         }
         
-        // 获取选中的抓取方式
-        function getSelectedScrapeMethod() {
-            const methods = document.getElementsByName('scrapeMethod');
-            for (const method of methods) {
-                if (method.checked) {
-                    return method.value;
-                }
-            }
-            return 'api';
-        }
-        
-        // 抓取网页内容 - 改进版本
+        // 抓取网页内容
         async function scrapeWebsite() {
-            const url = document.getElementById('caseUrl').value;
-            const caseId = document.getElementById('caseId').value;
-            const method = getSelectedScrapeMethod();
-            currentCaseId = caseId;
+            const caseUrl = document.getElementById('caseUrl').value.trim();
+            const caseId = document.getElementById('caseId').value.trim();
+            const scrapeMethod = document.querySelector('input[name="scrapeMethod"]:checked').value;
             
-            if (!url || !caseId) {
-                alert('请填写完整的URL和案件ID');
+            if (!caseUrl) {
+                alert('请输入案件URL');
                 return;
             }
             
-            showLoading(`正在使用${getMethodName(method)}抓取网页内容...`);
-            addMessage(`开始抓取案件网页：${url}`, true);
-            updateDebugInfo(`开始抓取: ${url}, 方法: ${method}`);
+            showLoading('正在抓取网页内容...');
+            addMessage('开始抓取网页内容...', true);
+            updateDebugInfo(`开始抓取: ${caseUrl}, 方法: ${scrapeMethod}`);
             
             try {
-                // 根据选择的抓取方式调用不同的API端点
-                const apiEndpoints = {
-                    'api': '/api/missing-persons/scrape',
-                    'proxy': '/api/missing-persons/scrape-proxy',
-                    'simulate': '/api/missing-persons/scrape-simulate',
-                    'fallback': '/api/missing-persons/scrape-fallback'
-                };
-                
-                const endpoint = apiEndpoints[method] || apiEndpoints.api;
-                
-                const response = await fetch(endpoint, {
+                const response = await fetch('/api/missing-persons/scrape', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        caseUrl: url,
-                        scrapeMethod: method 
-                    })
+                    body: JSON.stringify({ caseUrl })
                 });
                 
-                updateDebugInfo(`请求端点: ${endpoint}, 状态: ${response.status}`);
+                updateDebugInfo(`请求端点: /api/missing-persons/scrape, 状态: ${response.status}`);
                 
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -280,34 +254,36 @@
                 }
                 
                 const result = await response.json();
-                updateDebugInfo(`响应数据: ${JSON.stringify(result).substring(0, 200)}...`);
-                
                 hideLoading();
                 
                 if (result.success) {
-                    const charCount = result.content ? result.content.length : 0;
-                    addMessage(`网页内容抓取成功！获取了 ${charCount} 个字符的文本内容。`);
+                    currentCaseId = result.caseId;
                     window.scrapedText = result.content;
-                    displayScrapedContent(result.content);
                     
-                    // 显示详细调试信息
-                    if (debugEnabled) {
-                        updateDebugInfo(`抓取成功: ${charCount}字符, CaseID: ${result.caseId}`);
-                    }
+                    // 显示抓取的内容
+                    document.getElementById('scrapedContentDisplay').textContent = 
+                        result.content.substring(0, 500) + (result.content.length > 500 ? '...' : '');
+                    
+                    addMessage(`抓取成功！字符数: ${result.characterCount}`);
+                    addMessage(`案件ID: ${result.caseId}`);
+                    updateDebugInfo(`抓取成功，字符数: ${result.characterCount}`);
                 } else {
                     addMessage(`抓取失败：${result.error}`);
-                    lastError = result.error;
-                    showRetryButton();
+                    updateDebugInfo(`抓取错误: ${result.error}`);
                 }
             } catch (error) {
                 hideLoading();
                 addMessage(`网络错误：${error.message}`);
-                lastError = error.message;
                 updateDebugInfo(`捕获错误: ${error.message}`);
-                showRetryButton();
+                
+                // 如果是数据库错误，提示用户创建表
+                if (error.message.includes('no such column') || error.message.includes('D1_ERROR')) {
+                    addMessage('检测到数据库错误，请确保已创建数据库表结构');
+                    updateDebugInfo('建议执行: npx wrangler d1 execute cloudflare-demo-db --remote --file=./create-missing-persons-table.sql');
+                }
             }
         }
-        
+
         // 显示重试按钮
         function showRetryButton() {
             const chatArea = document.getElementById('chatArea');
