@@ -1,4 +1,4 @@
- const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const axios = require('axios');
@@ -120,7 +120,11 @@ function extractCaseTitleDirect(html, caseId) {
     return titleMatch ? titleMatch[1].trim() : `${caseId} 失踪案件`;
 }
 
-// 批量更新数据库 - 已修改为使用 DATABASE_ID
+// -------------------------------------------------------------------------
+// 🚨 核心修改区域：增加了 stderr 捕获和详细日志
+// -------------------------------------------------------------------------
+
+// 批量更新数据库
 async function updateBatchScrapedContent(caseUpdates) {
     return new Promise((resolve, reject) => {
         try {
@@ -134,31 +138,51 @@ async function updateBatchScrapedContent(caseUpdates) {
             const tempSqlPath = path.join(__dirname, `temp_batch_${Date.now()}.sql`);
             fs.writeFileSync(tempSqlPath, sqlContent, 'utf8');
             
-            // 修正点：直接使用 DATABASE_ID
+            // 使用 ID，绕过 binding
             const command = `npx wrangler d1 execute ${DATABASE_ID} --remote --file="${tempSqlPath}"`;
-            exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout) => {
+            
+            // 🚨 修改点：增加了 stderr 参数
+            exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
                 if (fs.existsSync(tempSqlPath)) fs.unlinkSync(tempSqlPath);
-                if (error) { reject(error); } else { console.log(`✅ 批量更新成功`); resolve(true); }
+                
+                if (error) {
+                    console.error('❌ 批量更新执行出错');
+                    console.error('👇👇👇 [STDERR 错误详情] 👇👇👇');
+                    console.error(stderr || '（无标准错误输出）');
+                    console.error('👆👆👆 -------------------- 👆👆👆');
+                    reject(error);
+                } else {
+                    console.log(`✅ 批量更新成功`);
+                    resolve(true);
+                }
             });
         } catch (e) { reject(e); }
     });
 }
 
-// 获取案件列表 - 已修改为使用 DATABASE_ID
+// 获取案件列表
 async function getCasesToScrape(retries = 3) {
     const command = `npx wrangler d1 execute ${DATABASE_ID} --remote --json --command="SELECT id, case_url, case_id, case_title FROM missing_persons_cases WHERE (scraped_content IS NULL OR length(scraped_content) = 0) ORDER BY id LIMIT 15;"`;
     
     for (let i = 0; i < retries; i++) {
         try {
             return await new Promise((resolve, reject) => {
-                exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout) => {
+                // 🚨 修改点：增加了 stderr 参数
+                exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
                     if (error) {
+                        console.error(`❌ 获取任务失败 (尝试 ${i+1}/${retries})`);
+                        console.error('👇👇👇 [STDERR 错误详情] 👇👇👇');
+                        console.error(stderr || '（无标准错误输出）');
+                        console.error('👆👆👆 -------------------- 👆👆👆');
                         reject(error);
                     } else {
                         try {
                             const parsed = JSON.parse(stdout);
                             resolve(parsed[0]?.results || []);
-                        } catch (e) { reject(new Error("JSON Parse Error: " + stdout)); }
+                        } catch (e) {
+                            console.error("JSON 解析失败，Wrangler 输出为:", stdout);
+                            reject(new Error("JSON Parse Error: " + stdout));
+                        }
                     }
                 });
             });
@@ -204,12 +228,12 @@ async function mainScrapeLoop() {
         console.log('\n🎉 任务结束！');
     } catch (error) {
         console.error('❌ 严重错误:', error);
-        process.exit(1); // 显式退出，让 GitHub Actions 捕获失败
+        process.exit(1); 
     }
 }
 
 async function main() {
-    console.log('🚀 顺序抓取 + 批量写入版本');
+    console.log('🚀 顺序抓取 + 批量写入版本 (Debug Mode)');
     await mainScrapeLoop();
 }
 
