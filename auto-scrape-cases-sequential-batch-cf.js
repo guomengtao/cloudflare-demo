@@ -128,8 +128,7 @@ function extractCaseTitleDirect(html, caseId) {
  
 
 async function updateBatchScrapedContent(caseUpdates) {
-    const DATABASE_ID = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b";
-    return new Promise((resolve, reject) => {
+     return new Promise((resolve, reject) => {
         try {
             if (!caseUpdates || caseUpdates.length === 0) return resolve(null);
             console.log(`📊 准备批量更新 ${caseUpdates.length} 个案件...`);
@@ -167,8 +166,7 @@ async function updateBatchScrapedContent(caseUpdates) {
 
 // 获取案件列表
  async function getCasesToScrape(retries = 3) {
-    const DATABASE_ID = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b";
-    
+     
     // 尝试使用本地 node_modules 下的路径，这比 npx 更稳定
     const wranglerPath = './node_modules/.bin/wrangler';
     const command = `${wranglerPath} d1 execute ${DATABASE_ID} --remote --json --command="SELECT id, case_url, case_id, case_title FROM missing_persons_cases WHERE (scraped_content IS NULL OR length(scraped_content) = 0) ORDER BY id LIMIT 15;"`;
