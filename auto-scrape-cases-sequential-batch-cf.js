@@ -4,8 +4,8 @@ const { exec } = require('child_process');
 const axios = require('axios');
 
 // 配置：直接写死 ID，绕过所有 wrangler.toml 别名问题
-const DATABASE_ID = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b";
-
+// const DATABASE_ID = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b";
+const DATABASE_ID = "cloudflare-demo-db";
 // 检查后端API是否可用
 async function checkBackendAPI() {
     try {
