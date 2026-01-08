@@ -5,14 +5,13 @@ pages_build_output_dir = "."
 
 # D1 Database 绑定
 [[d1_databases]]
-binding = "DB"
+# 修改点：将 binding 改为与你脚本中一致的名称
+binding = "cloudflare-demo-db" 
 database_name = "cloudflare-demo-db"
 database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
 
-# AI 绑定 - 用于 Cloudflare Workers AI
+# AI 绑定
 [ai]
 binding = "AI"
 
-# Functions 配置
-[functions]
-directory = "./functions"
+# 已移除冗余的 [functions] 避免报错
