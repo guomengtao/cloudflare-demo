@@ -1,3 +1,90 @@
+const { exec } = require('child_process');
+const fs = require('fs');
+
+// 读取 processed-cases.txt 文件
+function readProcessedCases() {
+  try {
+    const data = fs.readFileSync('/Users/Banner/Documents/tom/processed-cases.txt', 'utf8');
+    return new Set(data.split('\n').filter(line => line.trim() !== ''));
+  } catch (error) {
+    console.error('读取 processed-cases.txt 失败:', error.message);
+    return new Set();
+  }
+}
+
+// 执行数据库查询
+function executeQuery(query) {
+  return new Promise((resolve, reject) => {
+    exec(`npx wrangler d1 execute cloudflare-demo-db --remote --json --command="${query}"`, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      if (stderr) {
+        reject(new Error(stderr));
+        return;
+      }
+      try {
+        const result = JSON.parse(stdout);
+        resolve(result);
+      } catch (parseError) {
+        // 尝试提取 JSON 部分（如果输出包含其他内容）
+        const jsonStart = stdout.indexOf('[');
+        const jsonEnd = stdout.lastIndexOf(']') + 1;
+        if (jsonStart !== -1 && jsonEnd !== -1) {
+          try {
+            const cleanJson = stdout.substring(jsonStart, jsonEnd);
+            const result = JSON.parse(cleanJson);
+            resolve(result);
+          } catch (e) {
+            reject(parseError);
+          }
+        } else {
+          reject(parseError);
+        }
+      }
+    });
+  });
+}
+
+// 主函数
+async function main() {
+  console.log('开始检查待处理案例...');
+  
+  // 读取已处理的案例
+  const processedCases = readProcessedCases();
+  console.log('已处理案例数量:', processedCases.size);
+  
+  // 构建查询条件
+  const processedCaseList = Array.from(processedCases).map(id => `'${id}'`).join(',');
+  const whereClause = processedCaseList ? `AND case_id NOT IN (${processedCaseList})` : '';
+  
+  // 查询符合条件的记录总数
+  const countQuery = `SELECT COUNT(*) as total FROM missing_persons_cases WHERE scraped_content IS NOT NULL ${whereClause};`;
+  try {
+    const countResult = await executeQuery(countQuery);
+    const totalPending = countResult.results[0].total;
+    console.log('符合条件的记录总数:', totalPending);
+    
+    // 如果有符合条件的记录，获取其中一条
+    if (totalPending > 0) {
+      const sampleQuery = `SELECT case_id, case_url FROM missing_persons_cases WHERE scraped_content IS NOT NULL ${whereClause} LIMIT 1;`;
+      const sampleResult = await executeQuery(sampleQuery);
+      const sampleCase = sampleResult.results[0];
+      console.log('\n示例记录:');
+      console.log('case_id:', sampleCase.case_id);
+      console.log('case_url:', sampleCase.case_url);
+    } else {
+      console.log('没有符合条件的记录');
+    }
+  } catch (error) {
+    console.error('数据库查询失败:', error.message);
+  }
+}
+
+// 执行主函数
+main();
+
 randolph-alger
 timothy-leon-aamoth
 john-andrew-aarlie
@@ -25,3 +112,6 @@ amada-abundez
 haidar-mustafa-abushaqra
 cynthia-acevedo
 guadalupe-acevedo
+USNY-52427
+USVA-VA26-0043
+USVA-VA26-0044peter-achermann

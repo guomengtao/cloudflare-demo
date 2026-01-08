@@ -1,0 +1,33 @@
+
+这个文件实现的ai生成网页的功能了：
+
+📄 内容长度: 103 
+📊 待处理案件: 18/20
+调用AI接口生成网页内容: USVA-VA26-0044
+📁 创建文件夹: unknown/unknown
+✅ 网页文件已保存: /Users/Banner/Documents/tom/cases/unknown/unknown/USVA-VA26-0044-unknown-unknown.html
+✅ 案件处理完成: USVA-VA26-0044
+📁 文件保存位置: /Users/Banner/Documents/tom/cases/unknown/unknown/USVA-VA26-0044-unknown-unknown.html
+✅ 已成功处理 3 个案件
+等待 12 秒...
+⏰ 倒计时: 10 秒   ^C
+Banner@Devices-MacBook-Air tom % cd /Users/Banner/Documents/tom && node generate-case-webpages-enhanced.js
+
+
+Banner@Devices-MacBook-Air tom % cd /Users/Banner/Documents/tom &&
+
+
+
+ node generate-case-webpages-enhanced.js
+
+
+
+ node generate-case-webpages.js 
+ 可以 读取未处理的
+
+ 案件 采集程序：
+
+ Banner@Devices-MacBook-Air tom % cd /Users/Banner/Documents/tom && node auto-scrape-cases-sequential-batch.js
+
+ Banner@Devices-MacBook-Air tom % cd /Users/Banner/Documents/tom 
+ && node auto-scrape-cases-sequential-batch.js

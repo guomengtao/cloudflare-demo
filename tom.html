@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tom 项目主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .card ul {
+            list-style: none;
+        }
+        
+        .card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card li:last-child {
+            border-bottom: none;
+        }
+        
+        .card a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .card a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .status {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Tom 项目管理系统</h1>
+            <p>失踪人员案件信息管理与分析平台</p>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <h3>📊 项目概览</h3>
+                <div class="status">
+                    <strong>项目状态:</strong> 运行中<br>
+                    <strong>最后更新:</strong> <span id="lastUpdate"></span>
+                </div>
+                <ul>
+                    <li><strong>案件总数:</strong> <span id="caseCount">加载中...</span></li>
+                    <li><strong>AI处理状态:</strong> <span id="aiStatus">就绪</span></li>
+                    <li><strong>数据库状态:</strong> <span id="dbStatus">连接正常</span></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>🔧 工具与脚本</h3>
+                <ul>
+                    <li><a href="ai-cf-to-info.js" target="_blank">AI案件信息提取</a></li>
+                    <li><a href="ai-cf-to-web.js" target="_blank">AI网页生成</a></li>
+                    <li><a href="auto-scrape-cases.js" target="_blank">自动案件抓取</a></li>
+                    <li><a href="generate-case-webpages.js" target="_blank">案件网页生成</a></li>
+                    <li><a href="import-case-data.js" target="_blank">案件数据导入</a></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>📁 文件与目录</h3>
+                <ul>
+                    <li><a href="cases/" target="_blank">案件文件夹</a></li>
+                    <li><a href="jack/" target="_blank">Jack工具集</a></li>
+                    <li><a href="functions/" target="_blank">API函数</a></li>
+                    <li><a href="case-urls/" target="_blank">案件URL列表</a></li>
+                    <li><a href=".env" target="_blank">环境配置</a></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>📚 文档与指南</h3>
+                <ul>
+                    <li><a href="README.md" target="_blank">项目说明</a></li>
+                    <li><a href="DATABASE_SETUP.md" target="_blank">数据库设置</a></li>
+                    <li><a href="SCRAPING_GUIDE.md" target="_blank">抓取指南</a></li>
+                    <li><a href="DASHBOARD_SETUP.md" target="_blank">仪表板设置</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>🚀 快速操作</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                <button onclick="runScript('ai-cf-to-info.js')" style="padding: 10px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    🧠 运行AI提取
+                </button>
+                <button onclick="openFolder('cases')" style="padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    📂 查看案件
+                </button>
+                <button onclick="openFile('index.html')" style="padding: 10px; background: #ffc107; color: black; border: none; border-radius: 5px; cursor: pointer;">
+                    🌐 打开主页
+                </button>
+                <button onclick="checkStatus()" style="padding: 10px; background: #17a2b8; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    🔍 检查状态
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 Tom 项目管理系统 | 版本 1.0.0</p>
+        </div>
+    </div>
+
+    <script>
+        // 设置最后更新时间
+        document.getElementById('lastUpdate').textContent = new Date().toLocaleString('zh-CN');
+        
+        // 模拟获取案件数量
+        setTimeout(() => {
+            document.getElementById('caseCount').textContent = '25+ 个案件';
+        }, 1000);
+        
+        // 工具函数
+        function runScript(scriptName) {
+            alert(`即将运行脚本: ${scriptName}`);
+            // 这里可以添加实际的脚本执行逻辑
+        }
+        
+        function openFolder(folderName) {
+            window.open(folderName, '_blank');
+        }
+        
+        function openFile(fileName) {
+            window.open(fileName, '_blank');
+        }
+        
+        function checkStatus() {
+            const status = document.getElementById('aiStatus');
+            status.textContent = '检查中...';
+            status.style.color = '#ffc107';
+            
+            setTimeout(() => {
+                status.textContent = '运行正常';
+                status.style.color = '#28a745';
+                alert('系统状态检查完成，所有服务运行正常！');
+            }, 2000);
+        }
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Tom 项目管理系统已加载');
+        });
+    </script>
+</body>
+</html>

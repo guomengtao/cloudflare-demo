@@ -1,0 +1,24 @@
+案件ID: test-001
+案件URL: https://charleyproject.org/case/test-001
+案件标题: Test Missing Person Case
+
+失踪者基本信息：
+- 姓名：John Doe
+- 出生日期：1980-01-15
+- 失踪日期：2023-05-20
+- 失踪时年龄：43岁
+- 失踪地点：Minneapolis, Minnesota, USA
+- 性别：男性
+- 种族：高加索人
+- 身高：5英尺10英寸（178厘米）
+- 体重：180磅（82公斤）
+- 眼睛颜色：蓝色
+- 头发颜色：棕色
+- 特征标记：左臂有纹身，右脸颊有疤痕
+- 车辆信息：黑色丰田凯美瑞，车牌号ABC123
+- 案件分类：失踪人口
+- 调查机构：Minneapolis Police Department
+- 信息来源：Charley Project
+
+案件摘要：
+John Doe于2023年5月20日在Minneapolis市中心失踪。最后一次被见到是在当地的一家咖啡馆。家人报告称他当天早上离开家去上班，但再也没有到达工作地点。他的车辆在几天后在城市边缘被发现，车内没有打斗痕迹。警方正在调查此案。

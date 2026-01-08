@@ -13,6 +13,6 @@ database_id = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b"
 [ai]
 binding = "AI"
 
-# Functions 配置
-[functions]
-directory = "./functions"
+# Functions 配置 - 注释掉以避免警告
+# [functions]
+# directory = "./functions"

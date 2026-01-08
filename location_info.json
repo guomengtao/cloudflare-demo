@@ -1,0 +1,31 @@
+正在加载环境变量...
+[dotenv@17.2.3][DEBUG] No encoding is specified. UTF-8 is used by default
+[dotenv@17.2.3] injecting env (4) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[2026-01-08T07:53:08.742Z] 🔍 从输入信息中提取案件ID...
+[2026-01-08T07:53:08.743Z] 🆔 提取到案件ID: case_43r9llzb
+[2026-01-08T07:53:08.743Z] 🚀 开始提取地理位置信息...
+[2026-01-08T07:53:08.743Z] 🤖 调用Cloudflare AI接口提取地理位置信息: case_43r9llzb
+[2026-01-08T07:53:08.743Z] 🧹 清理输入信息，只保留案件相关内容...
+[2026-01-08T07:53:08.744Z] 📡 API请求 - 尝试 1/5: https://api.cloudflare.com/client/v4/accounts/197ff91e7b8164532e5a54f708eb14a0/ai/run/@cf/meta/llama-3.2-3b-instruct
+[2026-01-08T07:53:10.970Z] ✅ API请求成功 - 尝试 1/5
+[2026-01-08T07:53:10.974Z] 📍 提取的地理位置信息:
+[2026-01-08T07:53:10.974Z]    州: california
+[2026-01-08T07:53:10.974Z]    县: los-angeles
+[2026-01-08T07:53:10.974Z]    城市: los-angeles
+[2026-01-08T07:53:10.974Z] 📊 提取的案件详细信息:
+[2026-01-08T07:53:10.974Z]    case_id: case_43r9llzb
+[2026-01-08T07:53:10.974Z]    full_name: john doe
+[2026-01-08T07:53:10.974Z]    date_of_birth: 1990-01-01
+[2026-01-08T07:53:10.975Z]    missing_since: 2023-05-15
+[2026-01-08T07:53:10.975Z]    age_at_missing: 33
+[2026-01-08T07:53:10.975Z]    missing_city: los angeles
+[2026-01-08T07:53:10.975Z]    missing_state: california
+[2026-01-08T07:53:10.975Z]    missing_country: USA
+[2026-01-08T07:53:10.975Z]    sex: male
+[2026-01-08T07:53:10.975Z]    race: white
+[2026-01-08T07:53:10.975Z]    height: 5'10"
+[2026-01-08T07:53:10.975Z]    weight: 180 lbs
+[2026-01-08T07:53:10.975Z]    eye_color: brown
+[2026-01-08T07:53:10.975Z]    hair_color: black
+[2026-01-08T07:53:10.975Z]    distinguishing_marks: tattoo on left arm
+{"success":true,"caseId":"case_43r9llzb","location":{"state":"california","county":"los-angeles","city":"los-angeles"},"case_details":{"case_id":"case_43r9llzb","full_name":"john doe","date_of_birth":"1990-01-01","missing_since":"2023-05-15","age_at_missing":"33","missing_city":"los angeles","missing_state":"california","missing_country":"USA","location_details":null,"sex":"male","race":"white","height":"5'10\"","weight":"180 lbs","eye_color":"brown","hair_color":"black","distinguishing_marks":"tattoo on left arm","vehicle_info":null,"classification":null,"investigating_agency":null,"source_info":null,"case_summary":null}}

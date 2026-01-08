@@ -1,0 +1,63 @@
+// 最小的命令行工具：调用Cloudflare AI服务
+const fetch = require('node-fetch');
+
+// 默认问题
+const DEFAULT_QUESTION = '现在是什么时间？';
+
+// Cloudflare AI API 端点
+const AI_ENDPOINT = 'http://localhost:8787/api/ai-chat';
+
+// 默认模型
+const DEFAULT_MODEL = '@cf/meta/llama-3.1-8b-instruct';
+
+// 主函数
+async function main() {
+    try {
+        // 获取用户输入的问题，没有则使用默认问题
+        const question = process.argv[2] || DEFAULT_QUESTION;
+        
+        console.log(`🤖 正在向Cloudflare AI提问: "${question}"`);
+        
+        // 发送请求到Cloudflare AI API
+        const response = await fetch(AI_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: question,
+                model: DEFAULT_MODEL
+            }),
+            timeout: 30000 // 30秒超时
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP错误! 状态码: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(`API错误: ${data.error}`);
+        }
+        
+        // 显示AI的回答
+        console.log('\n✨ AI回答:');
+        console.log(data.response);
+        
+        // 显示使用的模型
+        console.log(`\nℹ️ 使用的模型: ${data.model || DEFAULT_MODEL}`);
+        
+    } catch (error) {
+        console.error(`❌ 发生错误: ${error.message}`);
+        process.exit(1);
+    }
+}
+
+// 执行主函数
+main();
+
+
+curl https://api.cloudflare.com/client/v4/accounts/197ff91e7b8164532e5a54f708eb14a0/ai/run/@cf/meta/llama-3.2-3b-instruct \
+  -H "Authorization: Bearer YR1t_IFpI" \
+  -d '{ "prompt": "你好，如果你收到了这条消息，请只回复两个字：收到。" }'

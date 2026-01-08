@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Julianna M. Alvarez 失踪人员案件信息及AI专业分析。查找失踪者，提供线索。">
+    <meta name="keywords" content="Julianna M. Alvarez, 失踪人口, 内华达州, 拉斯维加斯, 案件分析, 寻人">
+    <meta name="author" content="AI Assistant">
+    <title>Julianna M. Alvarez 失踪案件 - 详细信息与AI分析</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50; /* Dark blue/grey */
+            --secondary-color: #34495e; /* Slightly lighter dark blue */
+            --accent-color: #e74c3c; /* Red for alerts/highlights */
+            --background-color: #f4f7f6; /* Light grey background */
+            --text-color: #333;
+            --light-text-color: #ecf0f1; /* Light grey for dark backgrounds */
+            --border-color: #ddd;
+            --highlight-bg: #ffe0b2; /* Light orange for highlights */
+        }
+
+        body {
+            font-family: 'Open Sans', 'Noto Sans SC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header and Key Info */
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .key-info-banner {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .key-info-banner span {
+            margin: 0 5px; /* Adjust margin for better spacing on smaller screens */
+            display: inline-block;
+        }
+
+        .key-info-banner strong {
+            color: var(--highlight-bg); /* Use a complementary color for emphasis */
+        }
+
+        .breadcrumbs {
+            padding: 10px 0;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .breadcrumbs a {
+            color: var(--light-text-color);
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .hero h1 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .hero img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Details Section */
+        .details-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .details-card {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            flex: 1 1 calc(50% - 10px); /* Two columns on larger screens */
+            box-sizing: border-box;
+        }
+
+        .details-card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .details-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .details-card ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .details-card ul li strong {
+            min-width: 100px;
+            display: inline-block;
+            color: var(--secondary-color);
+        }
+
+        .details-card p {
+            margin-bottom: 15px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            object-fit: cover;
+            aspect-ratio: 1 / 1; /* Keep images square */
+        }
+
+        /* AI Analysis Section */
+        .ai-analysis-section {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .ai-analysis-section h2 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 15px;
+        }
+
+        .ai-module {
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .ai-module:hover {
+            transform: translateY(-5px);
+        }
+
+        .ai-module h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .ai-module p, .ai-module ul {
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .ai-module ul {
+            padding-left: 20px;
+            list-style: disc;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            font-size: 0.85em;
+            margin-top: 40px;
+            border-top: 1px solid var(--secondary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .key-info-banner {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .key-info-banner span {
+                margin: 5px 0;
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            .details-card {
+                flex: 1 1 100%; /* Single column on small screens */
+            }
+
+            .ai-analysis-section h2 {
+                font-size: 1.8em;
+            }
+
+            .ai-module h3 {
+                font-size: 1.3em;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="key-info-banner">
+                <span>案件ID: <strong>julianna-m-alvarez</strong></span>
+                <span>州: <strong>内华达州 (Nevada)</strong></span>
+                <span>县: <strong>克拉克县 (Clark County)</strong></span>
+                <span>城市: <strong>拉斯维加斯 (Las Vegas)</strong></span>
+            </div>
+            <div class="breadcrumbs">
+                <a href="#">首页</a> 》 <a href="#">内华达州</a> 〉 <a href="#">克拉克县</a> 》 <a href="#">拉斯维加斯</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna.jpg" alt="Julianna M. Alvarez" title="Julianna M. Alvarez - circa 2012">
+            <h1>Julianna M. Alvarez</h1>
+            <p>失踪日期：2012年5月1日</p>
+        </section>
+
+        <section class="details-section">
+            <div class="details-card">
+                <h2>失踪人员信息</h2>
+                <ul>
+                    <li><strong>姓名:</strong> Julianna M. Alvarez</li>
+                    <li><strong>失踪时年龄:</strong> 20岁</li>
+                    <li><strong>出生日期:</strong> 1991年12月3日</li>
+                    <li><strong>性别:</strong> 女性</li>
+                    <li><strong>种族:</strong> 白人</li>
+                    <li><strong>身高:</strong> 5英尺9英寸 (约175厘米)</li>
+                    <li><strong>体重:</strong> 140 - 160磅 (约63.5 - 72.5公斤)</li>
+                    <li><strong>眼睛颜色:</strong> 棕色</li>
+                    <li><strong>头发颜色:</strong> 棕色</li>
+                    <li><strong>穿着描述:</strong> 粉色背心和黑色牛仔裤</li>
+                    <li><strong>特殊标记:</strong> 雀斑。背部有红色玫瑰和“Julianna”字样的草书纹身。戴眼镜。昵称“Juju”和“Julie”。左臂有轻微残疾，无法伸直。</li>
+                </ul>
+            </div>
+            <div class="details-card">
+                <h2>案件详情</h2>
+                <p>Julianna M. Alvarez 于2012年5月1日在内华达州拉斯维加斯北拉斯维加斯大道4200街区最后一次被人看到。此后，她再也没有任何音讯。该案件的详细信息非常有限。</p>
+                <ul>
+                    <li><strong>失踪地点:</strong> 内华达州拉斯维加斯北拉斯维加斯大道4200街区</li>
+                    <li><strong>案件类型:</strong> 失踪人口</li>
+                    <li><strong>调查机构:</strong> 拉斯维加斯大都会警察局</li>
+                    <li><strong>联系电话:</strong> 702-828-2907</li>
+                    <li><strong>信息来源:</strong> 拉斯维加斯大都会警察局, NamUs, 3 News</li>
+                </ul>
+                <h3>相关图片</h3>
+                <div class="gallery">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna.jpg" alt="Julianna M. Alvarez 图像 1">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna2.jpg" alt="Julianna M. Alvarez 图像 2">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna3.jpg" alt="Julianna M. Alvarez 图像 3">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna4.jpg" alt="Julianna M. Alvarez 图像 4">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna5.jpg" alt="Julianna M. Alvarez 图像 5">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna6.jpg" alt="Julianna M. Alvarez 图像 6">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/10/alvarez_julianna7.jpg" alt="Julianna M. Alvarez 图像 7">
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-analysis-section">
+            <h2>AI专业案件分析</h2>
+
+            <div class="ai-module">
+                <h3>案件画像概览</h3>
+                <p>Julianna M. Alvarez，一名20岁的白人女性，于2012年5月1日在内华达州拉斯维加斯失踪。身高5英尺9英寸，体重140-160磅，棕色头发，棕色眼睛。她有雀斑，背部有红色玫瑰和“Julianna”字样的草书纹身，佩戴眼镜，左臂有轻微残疾。失踪时穿着粉色背心和黑色牛仔裤。案件细节有限，调查仍在进行。</p>
+            </div>
+
+            <div class="ai-module">
+                <h3>时空矛盾点分析</h3>
+                <p>案件信息显示Julianna最后一次出现是在拉斯维加斯北拉斯维加斯大道4200街区，此后便音讯全无。缺乏进一步的时间线和具体行动轨迹信息，难以识别明显的时空矛盾。然而，“细节有限”本身可能是一个需要深入调查的矛盾点，表明信息采集不足或存在隐瞒。失踪事件在白天发生（5月1日），但具体时间未提及，可能影响对目击证人的寻找。</p>
+            </div>
+
+            <div class="ai-module">
+                <h3>潜在风险因素评分</h3>
+                <p>（风险评分：7/10）基于现有信息，Julianna可能面临多种风险。</p>
+                <ul>
+                    <li><strong>个人脆弱性:</strong> 左臂轻微残疾，可能使其在遇到危险时更难自卫或逃脱。</li>
+                    <li><strong>信息缺乏:</strong> 案件细节稀少，增加了调查难度和潜在的未知风险。</li>                    <li><strong>失踪性质:</strong> 无明确线索的突然失踪，可能涉及非自愿因素。</li>
+                    <li><strong>环境因素:</strong> 拉斯维加斯作为一个大城市，人员流动复杂，可能增加寻找难度。</li>
+                </ul>
+            </div>
+
+            <div class="ai-module">
+                <h3>调查突破口建议</h3>
+                <ul>
+                    <li><strong>扩大目击者范围:</strong> 重新走访北拉斯维加斯大道4200街区及周边区域，寻找可能的新目击证人，特别是针对5月1日白天该区域的活动。</li>
+                    <li><strong>社交圈深挖:</strong> 详细调查Julianna的社交圈（朋友、家人、熟人），了解她失踪前的精神状态、人际关系和可能的困扰。</li>
+                    <li><strong>数字足迹分析:</strong> 尝试获取并分析她的手机通话记录、短信、社交媒体活动、银行交易记录等，寻找线索。</li>
+                    <li><strong>监控录像调取:</strong> 尽管时间久远，但仍应尝试查看该区域是否有仍可获取的监控录像，尤其是有可能拍到车辆或特定人群的摄像头。</li>
+                    <li><strong>心理侧写更新:</strong> 基于现有有限信息，配合AI技术对失踪者的性格和行为模式进行更深入的分析，辅助制定调查策略。</li>
+                </ul>
+            </div>
+
+            <div class="ai-module">
+                <h3>类似案件关联</h3>
+                <p>在美国，类似Julianna这样在城市环境中突然失踪且案件细节有限的年轻女性案件并不少见。通常，这些案件可能涉及：</p>
+                <ul>
+                    <li><strong>自愿离家但遇到意外:</strong> 后期未能与家人联系。</li>
+                    <li><strong>熟人作案:</strong> 犯罪嫌疑人可能来自失踪者的社交圈。</li>
+                    <li><strong>人口贩卖:</strong> 特别是在交通便利的大城市。</li>
+                    <li><strong>随机暴力犯罪:</strong> 尽管较少见，但也不能排除。</li>
+                </ul>
+                <p>此案与许多“冷案”相似，缺乏早期关键线索导致调查陷入僵局。通常需要新的证据或知情者提供信息才能取得进展。</p>
+            </div>
+
+            <div class="ai-module">
+                <h3>法律与免责声明</h3>
+                <p>本AI分析基于现有公开信息生成，仅供参考，不构成任何法律意见或调查结论。本分析不应替代专业执法机构的调查。案件的最终定性及所有法律责任均由相关执法机构负责。所有结论均可能随新证据的出现而改变。请尊重失踪者及其家属的隐私，并向官方渠道提供任何有效线索。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 失踪人员信息平台. 所有权利保留. 此页面信息仅供参考.</p>
+    </footer>
+</body>
+</html>

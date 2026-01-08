@@ -1,0 +1,27 @@
+案件ID: case_43r9llzb
+[images]
+[img]https://example.com/image1.jpg[/img]
+[img]https://example.com/image2.jpg[/img]
+[text]
+
+John Doe Missing Since: 2023-05-15
+State: California
+County: Los Angeles
+City: Los Angeles
+Date of Birth: 1990-01-01
+Age at Missing: 33
+Sex: Male
+Race: White
+Height: 5'10"
+Weight: 180 lbs
+Eye Color: Brown
+Hair Color: Black
+Distinguishing Marks: Tattoo on left arm
+Investigating Agency: Los Angeles Police Department
+Phone: (213) 485-2500
+
+John Doe was last seen on May 15, 2023 in Los Angeles, California. He was wearing a blue shirt and jeans.
+
+Case ID: case_43r9llzb
+Source: Missing Persons Database
+ 

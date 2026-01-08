@@ -236,7 +236,7 @@ const bgImageRegex = /background(?:-image)?\s*:\s*url\(["']?([^"')]+)["']?\)/gi;
         if (baseUrl.includes('charleyproject.org')) {
             const charleyRegex = /case\/([^\/]+)\/([^\/]+)\.(?:jpg|jpeg|png)/gi;
             while ((match = charleyRegex.exec(html)) !== null) {
-                const url = `https://charleyproject.org/case/${match[1]}/${match[2]}.jpg`;
+                const url = `https://calm-snow-a647.guomengtao.workers.dev/case/${match[1]}/${match[2]}.jpg`;
                 if (isCaseImage(url)) {
                     imageUrls.add(url);
                 }
@@ -611,78 +611,26 @@ async function mainScrapeLoop() {
 }
 
 // 获取数据库中需要抓取的案件URL（每次获取15条记录进行顺序处理）
-async function getCasesToScrape() {
-    return new Promise((resolve, reject) => {
-        // 使用 LIMIT 15 获取15条记录进行顺序处理
-        const command = `npx wrangler d1 execute cloudflare-demo-db --remote --json --command="SELECT id, case_url, case_id, case_title FROM missing_persons_cases WHERE scraped_content IS NULL OR scraped_content = '' ORDER BY id LIMIT 15;"`;
-        
-        console.log('获取需要抓取的案件记录（顺序15条）...');
-        
-        // 设置maxBuffer为10MB，避免缓冲区溢出
-        const options = {
-            maxBuffer: 10 * 1024 * 1024 // 10MB
-        };
-        
-        exec(command, options, (error, stdout, stderr) => {
-            if (error) {
-                console.error('获取错误:', error);
-                reject(error);
-                return;
-            }
-            
-            try {
-                // 使用 --json 参数后，输出应该是纯净的JSON
-                const result = JSON.parse(stdout);
-                const cases = [];
-                
-                if (result[0] && result[0].results) {
-                    cases.push(...result[0].results);
-                }
-                
-                if (cases.length > 0) {
-                    console.log(`✅ 找到 ${cases.length} 条需要抓取的案件记录`);
-                    console.log(`案件ID列表: ${cases.map(c => c.case_id).join(', ')}`);
-                } else {
-                    console.log('✅ 所有案件都已抓取完成，无需继续抓取。');
-                }
-                resolve(cases);
-            } catch (parseError) {
-                console.error('解析响应错误:', parseError);
-                console.log('尝试备用解析方法...');
-                
-                // 备用方法：如果 --json 参数无效，手动提取JSON
-                try {
-                    const jsonStart = stdout.indexOf('[');
-                    const jsonEnd = stdout.lastIndexOf(']') + 1;
-                    
-                    if (jsonStart !== -1 && jsonEnd > jsonStart) {
-                        const cleanJson = stdout.substring(jsonStart, jsonEnd);
-                        const result = JSON.parse(cleanJson);
-                        const cases = [];
-                        
-                        if (result[0] && result[0].results) {
-                            cases.push(...result[0].results);
-                        }
-                        
-                        if (cases.length > 0) {
-                            console.log(`✅ 备用方法找到 ${cases.length} 条需要抓取的案件记录`);
-                            console.log(`案件ID列表: ${cases.map(c => c.case_id).join(', ')}`);
-                        } else {
-                            console.log('✅ 备用方法：所有案件都已抓取完成');
-                        }
-                        resolve(cases);
-                        return;
-                    }
-                } catch (backupError) {
-                    console.error('备用方法也失败:', backupError);
-                }
-                
-                // 如果所有方法都失败，显示原始输出用于调试
-                console.log('原始输出内容:', stdout.substring(0, 500));
-                resolve([]);
-            }
-        });
-    });
+ 
+
+async function getCasesToScrape(retries = 3) {
+    const command = `npx wrangler d1 execute cloudflare-demo-db --remote --json --command="SELECT id, case_url, case_id, case_title FROM missing_persons_cases WHERE length(ifnull(scraped_content, '')) = 0 ORDER BY id LIMIT 15;"`;
+    
+    for (let i = 0; i < retries; i++) {
+        try {
+            return await new Promise((resolve, reject) => {
+                exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout) => {
+                    if (error) reject(error);
+                    else resolve(JSON.parse(stdout)[0]?.results || []);
+                });
+            });
+        } catch (err) {
+            if (i === retries - 1) throw err;
+            const wait = (i + 1) * 2000 + Math.random() * 1000;
+            console.log(`⚠️ 获取任务清单繁忙 (尝试 ${i+1}/${retries})，${(wait/1000).toFixed(1)}s 后重试...`);
+            await new Promise(r => setTimeout(r, wait));
+        }
+    }
 }
 
 // 创建监控脚本（使用--file模式）
