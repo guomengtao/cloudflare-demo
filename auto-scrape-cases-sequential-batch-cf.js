@@ -83,6 +83,7 @@ function parseCaseContentDirect(html, caseUrl, caseId) {
 // -------------------------------------------------------------------------
 // 🚀 核心改进：批量写入函数（带事务保护）
 // -------------------------------------------------------------------------
+ 
 async function updateBatchScrapedContent(caseUpdates) {
     return new Promise((resolve, reject) => {
         try {
@@ -93,14 +94,12 @@ async function updateBatchScrapedContent(caseUpdates) {
             
             console.log(`📊 准备写入数据库，共 ${caseUpdates.length} 条数据...`);
             
-            // 使用 BEGIN TRANSACTION 包装，确保批量执行的原子性和速度
-            let sqlContent = 'BEGIN TRANSACTION;\n';
+            // 🚨 修改点：直接拼接 UPDATE 语句，删掉 BEGIN 和 COMMIT
+            let sqlContent = ''; 
             caseUpdates.forEach(update => {
-                // 深度转义单引号：SQL 中单引号需用两个单引号表示
                 const escapedContent = update.scrapedContent.replace(/'/g, "''");
                 sqlContent += `UPDATE missing_persons_cases SET scraped_content = '${escapedContent}', updated_at = CURRENT_TIMESTAMP WHERE case_id = '${update.caseId}';\n`;
             });
-            sqlContent += 'COMMIT;';
 
             const tempSqlPath = path.join(__dirname, `temp_batch_${Date.now()}.sql`);
             fs.writeFileSync(tempSqlPath, sqlContent, 'utf8');
@@ -117,8 +116,9 @@ async function updateBatchScrapedContent(caseUpdates) {
                     console.error('STDERR:', stderr);
                     reject(error);
                 } else {
-                    console.log(`✅ 数据库写入完成！反馈信息:`);
-                    console.log(stdout.substring(stdout.length - 200)); // 只打印最后部分反馈
+                    console.log(`✅ 数据库写入成功！`);
+                    // 打印关键反馈，确认具体有多少条 Rows affected
+                    console.log(stdout.includes("Rows affected") ? stdout.substring(stdout.indexOf("Rows affected")) : "执行完成");
                     resolve(true);
                 }
             });
