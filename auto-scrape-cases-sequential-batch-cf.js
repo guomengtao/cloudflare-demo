@@ -457,155 +457,77 @@ function randomDelay(min = 50000, max = 150000) {
 }
 
 // 主循环抓取函数（逐个顺序抓取 + 批量写入）
+ // 主循环抓取函数（仅执行一次：取15个，抓15个，存15个，退出）
 async function mainScrapeLoop() {
     try {
-        console.log('=== 开始逐个顺序抓取案件内容（累积15个后批量写入） ===\n');
+        console.log('=== 开始单次顺序抓取任务（仅处理一批次/15个案件） ===\n');
         
-        let totalProcessed = 0;
         let successCount = 0;
         let errorCount = 0;
-        let batchNumber = 0;
-        let accumulatedUpdates = []; // 累积的案件更新
-        let processedCaseIds = new Set(); // 记录已处理的案件ID，避免重复
+        let accumulatedUpdates = []; 
+
+        // 1. 获取需要抓取的案件记录（仅获取 15 条）
+        const cases = await getCasesToScrape();
         
-        // 持续循环，直到没有更多需要抓取的记录
-        while (true) {
-            batchNumber++;
+        if (cases.length === 0) {
+            console.log('✅ 数据库中没有待抓取的案件。');
+            return; // 直接结束
+        }
+
+        console.log(`📋 本次任务共需处理 ${cases.length} 个案件`);
+        
+        // 2. 逐个顺序抓取案件内容
+        for (let i = 0; i < cases.length; i++) {
+            const currentCaseData = cases[i];
+            console.log(`\n--- 正在处理 (${i + 1}/${cases.length}) ---`);
+            console.log(`案件ID: ${currentCaseData.case_id}`);
             
-            // 1. 获取需要抓取的案件记录（每次获取15条进行顺序处理）
-            const cases = await getCasesToScrape();
-            
-            if (cases.length === 0) {
-                // 处理剩余的案件（如果累积了但不足15个）
-                if (accumulatedUpdates.length > 0) {
-                    console.log(`\n🔄 处理剩余的 ${accumulatedUpdates.length} 个案件...`);
-                    try {
-                        const sqlFilePath = await updateBatchScrapedContent(accumulatedUpdates);
-                        successCount += accumulatedUpdates.length;
-                        console.log(`✅ 剩余案件批量更新成功（${accumulatedUpdates.length}个）`);
-                        console.log(`📄 SQL文件路径: ${sqlFilePath}`);
-                    } catch (updateError) {
-                        console.error('❌ 剩余案件更新失败:', updateError.message);
-                        errorCount += accumulatedUpdates.length;
-                    }
-                    accumulatedUpdates = [];
-                }
+            try {
+                const scrapeResult = await scrapeWebsiteContent(currentCaseData.case_url, currentCaseData.case_id);
                 
-                console.log('✅ 所有案件都已抓取完成，无需继续抓取。');
-                break;
-            }
-            
-            // 过滤掉已经处理过的案件
-            const newCases = cases.filter(caseData => !processedCaseIds.has(caseData.case_id));
-            
-            if (newCases.length === 0) {
-                console.log(`⚠️ 当前批次的 ${cases.length} 个案件都已处理过，跳过此批次...`);
-                continue;
-            }
-            
-            console.log(`📋 当前批次有 ${newCases.length} 个新案件需要处理`);
-            
-            // 2. 逐个顺序抓取案件内容
-            for (let i = 0; i < newCases.length; i++) {
-                const currentCaseData = newCases[i];
-                const currentIndex = totalProcessed + i + 1;
-                
-                console.log(`\n--- 抓取第 ${currentIndex} 个案件 ---`);
-                console.log(`案件ID: ${currentCaseData.case_id}`);
-                console.log(`案件URL: ${currentCaseData.case_url}`);
-                console.log(`案件标题: ${currentCaseData.case_title || '未设置'}`);
-                
-                try {
-                    // 抓取网页内容
-                    console.log('开始抓取网页内容...');
-                    const scrapeResult = await scrapeWebsiteContent(currentCaseData.case_url, currentCaseData.case_id);
-                    
-                    if (scrapeResult.success) {
-                        console.log(`✅ 抓取成功，字符数: ${scrapeResult.characterCount}`);
-                        
-                        // 添加到累积更新列表
-                        accumulatedUpdates.push({
-                            caseId: currentCaseData.case_id,
-                            scrapedContent: scrapeResult.content
-                        });
-                        
-                        // 标记为已处理
-                        processedCaseIds.add(currentCaseData.case_id);
-                        successCount++;
-                        totalProcessed++;
-                        
-                        console.log(`📊 已累积 ${accumulatedUpdates.length} 个案件，目标15个后批量写入`);
-                        
-                        // 检查是否达到累积数量（15个）
-                        if (accumulatedUpdates.length >= 15) {
-                            console.log(`\n🔄 累积到15个案件，开始批量写入数据库...`);
-                            try {
-                                const sqlFilePath = await updateBatchScrapedContent(accumulatedUpdates);
-                                console.log(`✅ 批量数据库更新成功（${accumulatedUpdates.length}个案件）`);
-                                console.log(`📄 SQL文件路径: ${sqlFilePath}`);
-                                accumulatedUpdates = []; // 清空累积列表
-                            } catch (updateError) {
-                                console.error('❌ 批量数据库更新失败:', updateError.message);
-                                errorCount += accumulatedUpdates.length;
-                                accumulatedUpdates = []; // 即使失败也清空，避免重复处理
-                            }
-                        }
-                        
-                    } else {
-                        console.log('❌ 抓取失败');
-                        errorCount++;
-                        totalProcessed++;
-                    }
-                    
-                } catch (error) {
-                    console.log(`❌ 处理失败: ${error.message}`);
+                if (scrapeResult.success) {
+                    console.log(`✅ 抓取成功`);
+                    accumulatedUpdates.push({
+                        caseId: currentCaseData.case_id,
+                        scrapedContent: scrapeResult.content
+                    });
+                    successCount++;
+                } else {
+                    console.log('❌ 抓取失败');
                     errorCount++;
-                    totalProcessed++;
                 }
-                
-                // 3. 每个案件之间的延迟（5-15秒，带倒计时显示）
-                if (i < newCases.length - 1 || accumulatedUpdates.length < 15) {
-                    const delay = Math.floor(Math.random() * 100000) + 50000; // 5-15秒
-                    console.log(`\n⏳ 等待 ${delay/1000} 秒后处理下一个案件...`);
-                    
-                    // 倒计时显示
-                    for (let remaining = delay; remaining > 0; remaining -= 1000) {
-                        process.stdout.write(`\r⏰ 倒计时: ${Math.ceil(remaining/1000)}秒 `);
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                    }
-                    process.stdout.write('\r✅ 等待完成，继续处理下一个案件\n');
-                }
+            } catch (error) {
+                console.log(`❌ 异常: ${error.message}`);
+                errorCount++;
             }
             
-            // 4. 显示当前统计（修复成功计数显示）
-            console.log(`\n📊 当前处理统计:`);
-            console.log(`   ✅ 成功抓取: ${successCount} 个案件`);
-            console.log(`   ❌ 抓取失败: ${errorCount} 个案件`);
-            console.log(`   📋 累计处理: ${totalProcessed} 个案件`);
-            console.log(`   📦 累积待写入: ${accumulatedUpdates.length} 个案件`);
+            // 3. 案件之间的随机延迟 (最后一个案件后不需要延迟)
+            if (i < cases.length - 1) {
+                // 注意：你原来的随机延迟设置的是 50s-150s，时间非常久
+                // 如果是 Actions 建议改为 5-15s (5000-15000ms) 以防任务过慢
+                const delay = Math.floor(Math.random() * 10000) + 5000; 
+                console.log(`⏳ 等待 ${delay/1000} 秒...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
         }
         
-        // 处理最后剩余的案件（如果累积了但不足15个）
+        // 4. 处理完成后，统一批量写入数据库
         if (accumulatedUpdates.length > 0) {
-            console.log(`\n🔄 处理最后剩余的 ${accumulatedUpdates.length} 个案件...`);
+            console.log(`\n🔄 正在将 ${accumulatedUpdates.length} 个成功结果写入数据库...`);
             try {
-                const sqlFilePath = await updateBatchScrapedContent(accumulatedUpdates);
-                console.log(`✅ 最后剩余案件批量更新成功（${accumulatedUpdates.length}个）`);
-                console.log(`📄 SQL文件路径: ${sqlFilePath}`);
+                await updateBatchScrapedContent(accumulatedUpdates);
+                console.log(`✅ 批量更新成功！`);
             } catch (updateError) {
-                console.error('❌ 最后剩余案件更新失败:', updateError.message);
+                console.error('❌ 批量更新失败:', updateError.message);
             }
         }
         
         // 最终统计
-        console.log('\n🎉 顺序抓取 + 批量写入任务完成！');
-        console.log(`📊 最终统计:`);
-        console.log(`   ✅ 成功抓取: ${successCount} 个案件`);
-        console.log(`   ❌ 抓取失败: ${errorCount} 个案件`);
-        console.log(`   📋 总共处理: ${totalProcessed} 个案件`);
+        console.log('\n🎉 本次单次抓取任务结束！');
+        console.log(`📊 统计: 成功 ${successCount}, 失败 ${errorCount}`);
         
     } catch (error) {
-        console.error('❌ 顺序抓取循环发生严重错误:', error);
+        console.error('❌ 任务执行发生严重错误:', error);
         throw error;
     }
 }
@@ -729,6 +651,8 @@ async function main() {
         console.error('程序执行错误:', error);
     }
 }
+
+
 
 // 启动程序
 if (require.main === module) {
