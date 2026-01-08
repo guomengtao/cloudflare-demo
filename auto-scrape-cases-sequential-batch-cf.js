@@ -125,31 +125,36 @@ function extractCaseTitleDirect(html, caseId) {
 // -------------------------------------------------------------------------
 
 // 批量更新数据库
+ 
+
 async function updateBatchScrapedContent(caseUpdates) {
+    const DATABASE_ID = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b";
     return new Promise((resolve, reject) => {
         try {
             if (!caseUpdates || caseUpdates.length === 0) return resolve(null);
             console.log(`📊 准备批量更新 ${caseUpdates.length} 个案件...`);
+            
             let sqlContent = '';
             caseUpdates.forEach(update => {
                 const escapedContent = update.scrapedContent.replace(/'/g, "''");
                 sqlContent += `UPDATE missing_persons_cases SET scraped_content = '${escapedContent}', updated_at = CURRENT_TIMESTAMP WHERE case_id = '${update.caseId}';\n`;
             });
+
             const tempSqlPath = path.join(__dirname, `temp_batch_${Date.now()}.sql`);
             fs.writeFileSync(tempSqlPath, sqlContent, 'utf8');
             
-            // 使用 ID，绕过 binding
-            const command = `npx wrangler d1 execute ${DATABASE_ID} --remote --file="${tempSqlPath}"`;
+            const wranglerPath = './node_modules/.bin/wrangler';
+            const command = `${wranglerPath} d1 execute ${DATABASE_ID} --remote --file="${tempSqlPath}"`;
             
-            // 🚨 修改点：增加了 stderr 参数
             exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
                 if (fs.existsSync(tempSqlPath)) fs.unlinkSync(tempSqlPath);
                 
                 if (error) {
                     console.error('❌ 批量更新执行出错');
-                    console.error('👇👇👇 [STDERR 错误详情] 👇👇👇');
-                    console.error(stderr || '（无标准错误输出）');
-                    console.error('👆👆👆 -------------------- 👆👆👆');
+                    console.error('👇👇👇 [STDOUT] 👇👇👇');
+                    console.error(stdout || '(空)');
+                    console.error('👇👇👇 [STDERR] 👇👇👇');
+                    console.error(stderr || '(空)');
                     reject(error);
                 } else {
                     console.log(`✅ 批量更新成功`);
@@ -161,18 +166,24 @@ async function updateBatchScrapedContent(caseUpdates) {
 }
 
 // 获取案件列表
-async function getCasesToScrape(retries = 3) {
-    const command = `npx wrangler d1 execute ${DATABASE_ID} --remote --json --command="SELECT id, case_url, case_id, case_title FROM missing_persons_cases WHERE (scraped_content IS NULL OR length(scraped_content) = 0) ORDER BY id LIMIT 15;"`;
+ async function getCasesToScrape(retries = 3) {
+    const DATABASE_ID = "1c5802dd-3bd6-4804-9209-8bc4c26cc40b";
+    
+    // 尝试使用本地 node_modules 下的路径，这比 npx 更稳定
+    const wranglerPath = './node_modules/.bin/wrangler';
+    const command = `${wranglerPath} d1 execute ${DATABASE_ID} --remote --json --command="SELECT id, case_url, case_id, case_title FROM missing_persons_cases WHERE (scraped_content IS NULL OR length(scraped_content) = 0) ORDER BY id LIMIT 15;"`;
     
     for (let i = 0; i < retries; i++) {
         try {
             return await new Promise((resolve, reject) => {
-                // 🚨 修改点：增加了 stderr 参数
                 exec(command, { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
                     if (error) {
-                        console.error(`❌ 获取任务失败 (尝试 ${i+1}/${retries})`);
-                        console.error('👇👇👇 [STDERR 错误详情] 👇👇👇');
-                        console.error(stderr || '（无标准错误输出）');
+                        console.error(`\n❌ 获取任务命令执行失败 (尝试 ${i+1}/${retries})`);
+                        // 同时打印 stdout，因为报错信息可能躲在这里
+                        console.error('👇👇👇 [STDOUT (标准输出 - 错误详情可能在此)] 👇👇👇');
+                        console.error(stdout || '(空)');
+                        console.error('👇👇👇 [STDERR (错误流)] 👇👇👇');
+                        console.error(stderr || '(空)');
                         console.error('👆👆👆 -------------------- 👆👆👆');
                         reject(error);
                     } else {
@@ -180,15 +191,15 @@ async function getCasesToScrape(retries = 3) {
                             const parsed = JSON.parse(stdout);
                             resolve(parsed[0]?.results || []);
                         } catch (e) {
-                            console.error("JSON 解析失败，Wrangler 输出为:", stdout);
-                            reject(new Error("JSON Parse Error: " + stdout));
+                            console.error("JSON 解析失败，STDOUT 原文:", stdout);
+                            reject(new Error("JSON Parse Error"));
                         }
                     }
                 });
             });
         } catch (err) {
             if (i === retries - 1) throw err;
-            console.log(`⚠️ 重试中 (${i+1}/${retries})...`);
+            console.log(`⚠️ 等待 2s 后重试...`);
             await new Promise(r => setTimeout(r, 2000));
         }
     }
