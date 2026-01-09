@@ -15,7 +15,7 @@ const aiEndpoint = `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_A
  */
 async function generatePureHtml(scrapedContent, language = '简体中文') {
      const prompt = `
-    你是一名顶级的前端设计师。请为美国失踪人员生成一个【高度专业、充满人文关怀且具有警示感】的 HTML 网页。
+    你是一名顶级的前端设计师。请为美国失踪人员生成一个【高度专业、充满人文关怀且具有警示感】的 全中文的，面向华人的HTML 网页。
     
     【技术规范】：
     1. 必须在 <head> 引入最新版 Tailwind 3.0 CDN：<script src="https://cdn.tailwindcss.com"></script>。
