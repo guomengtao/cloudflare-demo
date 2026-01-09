@@ -96,6 +96,44 @@
             text-decoration: underline;
         }
         
+        .open-btn {
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .open-btn:hover {
+            background: #5a6fd8;
+            text-decoration: none;
+        }
+        
+        th {
+            cursor: pointer;
+            position: relative;
+        }
+        
+        th span {
+            margin-left: 5px;
+            font-size: 0.8em;
+        }
+        
+        th[data-sort]:hover {
+            background: #e0e0e0;
+        }
+        
+        th[data-sort].asc span::after {
+            content: '↑';
+            opacity: 0.6;
+        }
+        
+        th[data-sort].desc span::after {
+            content: '↓';
+            opacity: 0.6;
+        }
+        
         .pagination {
             display: flex;
             justify-content: center;
@@ -180,12 +218,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>案件ID</th>
-                            <th>姓名</th>
-                            <th>失踪日期</th>
-                            <th>城市</th>
-                            <th>县</th>
-                            <th>州</th>
+                            <th data-sort="case_id">案件ID <span></span></th>
+                            <th data-sort="full_name">姓名 <span></span></th>
+                            <th data-sort="missing_since">失踪日期 <span></span></th>
+                            <th data-sort="missing_city">城市 <span></span></th>
+                            <th data-sort="missing_county">县 <span></span></th>
+                            <th data-sort="missing_state">州 <span></span></th>
+                            <th>操作</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -207,6 +246,8 @@
         const API_BASE = '/api/missing-persons/info';
         let currentPage = 1;
         let totalPages = 1;
+        let currentSortBy = 'analyzed_at';
+        let currentSortOrder = 'DESC';
         
         // 初始化页面
         document.addEventListener('DOMContentLoaded', () => {
@@ -214,12 +255,15 @@
         });
         
         // 获取数据
-        async function fetchData(page = 1) {
+        async function fetchData(page = 1, sortBy = currentSortBy, sortOrder = currentSortOrder) {
             try {
                 showLoading();
                 hideError();
                 
-                const response = await fetch(`${API_BASE}?page=${page}&limit=30`);
+                currentSortBy = sortBy;
+                currentSortOrder = sortOrder;
+                
+                const response = await fetch(`${API_BASE}?page=${page}&limit=30&sortBy=${sortBy}&sortOrder=${sortOrder}`);
                 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({}));
@@ -254,8 +298,17 @@
             }
             
             tableBody.innerHTML = data.map(item => {
-                // 构建案件链接
-                const link = `/case/${encodeURIComponent(item.missing_state || 'unknown')}/${encodeURIComponent(item.missing_county || 'unknown')}/${encodeURIComponent(item.missing_city || 'unknown')}/${encodeURIComponent(item.case_id)}`;
+                // 构建案件链接 - 全部小写，空格用中线代替
+                const sanitizePath = (str) => {
+                    return (str || 'unknown').toString().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+                };
+                
+                const state = sanitizePath(item.missing_state);
+                const county = sanitizePath(item.missing_county);
+                const city = sanitizePath(item.missing_city);
+                const caseId = sanitizePath(item.case_id);
+                
+                const link = `/case/${state}/${county}/${city}/${caseId}`;
                 
                 return `
                     <tr>
@@ -265,6 +318,7 @@
                         <td>${escapeHtml(item.missing_city || 'N/A')}</td>
                         <td>${escapeHtml(item.missing_county || 'N/A')}</td>
                         <td>${escapeHtml(item.missing_state || 'N/A')}</td>
+                        <td><a href="${link}" target="_blank" class="open-btn">打开</a></td>
                     </tr>
                 `;
             }).join('');
@@ -323,6 +377,40 @@
                 fetchData(currentPage + 1);
             }
         });
+        
+        // 排序事件监听器
+        document.querySelectorAll('th[data-sort]').forEach(th => {
+            th.addEventListener('click', () => {
+                const sortBy = th.dataset.sort;
+                let newSortOrder = 'ASC';
+                
+                // 如果点击的是当前排序字段，则切换排序顺序
+                if (sortBy === currentSortBy) {
+                    newSortOrder = currentSortOrder === 'ASC' ? 'DESC' : 'ASC';
+                }
+                
+                // 重置页码到第一页
+                fetchData(1, sortBy, newSortOrder);
+                updateSortIndicators();
+            });
+        });
+        
+        // 更新排序指示器
+        function updateSortIndicators() {
+            // 移除所有排序指示器
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.classList.remove('asc', 'desc');
+            });
+            
+            // 为当前排序字段添加指示器
+            const currentSortTh = document.querySelector(`th[data-sort="${currentSortBy}"]`);
+            if (currentSortTh) {
+                currentSortTh.classList.add(currentSortOrder.toLowerCase());
+            }
+        }
+        
+        // 初始化排序指示器
+        updateSortIndicators();
         
         // 辅助函数
         function showLoading() {

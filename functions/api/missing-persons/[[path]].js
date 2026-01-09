@@ -558,7 +558,14 @@ async function handleInfo(request, env) {
         const url = new URL(request.url);
         const page = parseInt(url.searchParams.get('page')) || 1;
         const limit = parseInt(url.searchParams.get('limit')) || 30;
+        const sortBy = url.searchParams.get('sortBy') || 'analyzed_at';
+        const sortOrder = url.searchParams.get('sortOrder') || 'DESC';
         const offset = (page - 1) * limit;
+        
+        // 验证排序字段和顺序
+        const allowedFields = ['case_id', 'full_name', 'missing_since', 'missing_city', 'missing_county', 'missing_state', 'analyzed_at'];
+        const safeSortBy = allowedFields.includes(sortBy) ? sortBy : 'analyzed_at';
+        const safeSortOrder = ['ASC', 'DESC'].includes(sortOrder.toUpperCase()) ? sortOrder.toUpperCase() : 'DESC';
         
         // 查询数据
         const result = await env.DB.prepare(
@@ -566,7 +573,7 @@ async function handleInfo(request, env) {
                 case_id, full_name, missing_since, 
                 missing_city, missing_county, missing_state 
             FROM missing_persons_info 
-            ORDER BY analyzed_at DESC 
+            ORDER BY ${safeSortBy} ${safeSortOrder} 
             LIMIT ? OFFSET ?`
         ).bind(limit, offset).all();
         
