@@ -61,6 +61,8 @@ export async function onRequest(context) {
                 return await handleHistory(request, env);
             } else if (endpoint === 'cases' && request.method === 'GET') {
                 return await handleCases(request, env);
+            } else if (endpoint === 'info' && request.method === 'GET') {
+                return await handleInfo(request, env);
             } else {
                 return new Response(JSON.stringify({ 
                     error: '接口不存在',
@@ -540,6 +542,54 @@ async function handleCases(request, env) {
         
     } catch (error) {
         console.error('案件查询错误:', error);
+        return new Response(JSON.stringify({ 
+            error: '查询失败',
+            message: error.message
+        }), {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+}
+
+// 处理失踪人口信息查询的新函数
+async function handleInfo(request, env) {
+    try {
+        const url = new URL(request.url);
+        const page = parseInt(url.searchParams.get('page')) || 1;
+        const limit = parseInt(url.searchParams.get('limit')) || 30;
+        const offset = (page - 1) * limit;
+        
+        // 查询数据
+        const result = await env.DB.prepare(
+            `SELECT 
+                case_id, full_name, missing_since, 
+                missing_city, missing_county, missing_state 
+            FROM missing_persons_info 
+            ORDER BY analyzed_at DESC 
+            LIMIT ? OFFSET ?`
+        ).bind(limit, offset).all();
+        
+        // 查询总数
+        const countResult = await env.DB.prepare(
+            `SELECT COUNT(*) as total FROM missing_persons_info`
+        ).all();
+        
+        return new Response(JSON.stringify({
+            success: true,
+            data: result.results || [],
+            pagination: {
+                page,
+                limit,
+                total: countResult.results[0].total,
+                totalPages: Math.ceil(countResult.results[0].total / limit)
+            }
+        }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+        
+    } catch (error) {
+        console.error('信息查询错误:', error);
         return new Response(JSON.stringify({ 
             error: '查询失败',
             message: error.message

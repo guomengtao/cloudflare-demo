@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人口案件列表</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        main {
+            padding: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .page-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .page-btn:disabled {
+            background: #f5f5f5;
+            color: #ccc;
+            cursor: not-allowed;
+            border-color: #ddd;
+        }
+        
+        .page-info {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>失踪人口案件列表</h1>
+            <div class="subtitle">展示数据库中的失踪人口案件信息</div>
+        </header>
+        
+        <main>
+            <a href="/" class="back-link">← 返回首页</a>
+            
+            <div id="loading" class="loading">加载中...</div>
+            <div id="error" class="error" style="display: none;"></div>
+            <div id="table-container" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>案件ID</th>
+                            <th>姓名</th>
+                            <th>失踪日期</th>
+                            <th>城市</th>
+                            <th>县</th>
+                            <th>州</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- 数据将通过JavaScript动态插入 -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="pagination" class="pagination" style="display: none;">
+                <button id="prev-btn" class="page-btn" disabled>上一页</button>
+                <div id="page-numbers"></div>
+                <button id="next-btn" class="page-btn">下一页</button>
+                <div id="page-info" class="page-info"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        const API_BASE = '/api/missing-persons/info';
+        let currentPage = 1;
+        let totalPages = 1;
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData(currentPage);
+        });
+        
+        // 获取数据
+        async function fetchData(page = 1) {
+            try {
+                showLoading();
+                hideError();
+                
+                const response = await fetch(`${API_BASE}?page=${page}&limit=30`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || 'Failed to fetch data');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentPage = page;
+                    totalPages = result.pagination.totalPages;
+                    displayData(result.data);
+                    updatePagination(result.pagination);
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+            } catch (error) {
+                showError(`数据加载失败: ${error.message}`);
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        // 显示数据
+        function displayData(data) {
+            const tableBody = document.getElementById('table-body');
+            const tableContainer = document.getElementById('table-container');
+            
+            if (data.length === 0) {
+                tableContainer.style.display = 'none';
+                return;
+            }
+            
+            tableBody.innerHTML = data.map(item => {
+                // 构建案件链接
+                const link = `/case/${encodeURIComponent(item.missing_state || 'unknown')}/${encodeURIComponent(item.missing_county || 'unknown')}/${encodeURIComponent(item.missing_city || 'unknown')}/${encodeURIComponent(item.case_id)}`;
+                
+                return `
+                    <tr>
+                        <td><a href="${link}" target="_blank">${escapeHtml(item.case_id)}</a></td>
+                        <td>${escapeHtml(item.full_name || 'N/A')}</td>
+                        <td>${escapeHtml(item.missing_since || 'N/A')}</td>
+                        <td>${escapeHtml(item.missing_city || 'N/A')}</td>
+                        <td>${escapeHtml(item.missing_county || 'N/A')}</td>
+                        <td>${escapeHtml(item.missing_state || 'N/A')}</td>
+                    </tr>
+                `;
+            }).join('');
+            
+            tableContainer.style.display = 'block';
+        }
+        
+        // 更新分页控件
+        function updatePagination(pagination) {
+            const paginationContainer = document.getElementById('pagination');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const pageNumbers = document.getElementById('page-numbers');
+            const pageInfo = document.getElementById('page-info');
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            // 更新页码显示
+            pageNumbers.innerHTML = '';
+            
+            // 显示页码范围
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            // 添加页码按钮
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => fetchData(i);
+                pageNumbers.appendChild(btn);
+            }
+            
+            // 更新分页信息
+            pageInfo.textContent = `第 ${currentPage} 页，共 ${totalPages} 页`;
+            
+            paginationContainer.style.display = 'flex';
+        }
+        
+        // 事件监听器
+        document.getElementById('prev-btn').addEventListener('click', () => {
+            if (currentPage > 1) {
+                fetchData(currentPage - 1);
+            }
+        });
+        
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                fetchData(currentPage + 1);
+            }
+        });
+        
+        // 辅助函数
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('table-container').style.display = 'none';
+            document.getElementById('pagination').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
