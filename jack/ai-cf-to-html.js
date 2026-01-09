@@ -21,6 +21,8 @@ async function generatePureHtml(scrapedContent, language = '简体中文') {
     1. 必须在 <head> 引入最新版 Tailwind 3.0 CDN：<script src="https://cdn.tailwindcss.com"></script>。
     2. 必须引入字体：<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">。
     
+    3. 有多个位置 位置连接到 首页 “。/”  
+    4. 突出的面包碎屑 导航  首页 “。/” 》 全部列表 “。/list” 〉 州 》县 〉城市
     【UI 设计蓝图】：
     1. **配色细节**：
        - 背景: bg-[#f8fafc] (极浅蓝灰)

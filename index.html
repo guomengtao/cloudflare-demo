@@ -1,1 +1,480 @@
-Hi!!  <tony_escalante_aguilar_1-0></tony_escalante_aguilar_1-0>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国失踪人口数据库 - Missing Persons Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .features h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #333;
+            font-size: 2.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* Statistics Section */
+        .stats {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            padding: 60px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Latest Cases Section */
+        .latest-cases {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .latest-cases h2 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #333;
+            font-size: 2.5rem;
+        }
+        
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .case-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .case-img {
+            height: 200px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #999;
+        }
+        
+        .case-content {
+            padding: 20px;
+        }
+        
+        .case-content h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .case-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        .cta h2 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .features h2, .latest-cases h2, .cta h2 {
+                font-size: 2rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="/" class="logo">
+                    <i class="fas fa-search"></i>
+                    失踪人口数据库
+                </a>
+                <ul class="nav-links">
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/llist.htm">案件列表</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#contact">联系方式</a></li>
+                </ul>
+                <a href="/llist.htm" class="btn">
+                    <i class="fas fa-list"></i>
+                    查看所有案件
+                </a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>帮助寻找失踪的亲人</h1>
+            <p>美国失踪人口数据库致力于帮助家庭寻找失踪的亲人，提供全面的案件信息和资源。</p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="/llist.htm" class="btn" style="font-size: 1.1rem; padding: 12px 30px;">
+                    <i class="fas fa-list"></i>
+                    浏览案件列表
+                </a>
+                <a href="#about" class="btn" style="background: transparent; border: 2px solid white;">
+                    <i class="fas fa-info-circle"></i>
+                    了解更多
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <div class="container">
+            <h2>我们的服务</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-database"></i>
+                    <h3>全面的数据库</h3>
+                    <p>包含美国各地的失踪人口案件信息，提供详细的个人资料和案件详情。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-search"></i>
+                    <h3>强大的搜索功能</h3>
+                    <p>可以按姓名、地点、时间等多种条件搜索案件，帮助您快速找到相关信息。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>社区支持</h3>
+                    <p>建立失踪人口家庭社区，提供互相支持和资源分享的平台。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>案件宣传</h3>
+                    <p>通过各种渠道宣传案件信息，提高公众意识，增加找到失踪人员的机会。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>专业支持</h3>
+                    <p>与执法机构和专业组织合作，提供专业的寻人支持和指导。</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>爱心传递</h3>
+                    <p>鼓励公众参与，传递爱心，共同帮助寻找失踪的亲人。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Statistics Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>10,000+</h3>
+                    <p>收录案件</p>
+                </div>
+                <div class="stat-item">
+                    <h3>5,000+</h3>
+                    <p>已找到人员</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p>合作州</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>服务支持</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Latest Cases Section -->
+    <section class="latest-cases">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
+                <h2>最新案件</h2>
+                <a href="/llist.htm" class="btn">
+                    <i class="fas fa-arrow-right"></i>
+                    查看全部
+                </a>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="case-content">
+                        <h3>Richard Scott Ashley</h3>
+                        <div class="case-info">
+                            <span><i class="fas fa-map-marker-alt"></i> Missouri</span>
+                            <span><i class="fas fa-calendar"></i> 1986-05-13</span>
+                        </div>
+                        <p>失踪于密苏里州斯普林菲尔德，时年36岁。如有线索请联系当地警方。</p>
+                    </div>
+                </div>
+                <div class="case-card">
+                    <div class="case-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="case-content">
+                        <h3>Dorothy P. Goroshko</h3>
+                        <div class="case-info">
+                            <span><i class="fas fa-map-marker-alt"></i> Pennsylvania</span>
+                            <span><i class="fas fa-calendar"></i> 1990-07-01</span>
+                        </div>
+                        <p>失踪于宾夕法尼亚州摩尔镇，时年63岁。身高约165cm，白色头发。</p>
+                    </div>
+                </div>
+                <div class="case-card">
+                    <div class="case-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="case-content">
+                        <h3>John Doe</h3>
+                        <div class="case-info">
+                            <span><i class="fas fa-map-marker-alt"></i> California</span>
+                            <span><i class="fas fa-calendar"></i> 2023-01-15</span>
+                        </div>
+                        <p>失踪于加利福尼亚州洛杉矶，时年28岁。身材健壮，有多处纹身。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>一起帮助寻找失踪人员</h2>
+            <p>您的每一次转发和关注都可能帮助一个家庭团聚。</p>
+            <a href="/llist.htm" class="btn" style="font-size: 1.1rem; padding: 12px 30px;">
+                <i class="fas fa-heart"></i>
+                立即参与
+            </a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <p><strong>美国失踪人口数据库</strong> - 帮助寻找失踪的亲人</p>
+            <p>联系电话: (555) 123-4567 | 邮箱: info@missingpersons.org</p>
+            <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem;">&copy; 2024 美国失踪人口数据库. 保留所有权利.</p>
+        </div>
+    </footer>
+</body>
+</html>
