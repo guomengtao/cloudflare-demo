@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员分析</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .醒目信息栏 {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .醒目信息栏 h2 {
+            margin-top: 0;
+        }
+        .面包屑导航 {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .面包屑导航 ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .面包屑导航 li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .面包屑导航 a {
+            color: #337ab7;
+            text-decoration: none;
+        }
+        .面包屑导航 a:hover {
+            color: #23527c;
+        }
+        .mg {
+            margin: 20px auto;
+            width: 80%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .mg img {
+            width: 100%;
+            height: auto;
+        }
+        .AI深度分析模块 {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        .AI深度分析模块 h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="醒目信息栏">
+        <h2>案件ID: <?php echo $_POST['案件ID']; ?></h2>
+        <h2>州: <?php echo $_POST['州']; ?></h2>
+        <h2>县: <?php echo $_POST['县']; ?></h2>
+        <h2>城市: <?php echo $_POST['城市']; ?></h2>
+    </div>
+    <div class="面包屑导航">
+        <ul>
+            <li><a href="#">首页</a></li>
+            <li><a href="#"><?php echo $_POST['州']; ?></a></li>
+            <li><a href="#"><?php echo $_POST['县']; ?></a></li>
+            <li><a href="#"><?php echo $_POST['城市']; ?></a></li>
+        </ul>
+    </div>
+    <div class="mg">
+        <img src="<?php echo $_POST['失踪人员图片']; ?>" alt="失踪人员图片">
+    </div>
+    <div class="AI深度分析模块">
+        <h2>案件画像概览</h2>
+        <p>案件画像概览是指根据案件的基本信息、失踪人员的特征、案件的时间和地点等因素绘制的案件画像图表。该图表可以帮助我们了解案件的基本情况、失踪人员的特点和案件的发展趋势。</p>
+        <h2>时空矛盾点分析</h2>
+        <p>时空矛盾点分析是指根据案件的时间和地点等因素分析出案件中可能存在的矛盾点。该分析可以帮助我们找出案件中可能存在的漏洞和风险点。</p>
+        <h2>潜在风险因素评分</h2>
+        <p>潜在风险因素评分是指根据案件的基本信息、失踪人员的特征、案件的时间和地点等因素评估出案件中可能存在的风险因素。该评分可以帮助我们了解案件中可能存在的风险和威胁。</p>
+        <h2>调查突破口建议</h2>
+        <p>调查突破口建议是指根据案件的基本信息、失踪人员的特征、案件的时间和地点等因素提供的调查突破口建议。该建议可以帮助我们找到案件中可能存在的突破口和线索。</p>
+        <h2>类似案件关联</h2>
+        <p>类似案件关联是指根据案件的基本信息、失踪人员的特征、案件的时间和地点等因素分析出案件中可能存在的类似案件。该分析可以帮助我们了解案件中可能存在的类似案件和风险。</p>
+        <h2>法律与免责声明</h2>
+        <p>法律与免责声明是指根据案件的基本信息、失踪人员的特征、案件的时间和地点等因素提供的法律与免责声明。该声明可以帮助我们了解案件中可能存在的法律风险和免责责任。</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
+
+```php
+<?php
+// 获取输入数据
+$州 = $_POST['州'];
+$县 = $_POST['县'];
+$城市 = $_POST['城市'];
+$案件ID = $_POST['案件ID'];
+$失踪人员图片 = $_POST['失踪人员图片'];
+
+// 输出数据
+echo '<div class="醒目信息栏">';
+echo '<h2>案件ID: ' . $案件ID . '</h2>';
+echo '<h2>州: ' . $州 . '</h2>';
+echo '<h2>县: ' . $县 . '</h2>';
+echo '<h2>城市: ' . $城市 . '</h2>';
+echo '</div>';
+
+echo '<div class="面包屑导航">';
+echo '<ul>';
+echo '<li><a href="#">首页</a></li>';
+echo '<li><a href="#">' . $州 . '</a></li>';
+echo '<li><a href="#">' . $县 . '</a></li>';
+echo '<li><a href="#">' . $城市 . '</a></li>';
+echo '</ul>';
+echo '</div>';
+
+echo '<div class="mg">';
+echo '<img src="' . $失踪人员图片 . '" alt="失踪人员图片">';
+echo '</div>';
+?>
+```
+
+```javascript
+// 使用 JavaScript 获取输入数据
+const 州 = document.getElementById('州').value;
+const 县 = document.getElementById('县').value;
+const 城市 = document.getElementById('城市').value;
+const 案件ID = document.getElementById('案件ID').value;
+const 失踪人员图片 = document.getElementById('失踪人员图片').value;
+
+// 输出数据
+document.getElementById('醒目信息栏').innerHTML = `
+    <h2>案件ID: ${案件ID}</h2>
+    <h2>州: ${州}</h2>
+    <h2>县: ${县}</h2>
+    <h2>城市: ${城市}</h2>
+`;
+
+document.getElementById('面包屑导航').innerHTML = `
+    <ul>
+        <li><a href="#">首页</a></li>
+        <li><a href="#">${州}</a></li>
+        <li><a href="#">${县}</a></li>
+        <li><a href="#">${城市}</a></li>
+    </ul>
+`;
+
+document.getElementById('mg').innerHTML = `
+    <img src="${失踪人员图片}" alt="失踪人员图片">
+`;

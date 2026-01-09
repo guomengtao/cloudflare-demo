@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerardo Aguilar - Missing Person</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-image {
+            background-image: url('https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/gerardo_aguilar_1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            border-radius: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .risk-level {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-[#0f172a]">
+    <div class="container mx-auto p-12">
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-4">
+                <div class="bg-image"></div>
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl p-4 mt-4">
+                    <h2 class="text-lg font-bold">特征速查卡片</h2>
+                    <ul>
+                        <li>姓名：Gerardo Aguilar</li>
+                        <li>年龄：23岁</li>
+                        <li>身高：5'3"</li>
+                        <li>体重：125磅</li>
+                        <li>眼睛颜色：棕色</li>
+                        <li>头发颜色：黑色</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold">Gerardo Aguilar - Missing Person</h1>
+                <p class="text-lg">最后一次被看到：1989年11月11日</p>
+                <p class="text-lg">地点：Santa Monica, California</p>
+                <div class="bg-[#0f172a] text-white p-4 rounded-2xl mt-4">
+                    <h2 class="text-lg font-bold">详细时间轴</h2>
+                    <ul>
+                        <li>1989年11月11日：最后一次被看到</li>
+                        <li>2004年10月12日：案件更新</li>
+                        <li>2005年5月5日：案件更新</li>
+                    </ul>
+                </div>
+                <div class="bg-[#0f172a] text-white p-4 rounded-2xl mt-4">
+                    <h2 class="text-lg font-bold">AI 分析报告</h2>
+                    <p class="text-lg">风险等级：<span class="text-red-600 risk-level">HIGH RISK</span></p>
+                    <p class="text-lg">建议：警惕可能的危险</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

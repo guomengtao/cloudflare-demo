@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adolfo Santo Agramonte - Missing Person</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        .rounded-2xl {
+            border-radius: 2rem;
+        }
+        .shadow-2xl {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-[#0f172a]">
+    <div class="container mx-auto p-12 pt-24 md:pt-12">
+        <div class="grid grid-cols-12 gap-12">
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2018/09/agramonte_adolfo.jpg" alt="Adolfo Santo Agramonte" class="rounded-2xl shadow-2xl w-full h-full object-cover">
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-8 mt-8">
+                    <h2 class="text-lg font-bold mb-4">特征速查</h2>
+                    <ul>
+                        <li class="mb-2">性别：男性</li>
+                        <li class="mb-2">种族：双种族（黑人/西班牙裔）</li>
+                        <li class="mb-2">年龄：31岁</li>
+                        <li class="mb-2">身高：5'10" - 6'2"</li>
+                        <li class="mb-2">体重：180磅</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold mb-4">Adolfo Santo Agramonte</h1>
+                <p class="text-lg mb-8">失踪时间：2005年6月20日</p>
+                <div class="bg-[#0f172a] p-8 text-white rounded-2xl shadow-2xl">
+                    <h2 class="text-lg font-bold mb-4">详细时间轴</h2>
+                    <ul>
+                        <li class="mb-2">1997年被驱逐出美国</li>
+                        <li class="mb-2">2005年6月20日在德克萨斯州麦卡伦市附近的沙漠地区失踪</li>
+                    </ul>
+                </div>
+                <div class="mt-12">
+                    <h2 class="text-lg font-bold mb-4">AI 分析报告</h2>
+                    <div class="bg-[#0f172a] p-8 text-white rounded-2xl shadow-2xl">
+                        <p class="text-lg mb-4">风险等级：<span class="text-red-600 animate-pulse">HIGH RISK</span></p>
+                        <p class="text-lg">Agramonte 可能已经在沙漠中丧生。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员分析</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .alert {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .alert a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .alert a:hover {
+            color: #ccc;
+        }
+        .bg-red {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .bg-red a {
+            color: #fff;
+        }
+        .bg-red a:hover {
+            color: #ccc;
+        }
+        .img-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+        }
+        .img-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert bg-red">
+                    <h4>醒目信息栏</h4>
+                    <p>案件ID: <span id="case-id">未知</span></p>
+                    <p>州: <span id="state">Arizona</span></p>
+                    <p>县: <span id="county">Maricopa County</span></p>
+                    <p>城市: <span id="city">Laveen</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">首页</a></li>
+                        <li class="breadcrumb-item"><a href="#">Arizona</a></li>
+                        <li class="breadcrumb-item"><a href="#">Maricopa County</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Laveen</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>失踪人员信息</h2>
+                <p>姓名: Cynthia Acevedo</p>
+                <p>出生日期: 10/12/1979</p>
+                <p>失踪日期: 08/15/2019</p>
+                <p>年龄: 39</p>
+                <p>失踪城市: Laveen</p>
+                <p>失踪县: Maricopa County</p>
+                <p>失踪州: Arizona</p>
+                <p>失踪国家: United States</p>
+                <p>个人描述: Native American female, Brown hair, brown eyes, scar on left cheek</p>
+                <p>性别: Female</p>
+                <p>种族: Native American</p>
+                <p>身高: 5'4 - 5'6</p>
+                <p>体重: 231 - 250 lbs</p>
+                <p>眼睛颜色: Brown</p>
+                <p>头发颜色: Brown</p>
+                <p>特征: scar on left cheek</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>AI深度分析模块</h2>
+                <p>案件画像概览: <span id="case-profile">未知</span></p>
+                <p>时空矛盾点分析: <span id="time-space-conflict">未知</span></p>
+                <p>潜在风险因素评分: <span id="risk-score">未知</span></p>
+                <p>调查突破口建议: <span id="investigation-suggestion">未知</span></p>
+                <p>类似案件关联: <span id="similar-case">未知</span></p>
+                <p>法律与免责声明: <span id="legal-disclaimer">未知</span></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2>图片展示</h2>
+                <div class="img-container">
+                    <img src="https://picsum.photos/200/300" alt="图片1">
+                </div>
+                <div class="img-container">
+                    <img src="https://picsum.photos/200/301" alt="图片2">
+                </div>
+                <div class="img-container">
+                    <img src="https://picsum.photos/200/302" alt="图片3">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
+
+上述代码使用 Bootstrap 框架进行布局和样式的设置。案件信息和 AI 深度分析模块的内容使用 HTML 内联样式进行设置。图片展示部分使用了 Picsum Photos 提供的随机图片。
+
+如果您需要使用具体的图片，请将图片的 URL 替换到 `<img src>` 中即可。
