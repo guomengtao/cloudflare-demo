@@ -2,9 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 const fetch = require('node-fetch');
-const { generatePureHtml } = require('./ai-cf-to-html'); 
+const { generatePureHtml, DEFAULT_AI_MODEL } = require('./ai-cf-to-html'); 
 
 // 1. 初始化配置 (保持不变)
+// 读取命令行参数获取AI模型
+const args = process.argv.slice(2);
+const aiModel = args[0] || DEFAULT_AI_MODEL;
 const envPath = fs.existsSync(path.resolve(__dirname, '../.env')) 
     ? path.resolve(__dirname, '../.env') 
     : path.resolve(__dirname, '.env');
@@ -85,8 +88,9 @@ ${target.scraped_content}
 
         // --- 4. 调用 AI 生成网页 (保持不变) ---
         console.log(`🧠 AI 正在为 ${target.case_id} (${target.missing_city}) 生成网页...`);
+        console.log(`🤖 使用模型: ${aiModel}`);
         const lang = "简体中文";
-        const aiResult = await generatePureHtml(combinedContent, lang);
+        const aiResult = await generatePureHtml(combinedContent, lang, aiModel);
 
         if (aiResult.success) {
             if (!fs.existsSync(fullDir)) fs.mkdirSync(fullDir, { recursive: true });
@@ -109,7 +113,7 @@ ${target.scraped_content}
 }
 
 async function startBatch() {
-    const LIMIT = 600;
+    const LIMIT = 6000;
     for (let i = 1; i <= LIMIT; i++) {
         const res = await processHtmlTask(i);
         if (res === 'empty') break;

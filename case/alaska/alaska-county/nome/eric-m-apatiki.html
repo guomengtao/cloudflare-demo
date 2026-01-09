@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric M. Apatiki - 失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- 面包屑导航 -->
+    <nav class="bg-white p-4">
+        <div class="max-w-7xl mx-auto">
+            <a href="/" class="text-gray-700">首页</a> » 
+            <a href="/list" class="text-gray-700">全部列表</a> » 
+            <a href="/Alaska" class="text-gray-700">Alaska州</a> » 
+            <a href="/Alaska/AlaskaCounty" class="text-gray-700">Alaska县</a> » 
+            <span class="text-gray-500">Nome市</span>
+        </div>
+    </nav>
+
+    <!-- 核心展示区 -->
+    <header class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex gap-8">
+            <!-- 照片墙模块 -->
+            <div class="flex-1">
+                <!-- 大图区 -->
+                <div class="bg-gray-200 w-full h-96 rounded-lg mb-4"></div>
+                <!-- 缩略图区 -->
+                <div class="grid grid-cols-4 gap-2">
+                    <div class="bg-gray-200 w-full h-24 rounded cursor-pointer"></div>
+                    <div class="bg-gray-200 w-full h-24 rounded cursor-pointer"></div>
+                    <div class="bg-gray-200 w-full h-24 rounded cursor-pointer"></div>
+                    <div class="bg-gray-200 w-full h-24 rounded cursor-pointer"></div>
+                </div>
+            </div>
+
+            <!-- 基本信息模块 -->
+            <div class="flex-1">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Eric M. Apatiki</h1>
+                <p class="text-xl text-gray-600 mb-4">42岁</p>
+                <ul class="space-y-2 text-gray-700">
+                    <li>性别：男</li>
+                    <li>籍贯：Nome, Alaska</li>
+                    <li>身高：175cm</li>
+                    <li>体重：61kg</li>
+                    <li>血型：-</li>
+                    <li class="font-bold text-red-600">失踪日期：2004年10月5日</li>
+                    <li class="font-bold text-red-600">失踪地点：Nome, Alaska</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- 深度内容区 -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex gap-8">
+            <!-- 案件详情模块 -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">案件详情</h2>
+                <p class="text-gray-700 mb-4">Eric于2004年10月5日最后一次在Nome出现，当时他从St. Lawrence Island前来探望怀孕的女友并领取分红基金支票。他计划几天后返回家乡，但自此再无音讯。</p>
+                <p class="text-gray-700">他最后一次出现时身穿红色夹克，白色针织背心，白色裤子，棕色皮鞋和深蓝色棒球帽。</p>
+            </div>
+
+            <!-- AI分析报告模块 -->
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">AI分析报告</h2>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-semibold mb-2">案件画像概览</h3>
+                        <p class="text-gray-700">身份标签：Eric M. Apatiki，失踪时21岁，已失踪19年</p>
+                        <p class="text-gray-700">生理特征：黑发，棕色眼睛，Native American男性</p>
+                        <p class="text-gray-700">失踪风险等级：高度危险</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-xl font-semibold mb-2">时空矛盾点分析</h3>
+                        <p class="text-gray-700">消失环境：繁华街区与目击证言缺失</p>
+                        <p class="text-gray-700">生活稳定性偏离：无明显迹象表明主动消失</p>
+                        <p class="text-gray-700">关键窗口期：2004年10月5日至10月8日</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 辅助与互动区 -->
+    <footer class="max-w-7xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow">
+            <div class="flex gap-8 p-6">
+                <!-- 最新动态 -->
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">案件进展</h3>
+                    <div class="space-y-4">
+                        <div class="text-gray-700">2025年7月：案件信息更新</div>
+                        <div class="text-gray-700">2023年5月：DNA数据库比对进行中</div>
+                    </div>
+                </div>
+                <!-- 互动按钮 -->
+                <div class="flex flex-col gap-4">
+                    <button class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">
+                        线索举报
+                    </button>
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                        生成海报
+                    </button>
+                </div>
+            </div>
+            <!-- 联系方式 -->
+            <div class="border-t pt-6">
+                <p class="text-gray-700">办案民警：Nome警察局</p>
+                <p class="text-gray-700">联系电话：907-443-5262</p>
+                <p class="text-gray-700">家属紧急联系：-</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

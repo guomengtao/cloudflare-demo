@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adrian Anderson - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-[#0f172a]">失踪人员信息中心</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="/" class="px-3 py-2 text-gray-600">首页</a>
+                    <a href="/list" class="px-3 py-2 text-gray-600">全部列表</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="py-12 px-8">
+        <div class="max-w-7xl mx-auto">
+            <nav aria-label="Breadcrumb" class="mb-8">
+                <ol class="flex items-center space-x-4">
+                    <li>
+                        <a href="/" class="text-gray-600 hover:text-[#0f172a]">首页</a>
+                    </li>
+                    <li>
+                        <span class="text-gray-600">〉</span>
+                    </li>
+                    <li>
+                        <a href="/list" class="text-gray-600 hover:text-[#0f172a]">全部列表</a>
+                    </li>
+                    <li>
+                        <span class="text-gray-600">〉</span>
+                    </li>
+                    <li>
+                        <a href="/state/delaware" class="text-gray-600 hover:text-[#0f172a]">Delaware</a>
+                    </li>
+                    <li>
+                        <span class="text-gray-600">〉</span>
+                    </li>
+                    <li>
+                        <a href="/county/new-castle" class="text-gray-600 hover:text-[#0f172a]">New Castle County</a>
+                    </li>
+                    <li>
+                        <span class="text-gray-600">〉</span>
+                    </li>
+                    <li>
+                        <span class="text-gray-600">Newark</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="grid grid-cols-12 gap-8">
+                <!-- 左侧照片 -->
+                <div class="col-span-4">
+                    <div class="space-y-6">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/adrian_anderson_1.jpg" alt="Adrian Anderson" class="w-full rounded-[2rem] shadow-2xl">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/adrian_anderson_2.jpg" alt="Adrian Anderson" class="w-full rounded-[2rem] shadow-2xl">
+                    </div>
+                </div>
+
+                <!-- 右侧信息 -->
+                <div class="col-span-8">
+                    <h1 class="text-3xl font-bold text-[#0f172a] mb-6">Adrian Anderson</h1>
+                    
+                    <div class="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg p-6 mb-8">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-red-100 p-4 rounded-lg">
+                                <h3 class="font-bold text-red-600">风险等级</h3>
+                                <div class="mt-2">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="w-3/4 bg-red-600 rounded-full animate-pulse">
+                                            <span class="text-red-600 font-bold">高风险</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-blue-100 p-4 rounded-lg">
+                                <h3 class="font-bold text-blue-700">失踪时间</h3>
+                                <p class="text-blue-700 font-bold mt-2">2009年7月29日</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-[#0f172a] mb-4">案件详情</h2>
+                            <p class="text-gray-600">Adrian Anderson于2009年7月29日在特拉华州Newark失踪，至今下落不明。他可能曾前往西弗吉尼亚州，但目前没有进一步的消息。</p>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-bold text-[#0f172a] mb-4">体貌特征</h2>
+                            <ul class="list-disc list-inside text-gray-600">
+                                <li>黑人男性，39岁</li>
+                                <li>身高6英尺，体重175磅</li>
+                                <li>黑发，棕色眼睛</li>
+                                <li>右手和腹部有纹身</li>
+                                <li>右臂有十字架纹身</li>
+                                <li>左前臂有文字纹身</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-bold text-[#0f172a] mb-4">联系方式</h2>
+                            <p class="text-gray-600">New Castle County Police Department</p>
+                            <p class="text-gray-600">电话: 302-395-8171</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

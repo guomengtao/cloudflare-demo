@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ace F. Anderson - The Charley Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=PlusJakartaSans:wght@400;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <div class="flex flex-col justify-center items-center h-screen">
+    <div class="flex flex-col justify-between w-full px-4 py-16 bg-gray-800 text-white">
+      <div class="flex flex-col justify-start w-1/2">
+        <img src="images/ace.jpg" alt="Ace F. Anderson" rounded-radius="2rem" shadow-2xl />
+        <div class="text-sm font-bold mb-4">Ace F. Anderson</div>
+        <p>Missing since 2003</p>
+      </div>
+      <div class="flex flex-col justify-end w-1/2">
+        <h2>Case Details</h2>
+        <ul>
+          <li>Case URL: <a href="#">https://charleyproject.org/case/ace-f-anderson</a></li>
+          <li>Case ID: ace-f-anderson</li>
+          <li>Case Title: Ace F. Anderson &#8211; The Charley Project</li>
+          <li>Date of Disappearance: January 24, 2003</li>
+          <li>Location of Disappearance: Volunteer Park, Lakebay, Washington</li>
+          <li>Classification: Endangered Missing Sex Male</li>
+          <li>Height and Weight: 5'6 - 5'10, 160 - 170 pounds</li>
+          <li>Clothing and Jewelry: Coat with car keys in the pocket</li>
+          <li>Associated Vehicle(s): Teal 1995 Chevrolet Lumina (accounted for)</li>
+          <li>Distinguishing Characteristics: White male. Gray hair, blue eyes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="bg-gray-700 p-4 rounded-lg flex justify-center items-center">
+      <h2>AI Analysis</h2>
+      <canvas id="ai-canvas"></canvas>
+    </div>
+  </div>
+  <script>
+    const canvas = document.getElementById('ai-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Load and analyze the image
+    const image = new Image('images/ace.jpg');
+    image.onload = () => {
+      const imgData = image.data;
+      const imgTensor = tf.browser.fromPixels(imgData, 0);
+
+      // Apply model to the image
+      const model = tf.sequential();
+      model.add(tf.image.dense({ units: 128, activation: 'relu', inputShape: [imgTensor.shape[1], imgTensor.shape[0]] }));
+      model.add(tf.layers.dense({ units: 1 }));
+      model.compile({ optimizer: 'adam', loss: 'meanSquaredError' });
+
+      model.fit(imgTensor, { epochs: 100 });
+
+      // Draw the result
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(imgTensor, 0, 0);
+    };
+  </script>
+</body>
+
+</html>

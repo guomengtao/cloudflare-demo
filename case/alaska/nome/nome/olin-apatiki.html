@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olin Apatiki 案例详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <nav class="bg-blue-500 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./" class="text-lg font-bold">首页</a>
+            <div class="flex space-x-4">
+                <a href="./" class="hover:text-blue-300">首页</a>
+                <a href="./list" class="hover:text-blue-300">全部列表</a>
+                <span>Alaska</span>
+                <span>Nome</span>
+                <span>Nome</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container mx-auto mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 左侧照片墙模块 -->
+            <div class="border-2 border-gray-300 p-4 rounded-lg">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/olin_apatiki_1.jpg" alt="Olin Apatiki" class="w-full h-auto rounded-lg mb-4">
+                <div class="grid grid-cols-3 gap-2">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/olin_apatiki_1.jpg" alt="Olin Apatiki" class="w-full h-auto rounded-lg cursor-pointer" onclick="changeImage(this)">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/olin_apatiki_1.jpg" alt="Olin Apatiki" class="w-full h-auto rounded-lg cursor-pointer" onclick="changeImage(this)">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/olin_apatiki_1.jpg" alt="Olin Apatiki" class="w-full h-auto rounded-lg cursor-pointer" onclick="changeImage(this)">
+                </div>
+            </div>
+
+            <!-- 右侧基本信息模块 -->
+            <div class="border-2 border-gray-300 p-4 rounded-lg">
+                <h1 class="text-3xl font-bold mb-2">Olin Apatiki</h1>
+                <p class="text-xl">当前年龄: 69岁</p>
+                <ul class="mt-4 space-y-2">
+                    <li><strong>性别:</strong> 男</li>
+                    <li><strong>籍贯:</strong> 美国阿拉斯加州诺姆市</li>
+                    <li><strong>身高:</strong> 未知</li>
+                    <li><strong>体重:</strong> 未知</li>
+                    <li><strong>血型:</strong> 未知</li>
+                    <li><strong>失踪日期:</strong> <span class="font-bold text-red-500">1996年8月12日或13日</span></li>
+                    <li><strong>失踪地点:</strong> <span class="font-bold text-red-500">阿拉斯加州诺姆市</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 左侧案件详情模块 -->
+            <div class="border-2 border-gray-300 p-4 rounded-lg">
+                <h2 class="text-2xl font-bold mb-4">案件详情</h2>
+                <p>Apatiki 最后一次被看到是在阿拉斯加州诺姆市，时间是1996年8月12日或13日。他从未再次出现过。失踪时，他穿着黑色头发，棕色眼睛。关于他的失踪细节很少。</p>
+            </div>
+
+            <!-- 右侧AI分析报告模块 -->
+            <div class="border-2 border-gray-300 p-4 rounded-lg">
+                <h2 class="text-2xl font-bold mb-4">AI分析报告</h2>
+                <h3 class="text-xl font-semibold mb-2">案件画像概览</h3>
+                <ul class="mt-2 space-y-2">
+                    <li><strong>身份标签:</strong> Olin Apatiki, 69岁, 失踪29年</li>
+                    <li><strong>生理显著特征:</strong> 黑色头发, 棕色眼睛, 未知其他特征</li>
+                    <li><strong>状态评估:</strong> 高危失踪 (Endangered Missing)</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2">时空矛盾点分析</h3>
+                <ul class="mt-2 space-y-2">
+                    <li><strong>消失环境:</strong> 繁华街区 vs 荒野, 目击证言缺失</li>
+                    <li><strong>生活稳定性偏离:</strong> 社交、财务、心理状态不支持主动消失</li>
+                    <li><strong>关键窗口期:</strong> 1996年8月12日至发现失踪</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2">潜在风险因素评分</h3>
+                <ul class="mt-2 space-y-2">
+                    <li><strong>环境风险:</strong> 靠近水域, 极端天气, 施工地带</li>
+                    <li><strong>医疗风险:</strong> 未知疾病, 未提及需要定期服药</li>
+                    <li><strong>外部侵害:</strong> 第三方卷入迹象不明</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2">调查突破口建议</h3>
+                <ul class="mt-2 space-y-2">
+                    <li><strong>DNA/法医建议:</strong> 核对 NamUs 数据库中带有特定特征的无名尸体</li>
+                    <li><strong>数字足迹:</strong> 检查特定年份的信用卡记录、社交媒体或寻呼机记录</li>
+                    <li><strong>物理搜索建议:</strong> 加强声呐扫描等物理搜索</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2">类似案件关联</h3>
+                <ul class="mt-2 space-y-2">
+                    <li><strong>地理关联:</strong> 同一地区存在失踪手法相似的案例</li>
+                    <li><strong>人口统计学关联:</strong> 存在针对特定职业、年龄段人群的规律性事件</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2">法律与免责声明</h3>
+                <p>此报告由 AI 基于公开数据生成，仅供参考，不代表官方结论，也不应替代警方的专业调查。官方报案电话: Nome Police Department 907-443-5262。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8 mt-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h3 class="text-lg font-bold mb-2">案件调查进度时间轴</h3>
+                <p>更新于 2011年1月2日</p>
+            </div>
+            <div class="space-x-4">
+                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">线索举报</button>
+                <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">生成寻人海报</button>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-2">联系方式</h3>
+                <p>Nome Police Department: 907-443-5262</p>
+                <p>家属紧急联系电话: 未提供</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function changeImage(element) {
+            const mainImage = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.gap-8 > div:first-child > img:first-child');
+            mainImage.src = element.src;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joseph Edward Antczak 失踪案件</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <nav class="bg-blue-500 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="breadcrumb">
+                <a href="./" class="text-white hover:text-blue-300">首页</a> &gt;
+                <a href="./list" class="text-white hover:text-blue-300">全部列表</a> &gt;
+                <span>Wisconsin</span> &gt;
+                <span>Milwaukee</span> &gt;
+                <span>Milwaukee</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- 照片墙模块 -->
+            <div class="w-full md:w-1/2">
+                <img id="mainImage" src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/joseph_edward_antczak_1.jpg" alt="Joseph Edward Antczak" class="w-full h-auto rounded-lg shadow-md">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/joseph_edward_antczak_1.jpg" alt="Joseph Edward Antczak" class="w-full h-auto rounded-lg shadow-md cursor-pointer" onclick="changeMainImage(this.src)">
+                </div>
+            </div>
+
+            <!-- 基本信息模块 -->
+            <div class="w-full md:w-1/2">
+                <h1 class="text-3xl font-bold mb-2">Joseph Edward Antczak</h1>
+                <p class="text-2xl font-semibold mb-4">64岁</p>
+                <ul class="list-disc pl-6">
+                    <li><strong>性别:</strong> 男</li>
+                    <li><strong>籍贯:</strong> 美国威斯康星州密尔沃基市</li>
+                    <li><strong>身高:</strong> 165cm</li>
+                    <li><strong>体重:</strong> 54kg</li>
+                    <li><strong>血型:</strong> 未知</li>
+                    <li><strong>失踪日期:</strong> <strong>1984年5月12日</strong></li>
+                    <li><strong>失踪地点:</strong> <strong>威斯康星州密尔沃基市</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- 案件详情模块 -->
+            <div class="w-full md:w-1/2">
+                <h2 class="text-2xl font-bold mb-4">案件详情</h2>
+                <p><strong>最后出现时间:</strong> 1984年5月12日</p>
+                <p><strong>失踪地点:</strong> 威斯康星州密尔沃基市</p>
+                <p><strong>失踪时的穿着:</strong> 条纹衬衫、棕色尼龙头套衫或三季长度的绿色绗缝夹克、深蓝色工作裤和黑色皮鞋。</p>
+                <p><strong>其他特征:</strong> 白色男性，灰色头发，蓝色眼睛。Antczak 可能使用 Stephens 和/或 Stevens 作为姓氏。他的右腿比左腿短，因为髋关节置换手术而跛行。他有以下纹身：胸上的鹰、一只手臂上的马蹄铁和另一只手臂上的穿高跟鞋的女人。Antczak 戴黑色圆框眼镜。</p>
+                <p><strong>失踪时携带物品:</strong> 可能携带200美元现金和一个装有剃须刀和额外衣物的包。</p>
+                <p><strong>失踪时的状态:</strong> 从未被再次听到消息。</p>
+            </div>
+
+            <!-- AI分析报告模块 -->
+            <div class="w-full md:w-1/2">
+                <h2 class="text-2xl font-bold mb-4">AI分析报告</h2>
+                <h3 class="text-xl font-semibold mb-2">案件画像概览</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>身份标签:</strong> Joseph Edward Antczak, 64岁, 失踪41年</li>
+                    <li><strong>生理显著特征:</strong> 左臂玫瑰纹身、戴眼镜、行走步态异常</li>
+                    <li><strong>状态评估:</strong> 危险等级高</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-2">时空矛盾点分析</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>消失环境:</strong> 繁华街区，但目击证言缺失</li>
+                    <li><strong>生活稳定性偏离:</strong> 社交、财务、心理状态不支持主动消失</li>
+                    <li><strong>关键窗口期:</strong> 1984年5月12日至发现失踪</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-2">潜在风险因素评分</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>环境风险:</strong> 无明显高风险环境</li>
+                    <li><strong>医疗风险:</strong> 无已知疾病</li>
+                    <li><strong>外部侵害:</strong> 无明显第三方卷入迹象</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-2">调查突破口建议</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>DNA/法医建议:</strong> 核对NamUs数据库中带有特定纹身的无名尸体</li>
+                    <li><strong>数字足迹:</strong> 检查1984年的信用卡记录、社交媒体或寻呼机记录</li>
+                    <li><strong>物理搜索建议:</strong> 加强对特定地理特征的搜索</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-2">类似案件关联</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>地理关联:</strong> 同一地区存在失踪手法相似的案例</li>
+                    <li><strong>人口统计学关联:</strong> 存在针对特定职业、年龄段人群的规律性事件</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mb-2">法律与免责声明</h3>
+                <p>此报告由AI基于公开数据生成，仅供参考，不代表官方结论，也不应替代警方的专业调查。官方报案电话: 414-935-7502</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-blue-500 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">动态线索与操作</h3>
+                <p>案件调查最新进度时间轴: 2026年1月7日</p>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">线索举报</button>
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2">生成寻人海报</button>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-2">联系信息</h3>
+                <p>负责该案件的民警: 414-935-7502</p>
+                <p>家属紧急联系电话: 未提供</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src;
+        }
+    </script>
+</body>
+</html>

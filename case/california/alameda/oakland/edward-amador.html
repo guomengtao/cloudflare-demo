@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=PlusJakartaSans:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <title>Edward Amador - The Charley Project</title>
+  <style>
+    body {
+      font-family: 'PlusJakartaSans', sans-serif;
+      background-color: #f8fafc;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .image-container {
+      grid-column: span 4;
+    }
+
+    .card {
+      background-color: #0f172a;
+      color: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      animation: pulse 1s ease infinite;
+    }
+
+    @keyframes pulse {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .card-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header {
+      font-size: 18px;
+    }
+
+    .card-content .date-time {
+      font-size: 14px;
+    }
+
+    .card-content .ai-info {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Edward Amador - The Charley Project</h1>
+
+  <!-- Image container -->
+  <div class="image-container">
+    <img
+      src="http://charleyproject.org/wp-content/uploads/2017/10/amador_edward.jpg"
+      alt="Edward Amador"
+    />
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+    <div class="card-content">
+      <h2 class="card-header">Case Information</h2>
+      <p class="card-content__date-time">Last Updated: May 2, 2018</p>
+      <div class="card-content__ai-info">
+        AI Analysis: HIGH RISK
+        <br />
+        <span>Last seen leaving work in Oakland, California on February 10, 1986.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <div class="grid-item">
+      <h2>About</h2>
+      <p>Edward Amador was last seen on February 10, 1986, in Oakland, California. He was classified as a missing person.</p>
+    </div>
+    <div class="grid-item">
+      <h2>Details</h2>
+      <ul>
+        <li>Age: 20</li>
+        <li>Height: 6'0, 140 pounds</li>
+        <li>Hair: Black</li>
+        <li>Eyes: Brown</li>
+      </ul>
+    </div>
+    <div class="grid-item">
+      <h2>Case Status</h2>
+      <p>Unsolved</p>
+    </div>
+  </div>
+
+  <script>
+    // Replace with your desired animation duration
+    const animationDuration = 1000;
+  </script>
+</body>
+</html>

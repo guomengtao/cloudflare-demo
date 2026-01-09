@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharon Rose Apgar 案例 - 失踪人员查找</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-blue-500 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./" class="text-xl font-bold">失踪人员查找</a>
+            <div class="breadcrumb">
+                <span><a href="./" class="hover:underline">首页</a></span> <span>&gt;</span> <span><a href="./list" class="hover:underline">全部列表</a></span> <span>&gt;</span> <span>Kentucky</span> <span>&gt;</span> <span>Jefferson County</span> <span>&gt;</span> <span>Fort Mitchell</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container mx-auto mt-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold">Sharon Rose Apgar</h1>
+            <p class="text-2xl mt-2">当前年龄: 33岁</p>
+        </header>
+
+        <div class="flex flex-wrap -mx-4">
+            <div class="w-full md:w-1/2 px-4 mb-8">
+                <div class="relative">
+                    <img id="mainImage" src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/sharon_rose_apgar_1.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg shadow-md">
+                    <div class="grid grid-cols-3 gap-4 mt-4">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/sharon_rose_apgar_1.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/sharon_rose_apgar_2.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/sharon_rose_apgar_3.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/sharon_rose_apgar_4.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/apgar_sharon5.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/apgar_sharon6.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/apgar_sharon7.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/apgar_sharon8.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/apgar_sharon9.jpg" alt="Sharon Rose Apgar" class="w-full rounded-lg cursor-pointer hover:opacity-75" onclick="changeImage(this.src)">
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-4">
+                <ul class="list-disc pl-6">
+                    <li><strong>性别:</strong> 女性</li>
+                    <li><strong>籍贯:</strong> 白人</li>
+                    <li><strong>身高:</strong> 160 - 168 cm</li>
+                    <li><strong>体重:</strong> 45 kg</li>
+                    <li><strong>血型:</strong> 未提供</li>
+                    <li><strong>失踪日期:</strong> <strong>1999年11月19日</strong></li>
+                    <li><strong>失踪地点:</strong> <strong>Kentucky, Fort Mitchell</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap -mx-4">
+            <div class="w-full md:w-1/2 px-4 mb-8">
+                <h2 class="text-3xl font-bold mb-4">案件详情</h2>
+                <p><strong>失踪时的穿着打扮:</strong> 长袖猎绿色毛衣，蓝色牛仔裤，黑色作战靴，手指上可能戴着几个戒指，包括一枚金色马蹄铁戒指和一枚镶嵌大粉色宝石的戒指。</p>
+                <p><strong>失踪时携带物品:</strong> 未提供具体信息。</p>
+                <p><strong>语言口音:</strong> 未提供具体信息。</p>
+                <p><strong>行走姿态:</strong> 未提供具体信息。</p>
+                <p><strong>特殊疾病:</strong> 曾有处方药物成瘾史，但失踪时处于戒毒中。</p>
+            </div>
+            <div class="w-full md:w-1/2 px-4">
+                <h2 class="text-3xl font-bold mb-4">AI分析报告</h2>
+                <h3 class="text-2xl font-semibold mb-2">案件画像概览</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>身份标签:</strong> Sharon Rose Apgar, 33岁, 失踪时长27年</li>
+                    <li><strong>生理显著特征:</strong> 左胸玫瑰纹身，右肩心形带丝带纹身，右腕疤痕，右小腿烧伤疤痕，戴眼镜</li>
+                    <li><strong>状态评估:</strong> 高危失踪 (Endangered Missing)</li>
+                </ul>
+                <h3 class="text-2xl font-semibold mb-2">时空矛盾点分析</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>消失环境:</strong> 繁华街区与目击证言缺失存在矛盾</li>
+                    <li><strong>生活稳定性偏离:</strong> 社交、财务、心理状态不支持主动消失</li>
+                    <li><strong>关键窗口期:</strong> 1999年11月18日至1999年11月19日</li>
+                </ul>
+                <h3 class="text-2xl font-semibold mb-2">潜在风险因素评分</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>环境风险:</strong> 靠近繁华街区，可能存在安全风险</li>
+                    <li><strong>医疗风险:</strong> 曾有药物成瘾史，需注意心理健康问题</li>
+                    <li><strong>外部侵害:</strong> 可能存在第三方卷入的迹象</li>
+                </ul>
+                <h3 class="text-2xl font-semibold mb-2">调查突破口建议</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>DNA/法医建议:</strong> 核对NamUs数据库中带有特定纹身的无名尸体</li>
+                    <li><strong>数字足迹:</strong> 检查1999年的信用卡记录、社交媒体或寻呼机记录</li>
+                    <li><strong>物理搜索建议:</strong> 加强对附近区域的声呐扫描</li>
+                </ul>
+                <h3 class="text-2xl font-semibold mb-2">类似案件关联</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>地理关联:</strong> 同一地区存在失踪手法相似的案例</li>
+                    <li><strong>人口统计学关联:</strong> 存在针对特定职业、年龄段人群的规律性事件</li>
+                </ul>
+                <h3 class="text-2xl font-semibold mb-2">法律与免责声明</h3>
+                <p>此报告由AI基于公开数据生成，仅供参考，不代表官方结论，也不应替代警方的专业调查。如需更多信息，请联系官方报案电话: 513-732-7545。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-blue-500 p-4 text-white mt-12">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h3 class="font-bold mb-2">案件调查最新进度</h3>
+                <p>最后更新: 2015年10月12日</p>
+            </div>
+            <div>
+                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded mr-4">线索举报</button>
+                <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">生成寻人海报</button>
+            </div>
+            <div>
+                <h3 class="font-bold mb-2">联系方式</h3>
+                <p>负责民警: 513-732-7545</p>
+                <p>家属紧急联系: 未提供</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+        }
+    </script>
+</body>
+</html>

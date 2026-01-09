@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matthew Glen Anderson - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .animate-pulse { animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center space-x-4">
+                <a href="/" class="text-[#0f172a] font-bold">美国失踪人员信息中心</a>
+                <div class="text-sm text-gray-600">
+                    <a href="/" class="text-[#0f172a] hover:text-blue-700">首页</a> » 
+                    <a href="/list" class="text-[#0f172a] hover:text-blue-700">全部列表</a> » 
+                    <a href="/state/California" class="text-[#0f172a] hover:text-blue-700">California</a> » 
+                    <a href="/county/null" class="text-[#0f172a] hover:text-blue-700">未指定县</a> » 
+                    <a href="/city/Roseville" class="text-[#0f172a] hover:text-blue-700">Roseville</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-12 gap-8">
+            <!-- 左侧列 -->
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/matthew_glen_anderson_1.jpg" 
+                     alt="Matthew Glen Anderson" 
+                     class="rounded-[2rem] shadow-2xl w-full mb-6">
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-[#0f172a] mb-2">快速信息</h3>
+                    <dl class="space-y-2">
+                        <dt class="text-sm text-gray-600">失踪日期</dt>
+                        <dd class="text-blue-700">1996年6月1日</dd>
+                        <dt class="text-sm text-gray-600">年龄</dt>
+                        <dd class="text-blue-700">30岁</dd>
+                        <dt class="text-sm text-gray-600">性别</dt>
+                        <dd class="text-blue-700">男</dd>
+                        <dt class="text-sm text-gray-600">身高</dt>
+                        <dd class="text-blue-700">5'9</dd>
+                        <dt class="text-sm text-gray-600">体重</dt>
+                        <dd class="text-blue-700">115 - 165磅</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- 右侧列 -->
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold text-[#0f172a] mb-6">Matthew Glen Anderson</h1>
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg mb-6">
+                    <div class="space-y-4">
+                        <p class="text-red-600 font-bold">失踪地点: Roseville, California</p>
+                        <p class="text-gray-600">Matthew最后一次出现是在1996年6月1日晚上7点，位于Roseville的1900 South Cirby Way附近。</p>
+                        <p class="text-gray-600">他是一名发育障碍者，最后一次被看到时穿着面部化妆品。</p>
+                        <p class="text-gray-600">案件编号: matthew-glen-anderson</p>
+                    </div>
+                </div>
+
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h2 class="text-xl font-bold text-[#0f172a] mb-4">AI风险分析</h2>
+                    <div class="space-y-4">
+                        <div class="bg-red-100 p-2 rounded">
+                            <div class="text-center text-red-600 font-bold animate-pulse">HIGH RISK</div>
+                            <div class="h-2 bg-red-600 w-full"></div>
+                        </div>
+                        <div class="bg-yellow-100 p-2 rounded">
+                            <div class="text-center text-yellow-600 font-bold animate-pulse">ELEVATED RISK</div>
+                            <div class="h-2 bg-yellow-600 w-1/2"></div>
+                        </div>
+                        <div class="bg-blue-100 p-2 rounded">
+                            <div class="text-center text-blue-600 font-bold animate-pulse">ONGOING RISK</div>
+                            <div class="h-2 bg-blue-600 w-1/4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

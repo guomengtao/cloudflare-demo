@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gail Evon Anderson - 失踪人员信息</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .backdrop-blur-sm { backdrop-filter: blur(4px); }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-bold text-[#0f172a]">失踪人员信息网</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="/" class="text-gray-600">首页</a>
+                    <span class="mx-2">»</span>
+                    <a href="/list" class="text-gray-600">全部列表</a>
+                    <span class="mx-2">»</span>
+                    <a href="/state/Oklahoma" class="text-gray-600">Oklahoma</a>
+                    <span class="mx-2">»</span>
+                    <a href="/county/Stephens" class="text-gray-600">Stephens County</a>
+                    <span class="mx-2">»</span>
+                    <a href="/city/Duncan" class="text-gray-600">Duncan</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8">
+            <!-- 左侧栏 -->
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/gail_evon_anderson_1.jpg" 
+                     class="rounded-[2rem] shadow-2xl w-full mb-6">
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-[#0f172a] mb-4">特征速查</h3>
+                    <ul class="space-y-3">
+                        <li>女性，白人</li>
+                        <li>身高4'11，体重120磅</li>
+                        <li>绿眼，浅棕发</li>
+                        <li>右肩玫瑰纹身</li>
+                        <li>耳洞</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧栏 -->
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold text-[#0f172a] mb-8">Gail Evon Anderson</h1>
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-red-600 font-bold mb-2">失踪时间</p>
+                            <p class="text-lg">2004年10月23日</p>
+                        </div>
+                        <div>
+                            <p class="text-blue-700 font-bold mb-2">失踪地点</p>
+                            <p class="text-lg">Duncan, Oklahoma</p>
+                        </div>
+                        <div>
+                            <p class="text-red-600 font-bold mb-2">分类</p>
+                            <p class="text-lg">高度危险</p>
+                        </div>
+                        <div>
+                            <p class="text-blue-700 font-bold mb-2">出生日期</p>
+                            <p class="text-lg">1975年4月14日</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold text-[#0f172a] mb-4">案件详情</h2>
+                    <p class="text-gray-700">Gail于2004年10月23日晚上在Duncan的住所最后一次出现。她借了一辆汽车计划周末去看望母亲，但离开后未再联系任何人。她的男友表示当时他在洗澡，出来后发现她已经离开，但车辆仍在车道上，钥匙却不见踪影。</p>
+                </div>
+
+                <div class="mt-8 bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h2 class="text-2xl font-bold text-[#0f172a] mb-4">AI风险分析</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                <div class="bg-red-600 h-2 rounded-full animate-pulse" style="width: 80%"></div>
+                            </div>
+                            <span class="text-red-600 font-bold ml-4">HIGH RISK</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

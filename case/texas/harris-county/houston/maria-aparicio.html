@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maria Aparicio 案件详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <nav class="bg-blue-600 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./" class="text-lg font-bold">首页</a>
+            <div class="text-sm">
+                <a href="./" class="hover:underline">首页</a> &gt;
+                <a href="./list" class="hover:underline">全部列表</a> &gt;
+                Texas &gt;
+                Harris County &gt;
+                Houston
+            </div>
+        </div>
+    </nav>
+
+    <section class="container mx-auto mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 照片墙模块 -->
+            <div class="border p-4 bg-white rounded shadow-md">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2020/11/aparicio_maria.jpg" alt="Maria Aparicio" class="w-full h-auto rounded mb-4">
+                <div class="grid grid-cols-2 gap-2">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2020/11/aparicio_maria.jpg" alt="Maria Aparicio" class="w-full h-auto rounded cursor-pointer" onclick="changeImage(this.src)">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2020/11/aparicio_maria.jpg" alt="Maria Aparicio" class="w-full h-auto rounded cursor-pointer" onclick="changeImage(this.src)">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2020/11/aparicio_maria.jpg" alt="Maria Aparicio" class="w-full h-auto rounded cursor-pointer" onclick="changeImage(this.src)">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2020/11/aparicio_maria.jpg" alt="Maria Aparicio" class="w-full h-auto rounded cursor-pointer" onclick="changeImage(this.src)">
+                </div>
+            </div>
+
+            <!-- 基本信息模块 -->
+            <div class="border p-4 bg-white rounded shadow-md">
+                <h2 class="text-3xl font-bold mb-2">Maria Aparicio</h2>
+                <p class="text-xl font-semibold mb-4">当前年龄: 85岁</p>
+                <ul class="list-disc pl-6">
+                    <li><strong>性别:</strong> 女性</li>
+                    <li><strong>籍贯:</strong> 西班牙裔</li>
+                    <li><strong>身高:</strong> 160cm</li>
+                    <li><strong>体重:</strong> 54kg</li>
+                    <li><strong>血型:</strong> 未提供</li>
+                    <li><strong>失踪日期:</strong> <span class="font-bold">2017年7月31日</span></li>
+                    <li><strong>失踪地点:</strong> <span class="font-bold">休斯顿市, 德克萨斯州</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto mt-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 案件详情模块 -->
+            <div class="border p-4 bg-white rounded shadow-md">
+                <h3 class="text-2xl font-bold mb-4">案件详情</h3>
+                <p>Maria Aparicio 最后一次被看到是在 2017年7月31日上午11:30 在德克萨斯州休斯顿市布鲁克公园路14700街区步行。她穿着一件连衣裙，留着红色头发，棕色眼睛，耳朵打孔。</p>
+                <p>从那以后，她再也没有被听到任何消息。案件中提供的细节很少。</p>
+                <p>调查机构: 德克萨斯公共安全部门<br>联系电话: 800-346-3243</p>
+            </div>
+
+            <!-- AI分析报告模块 -->
+            <div class="border p-4 bg-white rounded shadow-md">
+                <h3 class="text-2xl font-bold mb-4">AI分析报告</h3>
+                <h4 class="text-xl font-semibold mb-2">案件画像概览</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>身份标签:</strong> Maria Aparicio, 85岁, 失踪1年</li>
+                    <li><strong>生理显著特征:</strong> 红色头发, 棕色眼睛, 耳朵打孔</li>
+                    <li><strong>状态评估:</strong> 危险等级: 高</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">时空矛盾点分析</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>消失环境:</strong> 繁华街区 vs 目击证言缺失</li>
+                    <li><strong>生活稳定性偏离:</strong> 社交、财务、心理状态支持其主动消失的可能性低</li>
+                    <li><strong>关键窗口期:</strong> 2017年7月31日至发现失踪</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">潜在风险因素评分</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>环境风险:</strong> 附近无明显水域、极端天气、施工地带</li>
+                    <li><strong>医疗风险:</strong> 无已知疾病</li>
+                    <li><strong>外部侵害:</strong> 可能存在第三方卷入的迹象</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">调查突破口建议</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>DNA/法医建议:</strong> 核对 NamUs 数据库中带有特定特征的无名尸体</li>
+                    <li><strong>数字足迹:</strong> 检查信用卡记录、社交媒体或寻呼机记录</li>
+                    <li><strong>物理搜索建议:</strong> 加强声呐扫描等</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">类似案件关联</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>地理关联:</strong> 同一地区存在失踪手法相似的案例</li>
+                    <li><strong>人口统计学关联:</strong> 存在针对特定职业、年龄段人群的规律性事件</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">法律与免责声明</h4>
+                <p>此报告由 AI 基于公开数据生成，仅供参考，不代表官方结论，也不应替代警方的专业调查。官方报案电话: 800-346-3243</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8 mt-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <div>
+                <h4 class="text-xl font-bold mb-2">动态线索与操作</h4>
+                <p>案件调查最新进度时间轴: 未提供</p>
+            </div>
+            <div class="space-y-2">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">线索举报</button>
+                <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">生成寻人海报</button>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-2">联系信息</h4>
+                <p>负责该案件的民警: 800-346-3243</p>
+                <p>家属紧急联系电话: 未提供</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function changeImage(src) {
+            document.querySelector('.grid-cols-1 img:first-child').src = src;
+        }
+    </script>
+</body>
+</html>

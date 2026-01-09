@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christopher E. Andersen - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-[#0f172a] text-white py-4 px-8">
+        <div class="flex items-center space-x-4">
+            <a href="./" class="hover:text-blue-400">首页</a>
+            <span class="text-gray-400">»</span>
+            <a href="./list" class="hover:text-blue-400">全部列表</a>
+            <span class="text-gray-400">»</span>
+            <a href="./state/nebraska" class="hover:text-blue-400">Nebraska</a>
+            <span class="text-gray-400">»</span>
+            <a href="./county/douglas" class="hover:text-blue-400">Douglas County</a>
+            <span class="text-gray-400">»</span>
+            <a href="./city/omaha" class="hover:text-blue-400">Omaha</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-12 px-8">
+        <div class="grid grid-cols-12 gap-8">
+            <!-- 左侧栏 -->
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2018/04/andersen_christopher.jpg" 
+                     alt="Christopher E. Andersen" 
+                     class="rounded-[2rem] shadow-2xl w-full">
+                
+                <div class="mt-6 bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-[#0f172a]">基本信息</h3>
+                    <div class="mt-4 space-y-3">
+                        <div><span class="text-gray-600">性别:</span> 男性</div>
+                        <div><span class="text-gray-600">年龄:</span> 54岁</div>
+                        <div><span class="text-gray-600">身高:</span> 5'11</div>
+                        <div><span class="text-gray-600">体重:</span> 160磅</div>
+                        <div><span class="text-gray-600">外貌:</span> 灰发，棕色眼睛</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧栏 -->
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold text-[#0f172a] mb-8">Christopher E. Andersen</h1>
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <div class="space-y-6">
+                        <div class="text-red-600 font-bold">失踪时间: 2016年7月17日</div>
+                        <div class="text-red-600 font-bold">失踪地点: 内布拉斯加州奥马哈市</div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold text-[#0f172a] mb-4">案件详情</h2>
+                    <div class="space-y-4 text-gray-700">
+                        <p>Andersen于2016年7月17日在奥马哈市最后被见到，此后再也没有任何音讯。</p>
+                        <p>案件编号: christopher-e-andersen</p>
+                        <p>调查机构: 奥马哈警察局 402-444-5818</p>
+                    </div>
+                </div>
+
+                <!-- AI分析部分 -->
+                <div class="mt-8 bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h2 class="text-2xl font-bold text-[#0f172a] mb-4">AI风险评估</h2>
+                    <div class="space-y-4">
+                        <div class="bg-red-100 h-4 rounded-full overflow-hidden">
+                            <div class="w-3/4 h-full animate-pulse">
+                                <span class="text-red-600 font-bold">HIGH RISK</span>
+                            </div>
+                        </div>
+                        <div class="bg-blue-100 h-4 rounded-full overflow-hidden">
+                            <div class="w-1/4 h-full animate-pulse">
+                                <span class="text-blue-700 font-bold">UNKNOWN</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 来源信息 -->
+        <div class="mt-12 text-sm text-gray-500">
+            <p>来源: Nebraska Missing Persons Clearinghouse</p>
+            <p>最后更新时间: 2026年1月7日</p>
+        </div>
+    </main>
+</body>
+</html>

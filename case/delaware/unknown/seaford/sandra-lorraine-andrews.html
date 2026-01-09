@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员信息 | 华人失踪数据库</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="./" class="text-xl font-bold text-blue-600">失踪人员数据库</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="./" class="text-gray-600 hover:text-blue-600">首页</a>
+                    <a href="/list" class="text-gray-600 hover:text-blue-600">全部列表</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="max-w-7xl mx-auto px-4 py-4">
+        <nav class="text-gray-600">
+            <a href="./" class="text-gray-600 hover:text-blue-600">首页</a>
+            <span class="mx-2">/</span>
+            <a href="/list" class="text-gray-600 hover:text-blue-600">全部列表</a>
+            <span class="mx-2">/</span>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Delaware</a>
+            <span class="mx-2">/</span>
+            <a href="#" class="text-gray-600 hover:text-blue-600">Seaford</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-600">Sandra Lorraine Andrews</span>
+        </nav>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- 失踪人员信息卡片 -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- 照片轮播 -->
+                <div class="w-full md:w-1/3">
+                    <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/andrews_sandra.jpg" alt="Sandra Lorraine Andrews" class="rounded-lg max-h-64 mx-auto">
+                    </div>
+                </div>
+                
+                <!-- 基本信息 -->
+                <div class="w-full md:w-2/3">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-4">Sandra Lorraine Andrews</h1>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-600">失踪时间</p>
+                            <p class="text-gray-800 font-medium">1990年11月16日</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-600">年龄</p>
+                            <p class="text-gray-800 font-medium">44岁</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-600">身高</p>
+                            <p class="text-gray-800 font-medium">5'8" (173cm)</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-600">体重</p>
+                            <p class="text-gray-800 font-medium">133磅 (60kg)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 案件详情 -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">案件详情</h2>
+            <div class="space-y-4">
+                <p class="text-gray-600">Sandra最后一次出现是在1990年11月16日晚上11:15，从Seaford的Methodist Manor Home护理工作下班后离开。</p>
+                <p class="text-gray-600">她的白色或米色1985年Mercury Cougar汽车（棕色车顶）在失踪次日凌晨4点被发现，停在Route 13北侧的存储建筑后方。</p>
+                <p class="text-gray-600">车内发现她的钱包和其他物品散落在驾驶座旁，车钥匙留在后备箱盖上。</p>
+            </div>
+        </div>
+
+        <!-- AI分析报告 -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">AI分析报告</h2>
+            <div class="space-y-6">
+                <!-- 案件画像概览 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">案件画像概览</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li class="text-gray-600">身份标签：Sandra Lorraine Andrews，女性，白人，44岁</li>
+                        <li class="text-gray-600">生理特征：黑发，棕色眼睛，腹部中央有疤痕</li>
+                        <li class="text-gray-600">状态评估：Endangered Missing（高风险失踪）</li>
+                    </ul>
+                </div>
+
+                <!-- 时空矛盾点分析 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">时空矛盾点分析</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li class="text-gray-600">消失环境：护理工作地点附近，周边监控缺失</li>
+                        <li class="text-gray-600">生活稳定性：离婚后复婚，家庭关系稳定</li>
+                        <li class="text-gray-600">关键窗口期：失踪后48小时为黄金搜索期</li>
+                    </ul>
+                </div>
+
+                <!-- 其他分析部分（略，可根据需求扩展） -->
+            </div>
+        </div>
+    </main>
+
+    <!-- 法律免责声明 -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="bg-gray-100 rounded-lg p-4">
+            <p class="text-sm text-gray-600">
+                声明：此报告由AI基于公开数据生成，仅供参考。失踪人员的最终认定需以警方调查结果为准。如发现任何线索，请立即联系当地警方。
+            </p>
+        </div>
+    </div>
+</body>
+</html>

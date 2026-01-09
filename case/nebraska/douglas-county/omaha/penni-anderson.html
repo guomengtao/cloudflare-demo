@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻找Penni Anderson - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-[#0f172a] font-bold text-xl">失踪人员信息中心</a>
+                </div>
+                <div class="hidden md:flex md:space-x-8">
+                    <a href="/" class="text-gray-600 hover:text-[#0f172a]">首页</a>
+                    <a href="/list" class="text-gray-600 hover:text-[#0f172a]">全部列表</a>
+                    <a href="/state/nebraska" class="text-gray-600 hover:text-[#0f172a]">Nebraska</a>
+                    <a href="/county/douglas" class="text-gray-600 hover:text-[#0f172a]">Douglas County</a>
+                    <a href="/city/omaha" class="text-gray-600 hover:text-[#0f172a]">Omaha</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+            <!-- 左侧列 -->
+            <div class="md:col-span-4">
+                <div class="bg-[#0f172a] p-6 rounded-lg">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2019/06/anderson_penni.jpg" 
+                         alt="Penni Anderson" 
+                         class="w-full rounded-[2rem] shadow-2xl mb-6">
+                    <div class="bg-white/80 backdrop-blur-sm p-4 rounded-lg border border-slate-200">
+                        <h3 class="text-xl font-bold text-[#0f172a] mb-2">快速特征</h3>
+                        <ul class="text-gray-600 space-y-2">
+                            <li>白人女性</li>
+                            <li>42岁</li>
+                            <li>5'0 / 150磅</li>
+                            <li>棕色头发，绿色眼睛</li>
+                            <li>耳钉</li>
+                            <li>最后 seen in 2018年5月13日</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧列 -->
+            <div class="md:col-span-8">
+                <div class="bg-white/80 backdrop-blur-sm p-8 rounded-lg border border-slate-200">
+                    <h1 class="text-3xl font-bold text-[#0f172a] mb-4">Penni Anderson</h1>
+                    <div class="mb-6">
+                        <p class="text-red-600 font-bold text-xl mb-2">失踪状态：未解决</p>
+                        <p class="text-blue-700 font-semibold">失踪地点：Omaha, Nebraska</p>
+                        <p class="text-gray-600">失踪时间：2018年5月13日</p>
+                    </div>
+
+                    <!-- 时间轴 -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-[#0f172a] mb-4">案件时间轴</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <span class="w-2 h-8 bg-[#0f172a] rounded-full mr-4"></span>
+                                <span class="text-gray-600">2018年5月13日 - 最后 seen in Omaha</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-2 h-8 bg-[#0f172a] rounded-full mr-4"></span>
+                                <span class="text-gray-600">2019年6月7日 - 案件文件更新</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI分析 -->
+                    <div class="bg-red-50 p-6 rounded-lg">
+                        <h2 class="text-2xl font-bold text-red-600 mb-4">AI风险分析</h2>
+                        <div class="flex items-center">
+                            <div class="bg-red-100 h-8 w-full rounded-full overflow-hidden">
+                                <div class="bg-red-600 h-full w-3/4 animate-pulse"></div>
+                                <span class="absolute top-1/2 left-2 text-white font-bold">HIGH RISK</span>
+                            </div>
+                        </div>
+                        <p class="text-red-600 mt-2">案件复杂度：高度复杂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

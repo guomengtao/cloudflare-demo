@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniela Jasmin Amaro - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <!-- 导航栏 -->
+    <nav class="bg-[#0f172a] text-white py-4 px-8">
+        <div class="flex justify-between items-center">
+            <a href="/" class="text-xl font-bold hover:text-blue-400">美国失踪人员信息中心</a>
+            <div class="space-x-4">
+                <a href="/" class="hover:text-blue-400">首页</a>
+                <a href="/list" class="hover:text-blue-400">全部列表</a>
+                <a href="/state/Colorado" class="hover:text-blue-400">Colorado</a>
+                <a href="/county/Denver" class="hover:text-blue-400">Denver</a>
+                <a href="/city/Denver" class="hover:text-blue-400">Denver</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 面包屑导航 -->
+    <div class="px-8 py-4">
+        <nav class="text-sm text-slate-600">
+            <a href="/" class="hover:text-blue-600">首页</a> » 
+            <a href="/list" class="hover:text-blue-600">全部列表</a> » 
+            <a href="/state/Colorado" class="hover:text-blue-600">Colorado</a> » 
+            <a href="/county/Denver" class="hover:text-blue-600">Denver</a> » 
+            <a href="/city/Denver" class="hover:text-blue-600">Denver</a>
+        </nav>
+    </div>
+
+    <main class="container mx-auto px-8 py-12">
+        <div class="grid grid-cols-12 gap-8">
+            <!-- 左侧列：照片和特征速查 -->
+            <div class="col-span-4 space-y-8">
+                <!-- 处理过的照片 -->
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2018/10/amaro_daniela.jpg" 
+                     class="rounded-[2rem] shadow-2xl w-full">
+                
+                <!-- 特征速查卡片 -->
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h3 class="text-lg font-semibold text-[#0f172a]">特征速查</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li class="text-sm text-slate-700">女性，29岁</li>
+                        <li class="text-sm text-slate-700">身高：5'3 - 5'4</li>
+                        <li class="text-sm text-slate-700">体重：150 - 160磅</li>
+                        <li class="text-sm text-slate-700">黑发，棕色眼睛</li>
+                        <li class="text-sm text-slate-700">可能使用中间名 Jasmin</li>
+                        <li class="text-sm text-red-600 font-medium">精神疾病史</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧列：主内容 -->
+            <div class="col-span-8">
+                <!-- 主标题 -->
+                <h1 class="text-3xl font-bold text-[#0f172a] mb-6">Daniela Jasmin Amaro</h1>
+
+                <!-- 时间轴 -->
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg mb-8">
+                    <div class="timeline">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-red-600 rounded-full mr-4"></div>
+                            <div class="text-sm text-slate-700">2017年10月6日</div>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-blue-700 rounded-full mr-4"></div>
+                            <div class="text-sm text-slate-700">2017年10月7日</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-[#0f172a] rounded-full mr-4"></div>
+                            <div class="text-sm text-slate-700">2018年10月29日</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 案件详情 -->
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h2 class="text-xl font-semibold text-[#0f172a] mb-4">案件详情</h2>
+                    <p class="text-sm text-slate-700 mb-4">Daniela于2017年10月6日在Denver的家中最后一次被见到。次日，她的车辆被发现遗弃在North Las Vegas的215 Beltway附近。尽管两地警方进行了广泛搜索，至今仍未发现她的下落。</p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <span class="text-red-600 font-medium mr-2">⚠️ 高风险</span>
+                            <span class="text-sm text-slate-600 animate-pulse">HIGH RISK - 未携带必要药物</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-blue-700 font-medium mr-2">🔍 最新进展</span>
+                            <span class="text-sm text-slate-600">案件正在由Denver和North Las Vegas警方联合调查</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 版权信息 -->
+    <footer class="bg-[#0f172a] text-white py-8 px-8 mt-12">
+        <div class="container mx-auto text-center text-sm">
+            <p>© 2026 美国失踪人员信息中心 | 数据来源：The Charley Project</p>
+            <p class="mt-2"> DISCLAIMER: 本站信息仅供参考，最终以官方发布为准</p>
+        </div>
+    </footer>
+</body>
+</html>

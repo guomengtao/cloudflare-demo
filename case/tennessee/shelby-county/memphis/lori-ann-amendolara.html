@@ -1,0 +1,119 @@
+<!DOCTYPE html>和<html>标签，包含<head>部分，引入Tailwind和字体。然后是<body>，设置背景颜色。导航栏使用面包屑，链接到相应页面。主内容部分用grid布局，左侧放图片和特征卡片，右侧放标题、时间轴和分析报告。
+
+在左侧，我选择第一张图片作为主要照片，添加圆角和阴影。特征卡片使用半透明背景和边框，列出关键信息。右侧部分，标题突出显示，时间轴用时间点展示，分析报告部分包括风险等级和特征描述。
+
+风险等级部分，我使用红色背景，闪烁动画，显示“高风险”。特征部分用颜色标注，突出显示。底部版权声明，保持简洁。
+
+最后，检查所有链接是否正确，确保图片URL经过处理，内容无占位符，样式符合Tailwind规范。完成这些步骤后，生成最终的HTML代码。
+</think>
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lori Ann Amendolara - 失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center space-x-4 py-4">
+                <a href="/" class="text-[#0f172a] font-bold">失踪人员信息中心</a>
+                <div class="text-sm text-gray-500">
+                    <a href="/" class="text-gray-500 hover:text-gray-700">首页</a>
+                    <span class="mx-2">›</span>
+                    <a href="/list" class="text-gray-500 hover:text-gray-700">全部列表</a>
+                    <span class="mx-2">›</span>
+                    <span class="text-gray-500">Tennessee</span>
+                    <span class="mx-2">›</span>
+                    <span class="text-gray-500">Shelby County</span>
+                    <span class="mx-2">›</span>
+                    <span class="text-gray-500">Memphis</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-12 gap-8">
+            <!-- 左侧栏 -->
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2020/01/amendolara_lori.jpg" 
+                     alt="Lori Ann Amendolara" 
+                     class="w-full rounded-[2rem] shadow-2xl mb-6">
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h3 class="text-[#0f172a] font-bold text-lg mb-4">特征速查</h3>
+                    <ul class="space-y-2">
+                        <li class="text-blue-700">女性，白色</li>
+                        <li class="text-blue-700">棕色头发，蓝眼睛</li>
+                        <li class="text-blue-700">戴眼镜</li>
+                        <li class="text-blue-700">双臂有大面积彩绘纹身</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧栏 -->
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold text-[#0f172a] mb-8">Lori Ann Amendolara</h1>
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <div class="mb-6">
+                        <p class="text-red-600 font-bold mb-2">失踪时间：2018年9月1日</p>
+                        <p class="text-red-600 font-bold">失踪地点：Memphis, Tennessee</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-xl font-bold text-[#0f172a] mb-4">案件时间轴</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="w-2 h-8 bg-[#0f172a] mr-4"></div>
+                                <p>2017年7月：抵达Memphis</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-8 bg-[#0f172a] mr-4"></div>
+                                <p>2017年10月：因盗窃被捕</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-8 bg-red-600 mr-4"></div>
+                                <p class="font-bold">2018年9月1日：最后一次联系</p>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-2 h-8 bg-gray-400 mr-4"></div>
+                                <p>至今未收到任何消息</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-600 text-white p-4 rounded-lg animate-pulse">
+                        <h3 class="font-bold">高风险等级</h3>
+                        <p class="text-sm">案件缺乏关键信息，需引起高度重视</p>
+                    </div>
+
+                    <div class="mt-8">
+                        <h2 class="text-xl font-bold text-[#0f172a] mb-4">案件详情</h2>
+                        <p class="mb-4">Lori Ann Amendolara于2018年9月1日最后一次与外界联系后，至今杳无音讯。她于2017年7月抵达Memphis，期间生活不稳定，曾在天主教修女经营的庇护所暂住。</p>
+                        <p class="mb-4">她双臂有大面积彩绘纹身，左臂为斧头图案，右臂为未公开设计。</p>
+                        <p>Memphis警察局正在调查此案，但目前尚无重大进展。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#0f172a] text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="text-center">
+                <p>© 2026 失踪人员信息中心. 专注传递每一个重要信息.</p>
+                <p class="mt-2">请勿传播未经核实的信息，让我们一起为失踪者祈祷.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jennifer L. Andersen - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="./" class="text-[#0f172a] font-bold text-xl mr-4">美国失踪人员信息中心</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="./" class="text-gray-600 hover:text-[#0f172a]">首页</a>
+                        <a href="/list" class="text-gray-600 hover:text-[#0f172a]">全部列表</a>
+                        <a href="/state/Nebraska" class="text-gray-600 hover:text-[#0f172a]">Nebraska</a>
+                        <a href="/county/Douglas" class="text-gray-600 hover:text-[#0f172a]">Douglas</a>
+                        <a href="/city/Omaha" class="text-gray-600 hover:text-[#0f172a]">Omaha</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <!-- 左侧照片列 -->
+            <div class="md:col-span-4 space-y-6">
+                <div class="aspect-square rounded-[2rem] overflow-hidden shadow-2xl">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/jennifer_l._andersen_1.jpg" alt="Jennifer L. Andersen" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg p-6">
+                    <h3 class="text-[#0f172a] font-bold text-lg mb-4">特征速查</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li>白人女性，32岁</li>
+                        <li>身高5'7"，体重110磅</li>
+                        <li>蓝眼睛，金发</li>
+                        <li>臀部有三叶草纹身</li>
+                        <li>左眉附近有疤痕</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧内容列 -->
+            <div class="md:col-span-8">
+                <h1 class="text-[#0f172a] font-bold text-3xl mb-6">Jennifer L. Andersen</h1>
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg p-6 mb-8">
+                    <div class="flex items-center mb-4">
+                        <span class="text-red-600 font-bold mr-2">高风险失踪</span>
+                        <div class="flex-1">
+                            <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="w-full h-full bg-red-600 animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">最后失踪时间：2010年3月9日</p>
+                    <p class="text-gray-700">失踪地点：内布拉斯加州奥马哈市</p>
+                </div>
+
+                <div class="space-y-6">
+                    <h2 class="text-[#0f172a] font-bold text-xl mb-4">失踪详情</h2>
+                    <div class="space-y-4 text-gray-700">
+                        <p>Jennifer于2010年3月9日凌晨1点左右从其位于奥马哈市120th Street和Blondo Street的公寓中离开。</p>
+                        <p>她留下一张纸条，表示要开车出去，但自此再无音讯。</p>
+                        <p>她的车于3月15日被发现停在Rick's Boatyard Cafe附近，车门上锁，钱包和 purses 在车内，但没有钥匙。</p>
+                        <p>她没有使用任何信用卡或银行账户，手机也被留在家中。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-[#0f172a] text-white mt-12 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2026 美国失踪人员信息中心 - 传递希望，守护生命</p>
+        </div>
+    </footer>
+</body>
+</html>

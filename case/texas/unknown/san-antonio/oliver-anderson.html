@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oliver Anderson - 美国失踪人员信息中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-[#0f172a]">失踪人员信息中心</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="/" class="text-gray-600 hover:text-[#0f172a]">首页</a>
+                    <span class="mx-2 text-gray-400">›</span>
+                    <a href="/list" class="text-gray-600 hover:text-[#0f172a]">全部列表</a>
+                    <span class="mx-2 text-gray-400">›</span>
+                    <a href="/Texas" class="text-gray-600 hover:text-[#0f172a]">Texas</a>
+                    <span class="mx-2 text-gray-400">›</span>
+                    <a href="/San%20Antonio" class="text-gray-600 hover:text-[#0f172a]">San Antonio</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8">
+            <!-- 左侧栏 -->
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/oliver_anderson_1.jpg" 
+                     class="rounded-[2rem] shadow-2xl mx-auto mb-6">
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-bold text-[#0f172a] mb-4">快速特征</h3>
+                    <ul class="space-y-3">
+                        <li class="text-gray-600">黑人男性</li>
+                        <li class="text-gray-600">身高6'1 - 6'4</li>
+                        <li class="text-gray-600">体重190 - 200磅</li>
+                        <li class="text-gray-600">手腕和前臂有疤痕</li>
+                        <li class="text-red-600 font-medium">有自杀倾向</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右侧栏 -->
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold text-[#0f172a] mb-4">Oliver Anderson</h1>
+                
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-6 rounded-lg">
+                    <div class="mb-6">
+                        <p class="text-gray-600 mb-2">失踪时间：1993年5月6日</p>
+                        <p class="text-gray-600 mb-2">失踪地点：Texas州 San Antonio市</p>
+                        <p class="text-gray-600 mb-2">分类：高危失踪</p>
+                    </div>
+
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-[#0f172a] mb-4">失踪详情</h2>
+                        <p class="text-gray-600">Oliver Anderson于1993年5月6日在Texas州San Antonio市最后一次被见到，至今未有音讯。目前案件信息有限，正在积极调查中。</p>
+                    </div>
+
+                    <div class="bg-red-100 p-4 rounded-lg">
+                        <h2 class="text-xl font-bold text-[#0f172a] mb-4">AI风险分析</h2>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-1">
+                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                    <div class="w-3/4 bg-red-600 rounded-full animate-pulse"></div>
+                                </div>
+                                <p class="text-red-600 font-medium mt-2">高风险 (HIGH RISK)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

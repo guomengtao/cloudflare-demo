@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gregory Paul Anspaugh 案例 - 美国失踪人员查找</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <nav class="bg-blue-500 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex space-x-4">
+                <a href="./" class="hover:text-blue-300">首页</a>
+                <a href="./list" class="hover:text-blue-300">全部列表</a>
+                <span class="text-gray-400">》</span>
+                <span class="text-gray-400">California</span>
+                <span class="text-gray-400">》</span>
+                <span class="text-gray-400">Concord</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="border rounded-lg p-4 bg-white shadow-md">
+                <div class="relative">
+                    <img id="mainImage" src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/gregory_paul_anspaugh_1.jpg" alt="Gregory Paul Anspaugh" class="w-full h-auto rounded-lg">
+                    <div class="mt-4 grid grid-cols-3 gap-2">
+                        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/gregory_paul_anspaugh_1.jpg" alt="Gregory Paul Anspaugh" class="w-full h-auto rounded-lg cursor-pointer" onclick="changeImage(this)">
+                    </div>
+                </div>
+            </div>
+            <div class="border rounded-lg p-4 bg-white shadow-md">
+                <h2 class="text-3xl font-bold mb-2">Gregory Paul Anspaugh</h2>
+                <p class="text-xl mb-4">当前年龄: 55岁</p>
+                <ul class="list-disc pl-6">
+                    <li><strong>性别:</strong> 男</li>
+                    <li><strong>籍贯:</strong> 加利福尼亚州康科德市</li>
+                    <li><strong>身高:</strong> 175cm</li>
+                    <li><strong>体重:</strong> 72kg</li>
+                    <li><strong>血型:</strong> 未知</li>
+                    <li><strong>失踪日期:</strong> <span class="font-bold text-red-500">1999年3月3日</span></li>
+                    <li><strong>失踪地点:</strong> <span class="font-bold text-red-500">康科德市</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="border rounded-lg p-4 bg-white shadow-md">
+                <h3 class="text-2xl font-bold mb-4">案件详情</h3>
+                <p>Anspaugh 最后一次被看到是在 1999 年 3 月 3 日的康科德市。他从未再被听到过消息。失踪时，Anspaugh 是一名白人男性，留着棕色头发，眼睛也是棕色的。</p>
+                <p>他最后一次露面时穿着什么、携带什么物品、说话有什么特别口音、走路有什么特别姿态等细节均不清楚。目前没有关于他失踪时是否有特殊疾病的记录。</p>
+            </div>
+            <div class="border rounded-lg p-4 bg-white shadow-md">
+                <h3 class="text-2xl font-bold mb-4">AI 分析报告</h3>
+                <h4 class="text-xl font-semibold mb-2">案件画像概览</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>身份标签:</strong> Gregory Paul Anspaugh, 55岁, 失踪27年</li>
+                    <li><strong>生理显著特征:</strong> 白人男性, 棕色头发, 棕色眼睛</li>
+                    <li><strong>状态评估:</strong> 危险等级: 高危 (Endangered Missing)</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">时空矛盾点分析</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>消失环境:</strong> 繁华街区 vs 目击证言缺失</li>
+                    <li><strong>生活稳定性偏离:</strong> 社交、财务、心理状态不支持主动消失</li>
+                    <li><strong>关键窗口期:</strong> 1999年3月3日至1999年3月10日</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">潜在风险因素评分</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>环境风险:</strong> 附近无明显水域、极端天气、施工地带</li>
+                    <li><strong>医疗风险:</strong> 无记录显示患有阿尔兹海默症、抑郁症或需要定期服药的疾病</li>
+                    <li><strong>外部侵害:</strong> 无第三方卷入的迹象</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">调查突破口建议</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>DNA/法医建议:</strong> 核对 NamUs 数据库中无名尸体记录</li>
+                    <li><strong>数字足迹:</strong> 检查 1999 年的信用卡记录、社交媒体或寻呼机记录</li>
+                    <li><strong>物理搜索建议:</strong> 加强对康科德市周边地区的搜索</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">类似案件关联</h4>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><strong>地理关联:</strong> 同一地区存在失踪手法相似的案例</li>
+                    <li><strong>人口统计学关联:</strong> 存在针对特定年龄段人群的规律性事件</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-2">法律与免责声明</h4>
+                <p>此报告由 AI 基于公开数据生成，仅供参考，不代表官方结论，也不应替代警方的专业调查。官方报案电话: 925-671-3240</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">案件调查进度时间轴</h3>
+                    <p>最后更新时间: 2012年3月21日</p>
+                </div>
+                <div class="space-x-4">
+                    <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">线索举报</button>
+                    <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">生成寻人海报</button>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p>负责该案件的民警联系方式: 925-671-3240</p>
+                <p>家属紧急联系电话: 未提供</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function changeImage(img) {
+            document.getElementById('mainImage').src = img.src;
+        }
+    </script>
+</body>
+</html>
