@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国失踪人员</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc]">
+    <!-- 头部导航 -->
+    <nav class="bg-[#0f172a] text-white py-4 px-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./" class="text-lg font-bold">首页</a>
+            <ul class="flex items-center">
+                <li class="mr-4"><a href="./list" class="text-lg">全部列表</a></li>
+                <li class="mr-4"><a href="#" class="text-lg">州</a></li>
+                <li class="mr-4"><a href="#" class="text-lg">县</a></li>
+                <li><a href="#" class="text-lg">城市</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- 内容区域 -->
+    <div class="container mx-auto py-12 px-8">
+        <!-- 左侧列 -->
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/andrea_mona_altiery_1.jpg" class="rounded-[2rem] shadow-2xl">
+                <!-- 特征速查卡片 -->
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-6 mt-4">
+                    <h2 class="text-lg font-bold">Andrea Mona Altiery</h2>
+                    <p>失踪时间：1981年12月2日</p>
+                    <p>失踪地点：Alaska州Anchorage市</p>
+                </div>
+            </div>
+            <!-- 右侧列 -->
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold">Andrea Mona Altiery</h1>
+                <!-- 详细时间轴 -->
+                <div class="mt-4">
+                    <h2 class="text-lg font-bold">详细时间轴</h2>
+                    <p>1981年12月2日，Andrea Mona Altiery最后一次被看到是在Anchorage市的Boniface Mall，她计划与一名未知男性进行拍照。自那以后，她再也没有被听到过。</p>
+                </div>
+                <!-- AI 分析报告 -->
+                <div class="mt-4">
+                    <h2 class="text-lg font-bold">AI 分析报告</h2>
+                    <p>根据案件信息，我们的AI模型分析认为，Andrea Mona Altiery的失踪案件与serial killer Robert Hansen有关。</p>
+                    <div class="bg-red-600 text-white py-2 px-4 rounded animate-pulse">HIGH RISK</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

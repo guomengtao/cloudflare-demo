@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员信息</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc]">
+    <header class="bg-[#0f172a] text-white py-4">
+        <nav class="container mx-auto flex justify-between">
+            <a href="./" class="text-lg font-bold">首页</a>
+            <ul class="flex items-center">
+                <li class="mr-4"><a href="./list" class="text-lg">全部列表</a></li>
+                <li class="mr-4"><a href="./list/state" class="text-lg">州</a></li>
+                <li class="mr-4"><a href="./list/county" class="text-lg">县</a></li>
+                <li><a href="./list/city" class="text-lg">城市</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mx-auto py-12">
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/angela_elaine_allen_1.jpg" alt="Angela Elaine Allen" class="rounded-[2rem] shadow-2xl">
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-6 mt-4">
+                    <h2 class="text-lg font-bold">特征速查卡片</h2>
+                    <ul>
+                        <li>姓名：Angela Elaine Allen</li>
+                        <li>年龄：28岁</li>
+                        <li>身高：5'5"</li>
+                        <li>体重：135磅</li>
+                        <li>眼睛颜色：棕色</li>
+                        <li>头发颜色：黑色</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold mb-4">Angela Elaine Allen</h1>
+                <p class="text-lg mb-4">失踪时间：1979年12月26日</p>
+                <p class="text-lg mb-4">失踪地点：纽约州奥农达加县雪城</p>
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-6 mb-4">
+                    <h2 class="text-lg font-bold">详细时间轴</h2>
+                    <ul>
+                        <li>1979年12月26日：Angela Elaine Allen 最后一次被人看到</li>
+                        <li>1982年：Lorraine Marshall 开始与警方合作调查 Angela 的失踪案</li>
+                        <li>1985年：Hubert James "Mad Dog" Allen 被判犯有 Lorraine Marshall 和 James Jose Allen 的谋杀罪</li>
+                    </ul>
+                </div>
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-6 mb-4">
+                    <h2 class="text-lg font-bold">AI 分析报告</h2>
+                    <p class="text-lg">风险等级：<span class="text-red-600 animate-pulse">HIGH RISK</span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

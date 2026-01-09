@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamza Ali - 失踪案件</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        .bg-image {
+            background-image: url('https://wsrv.nl/?url=https://charleyproject.org/wp-content/uploads/2017/10/hamza_ali_1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <header class="bg-[#0f172a] text-white py-4">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <a href="./" class="text-lg font-bold">首页</a>
+            <ul class="flex items-center space-x-4">
+                <li><a href="./list" class="text-lg">全部列表</a></li>
+                <li><a href="./state" class="text-lg">州</a></li>
+                <li><a href="./county" class="text-lg">县</a></li>
+                <li><a href="./city" class="text-lg">城市</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mx-auto px-4 py-12">
+        <section class="grid grid-cols-12 gap-4">
+            <div class="col-span-4">
+                <div class="bg-image rounded-[2rem] shadow-2xl"></div>
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-8 mt-4">
+                    <h2 class="text-lg font-bold">特征速查</h2>
+                    <ul class="list-none space-y-2">
+                        <li>姓名：Hamza Ali</li>
+                        <li>年龄：7个月</li>
+                        <li>身高：2'1</li>
+                        <li>体重：12磅</li>
+                        <li>种族：黑人</li>
+                        <li>眼睛颜色：棕色</li>
+                        <li>头发颜色：黑色</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold mb-4">Hamza Ali - 失踪案件</h1>
+                <p class="text-lg">Hamza Ali于2013年8月6日从宾夕法尼亚州的Upper Darby失踪。他的母亲，Zainab Gaal，和她的男友，Ummad Rushdi，曾报告说他们带着Hamza去Rushdi的父母家度周末时，Rushdi带走了Hamza并消失了。</p>
+                <h2 class="text-lg font-bold mt-4">详细时间轴</h2>
+                <ul class="list-none space-y-2">
+                    <li>2013年8月6日：Hamza Ali失踪</li>
+                    <li>2013年8月7日：Ummad Rushdi被捕，指控他绑架Hamza</li>
+                    <li>2013年8月底：Rushdi被指控谋杀Hamza</li>
+                    <li>2017年9月：Rushdi被宣布无罪</li>
+                </ul>
+                <h2 class="text-lg font-bold mt-4">AI 分析报告</h2>
+                <div class="bg-[#0f172a] text-white py-4 px-8 mt-4 rounded-[2rem] shadow-2xl">
+                    <h3 class="text-lg font-bold">风险等级：</h3>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-red-600 py-2 px-4 rounded-[2rem] animate-pulse">HIGH RISK</div>
+                        <p class="text-lg">根据案件信息和证据，Hamza Ali失踪案件被评估为高风险。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-[#0f172a] text-white py-4">
+        <p class="container mx-auto px-4 text-lg">Copyright 2023 Hamza Ali 失踪案件</p>
+    </footer>
+</body>
+</html>

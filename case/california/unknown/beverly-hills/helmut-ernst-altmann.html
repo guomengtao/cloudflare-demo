@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员信息</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* 自定义样式 */
+        .bg-image {
+            background-image: url('https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/helmut_ernst_altmann_1.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-[#f8fafc]">
+    <header class="bg-[#0f172a] text-white py-4">
+        <nav class="container mx-auto flex justify-between">
+            <a href="./" class="text-white hover:text-blue-700">首页</a>
+            <div class="flex items-center">
+                <a href="./list" class="text-white hover:text-blue-700">全部列表</a>
+                <span class="mx-2">›</span>
+                <a href="#" class="text-white hover:text-blue-700">州</a>
+                <span class="mx-2">›</span>
+                <a href="#" class="text-white hover:text-blue-700">县</a>
+                <span class="mx-2">›</span>
+                <a href="#" class="text-white hover:text-blue-700">城市</a>
+            </div>
+        </nav>
+    </header>
+    <main class="container mx-auto py-12 px-8 grid grid-cols-12 gap-4">
+        <div class="col-span-4 bg-white/80 backdrop-blur-sm rounded-[2rem] shadow-2xl p-4">
+            <h2 class="text-2xl font-bold mb-2">Helmut Ernst Altmann</h2>
+            <p class="text-lg">失踪于 1984 年 10 月 30 日</p>
+            <p class="text-lg">来自 Beverly Hills, California</p>
+            <div class="flex items-center mt-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/helmut_ernst_altmann_1.jpg" alt="Helmut Ernst Altmann" class="w-24 h-24 rounded-full">
+                <div class="ml-4">
+                    <p class="text-lg font-bold">特征:</p>
+                    <p class="text-lg">白人男性，棕色头发，绿色眼睛，下颌突出，头发稀疏</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-span-8">
+            <h1 class="text-3xl font-bold mb-2">Helmut Ernst Altmann 的失踪案件</h1>
+            <p class="text-lg">Altmann 是一名奥地利公民，他于 1984 年 10 月来到洛杉矶投资房地产。他入住了 Beverly Hills 的 Regent Beverly Wilshire Hotel，并于 10 月 26 日告诉酒店工作人员他计划于 10 月 31 日退房。然而，他从未返回酒店， 也没有回奥地利。</p>
+            <p class="text-lg">他的妻子于 1984 年 11 月 6 日报告了他的失踪。酒店工作人员检查了他的房间，发现他的护照、衣服、钱和回程机票完好无损。</p>
+            <div class="mt-4">
+                <h2 class="text-2xl font-bold mb-2">风险等级</h2>
+                <div class="bg-red-600 text-white py-2 px-4 rounded animate-pulse">HIGH RISK</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

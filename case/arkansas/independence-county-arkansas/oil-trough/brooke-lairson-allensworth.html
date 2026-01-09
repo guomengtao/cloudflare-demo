@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员信息</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-grad {
+            background-image: linear-gradient(to bottom, #f8fafc, #f8fafc);
+        }
+    </style>
+</head>
+<body class="bg-grad">
+    <header class="bg-[#0f172a] text-white py-4">
+        <nav class="container mx-auto px-4 flex justify-between">
+            <a href="./" class="text-2xl font-bold">失踪人员信息</a>
+            <ul class="flex items-center space-x-4">
+                <li><a href="./" class="text-white hover:text-red-600">首页</a></li>
+                <li><a href="./list" class="text-white hover:text-red-600">全部列表</a></li>
+                <li><a href="./" class="text-white hover:text-red-600">州</a></li>
+                <li><a href="./" class="text-white hover:text-red-600">县</a></li>
+                <li><a href="./" class="text-white hover:text-red-600">城市</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mx-auto p-4 pt-6">
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-4">
+                <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2019/07/allensworth_brooke.jpg" alt="失踪人员照片" class="rounded-[2rem] shadow-2xl">
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-4 mt-4">
+                    <h2 class="text-lg font-bold">特征速查卡片</h2>
+                    <ul class="list-disc pl-4">
+                        <li>姓名：Brooke Lairson Allensworth</li>
+                        <li>年龄：37岁</li>
+                        <li>身高：5'8"</li>
+                        <li>体重：170-185磅</li>
+                        <li>眼睛颜色：蓝色</li>
+                        <li>头发颜色：棕色</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-span-8">
+                <h1 class="text-3xl font-bold">失踪人员信息</h1>
+                <p class="text-lg">失踪时间：2018年7月11日</p>
+                <p class="text-lg">失踪地点：Oil Trough, Arkansas</p>
+                <div class="mt-4">
+                    <h2 class="text-lg font-bold">详细时间轴</h2>
+                    <ul class="list-disc pl-4">
+                        <li>2018年7月11日：失踪</li>
+                        <li>2018年7月25日：汽车被发现</li>
+                    </ul>
+                </div>
+                <div class="mt-4">
+                    <h2 class="text-lg font-bold">AI 分析报告</h2>
+                    <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-4">
+                        <p class="text-lg">风险等级：<span class="text-red-600 animate-pulse">HIGH RISK</span></p>
+                        <p class="text-lg">建议：尽快联系当地警方报案</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

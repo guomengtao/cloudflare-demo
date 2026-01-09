@@ -184,30 +184,21 @@ function safeParseJSON(str) {
 
 // 调用AI API并支持重试机制
 async function callApiWithRetry(prompt, maxRetries = 3) {
-    const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-    const apiUrl = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.3-70b-instruct`;
-    const apiToken = process.env.CLOUDFLARE_API_TOKEN;
-    
-    if (!apiToken) {
-        throw new Error('CLOUDFLARE_API_TOKEN 环境变量未设置');
-    }
+    const apiUrl = '/gemini'; // 使用Gemini AI的API端点
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${apiToken}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    messages: [
-                        {
-                            role: 'user',
-                            content: prompt
-                        }
-                    ],
-                    stream: false
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }]
                 })
             });
             

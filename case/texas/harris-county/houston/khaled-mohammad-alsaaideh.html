@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>失踪人员数据库</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#f8fafc]">
+  <header class="bg-[#0f172a] text-white py-4 px-8">
+    <nav class="container mx-auto flex justify-between">
+      <a href="./" class="text-lg font-bold">失踪人员数据库</a>
+      <ul class="flex items-center space-x-4">
+        <li><a href="./" class="text-blue-700 hover:text-blue-500">首页</a></li>
+        <li><a href="./list" class="text-blue-700 hover:text-blue-500">全部列表</a></li>
+        <li><a href="./" class="text-blue-700 hover:text-blue-500">州</a></li>
+        <li><a href="./" class="text-blue-700 hover:text-blue-500">县</a></li>
+        <li><a href="./" class="text-blue-700 hover:text-blue-500">城市</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="container mx-auto py-12 px-8">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-4">
+        <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2019/12/alsaaideh_khaled.jpg" alt="失踪人员照片" class="w-full rounded-[2rem] shadow-2xl">
+        <div class="bg-white/80 backdrop-blur-sm border border-slate-200 p-4 mt-4">
+          <h2 class="text-lg font-bold">特征速查</h2>
+          <ul class="list-none p-0 m-0">
+            <li class="py-2">性别：男</li>
+            <li class="py-2">种族：亚洲</li>
+            <li class="py-2">年龄：55</li>
+            <li class="py-2">身高：5'6</li>
+            <li class="py-2">体重：160磅</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-span-8">
+        <h1 class="text-3xl font-bold">Khaled Mohammad Alsaaideh</h1>
+        <p class="text-lg">失踪时间：2017年6月7日</p>
+        <p class="text-lg">失踪地点：Houston, Texas</p>
+        <h2 class="text-lg font-bold">详细时间轴</h2>
+        <ul class="list-none p-0 m-0">
+          <li class="py-2">2017年6月7日：Alsaaideh最后一次被看到在Houston, Texas</li>
+          <li class="py-2">2017年6月7日：Alsaaideh从Jordan出发前往美国</li>
+        </ul>
+        <h2 class="text-lg font-bold">AI 分析报告</h2>
+        <div class="bg-[#0f172a] text-white p-4 mt-4">
+          <p class="text-lg">风险等级：<span class="text-red-600 animate-pulse">HIGH RISK</span></p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

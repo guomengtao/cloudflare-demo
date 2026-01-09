@@ -570,16 +570,21 @@ async function handleInfo(request, env) {
         // 查询数据
         const result = await env.DB.prepare(
             `SELECT 
-                case_id, full_name, missing_since, 
-                missing_city, missing_county, missing_state 
-            FROM missing_persons_info 
+                mpi.case_id, mpi.full_name, mpi.missing_since, 
+                mpi.missing_city, mpi.missing_county, mpi.missing_state 
+            FROM missing_persons_info mpi
+            JOIN missing_persons_cases mpc ON mpi.case_id = mpc.case_id
+            WHERE mpc.html_status = 1
             ORDER BY ${safeSortBy} ${safeSortOrder} 
             LIMIT ? OFFSET ?`
         ).bind(limit, offset).all();
         
         // 查询总数
         const countResult = await env.DB.prepare(
-            `SELECT COUNT(*) as total FROM missing_persons_info`
+            `SELECT COUNT(*) as total 
+            FROM missing_persons_info mpi
+            JOIN missing_persons_cases mpc ON mpi.case_id = mpc.case_id
+            WHERE mpc.html_status = 1`
         ).all();
         
         return new Response(JSON.stringify({

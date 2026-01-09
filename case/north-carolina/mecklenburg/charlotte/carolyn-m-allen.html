@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美国失踪人员 - Carolyn M. Allen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 自定义样式 */
+        .bg-light-blue {
+            background-color: #f8fafc;
+        }
+        .bg-dark-blue {
+            background-color: #0f172a;
+        }
+        .text-red {
+            color: #ff0000;
+        }
+        .text-blue {
+            color: #0000ff;
+        }
+    </style>
+</head>
+<body class="bg-light-blue">
+    <header class="bg-dark-blue py-12 px-8 text-white">
+        <nav class="container mx-auto flex justify-between">
+            <a href="./" class="text-lg font-bold">首页</a>
+            <ul class="flex items-center space-x-4">
+                <li><a href="./list" class="text-lg">全部列表</a></li>
+                <li><a href="./list/state" class="text-lg">州</a></li>
+                <li><a href="./list/county" class="text-lg">县</a></li>
+                <li><a href="./list/city" class="text-lg">城市</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mx-auto py-12 px-8 grid grid-cols-12 gap-4">
+        <div class="col-span-4">
+            <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2018/09/allen_carolyn.jpg" alt="Carolyn M. Allen" class="rounded-[2rem] shadow-2xl">
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-6 mt-4">
+                <h2 class="text-lg font-bold">特征速查</h2>
+                <ul class="list-none">
+                    <li>性别：女</li>
+                    <li>年龄：50岁</li>
+                    <li>身高：5'4</li>
+                    <li>体重：145磅</li>
+                    <li>头发：黑色</li>
+                    <li>眼睛：棕色</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-span-8">
+            <h1 class="text-3xl font-bold">Carolyn M. Allen</h1>
+            <p class="text-lg">最后一次被看到是在2016年1月份，位于北卡罗来纳州夏洛特市的雷根大道5000号街区。</p>
+            <h2 class="text-lg font-bold">详细时间轴</h2>
+            <ul class="list-none">
+                <li>2016年1月份：最后一次被看到</li>
+                <li>2017年7月份：被报告失踪</li>
+            </ul>
+            <h2 class="text-lg font-bold">AI 分析报告</h2>
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 py-4 px-6 mt-4">
+                <h3 class="text-lg font-bold">风险等级</h3>
+                <div class="flex items-center">
+                    <div class="w-1/2 bg-red-600 py-2 text-white text-center animate-pulse">HIGH RISK</div>
+                    <div class="w-1/2 bg-blue-700 py-2 text-white text-center">UNKNOWN</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-dark-blue py-12 px-8 text-white">
+        <p class="text-lg">Copyright 2023. All rights reserved.</p>
+    </footer>
+</body>
+</html>
