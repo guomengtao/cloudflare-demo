@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻找 Rama Arefaine - 失踪案件分析报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .stat-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .risk-high { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); }
+        .risk-medium { background: linear-gradient(135deg, #ffd93d 0%, #ff9a3d 100%); }
+        .risk-low { background: linear-gradient(135deg, #6bcf7f 0%, #4dabf7 100%); }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-xl font-bold text-gray-900">失踪人员信息中心</a>
+                    <div class="flex items-center space-x-1 text-sm text-gray-600">
+                        <a href="/list" class="hover:text-blue-600">案件列表</a>
+                        <span>›</span>
+                        <span class="text-gray-900">案件详情</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-phone mr-2"></i>举报线索
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 案件头部 -->
+    <header class="gradient-bg text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-12">
+                <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl">
+                    <img src="案件照片URL" 
+                         alt="寻找 Rama Arefaine" class="w-full h-full object-cover">
+                </div>
+                <div class="text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">寻找 Rama Arefaine</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
+                        <div><i class="fas fa-calendar-alt mr-2"></i>失踪时间: 未知日期</div>
+                        <div><i class="fas fa-map-marker-alt mr-2"></i>未知地点: 未知地点</div>
+                        <div><i class="fas fa-user mr-2"></i>当前37岁: 37岁</div>
+                        <div><i class="fas fa-exclamation-triangle mr-2"></i>案件状态: 案件状态</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card text-white p-6 rounded-xl text-center">
+                <div class="text-3xl font-bold">失踪时长</div>
+                <div class="text-sm opacity-90">失踪时长</div>
+            </div>
+            <div class="bg-blue-600 text-white p-6 rounded-xl text-center">
+                <div class="text-3xl font-bold">未知</div>
+                <div class="text-sm opacity-90">未知</div>
+            </div>
+            <div class="bg-green-600 text-white p-6 rounded-xl text-center">
+                <div class="text-3xl font-bold">未知</div>
+                <div class="text-sm opacity-90">未知</div>
+            </div>
+            <div class="risk-high text-white p-6 rounded-xl text-center">
+                <div class="text-3xl font-bold">风险等级</div>
+                <div class="text-sm opacity-90">危险等级</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 左侧栏 - 基本信息 -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- 照片墙 -->
+                <div class="bg-white card-shadow rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">
+                        <i class="fas fa-images mr-2 text-blue-600"></i>照片集
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <img src="照片URL1" 
+                             alt="寻找 Rama Arefaine" class="w-full h-32 object-cover rounded-lg cursor-pointer hover:scale-105 transition-transform"
+                             onclick="changeMainImage(this.src)">
+                        <img src="照片URL2" 
+                             alt="寻找 Rama Arefaine" class="w-full h-32 object-cover rounded-lg cursor-pointer hover:scale-105 transition-transform"
+                             onclick="changeMainImage(this.src)">
+                    </div>
+                </div>
+
+                <!-- 生理特征 -->
+                <div class="bg-white card-shadow rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">
+                        <i class="fas fa-user-circle mr-2 text-green-600"></i>生理特征
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">未知</span>
+                            <span class="font-medium">未知</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">族裔</span>
+                            <span class="font-medium">族裔</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">未知</span>
+                            <span class="font-medium">未知</span>
+                        </div>
+                        <div class="border-t pt-3">
+                            <div class="text-sm text-gray-600 mb-2">显著特征:</div>
+                            <div class="space-y-1" id="distinctive-features">
+                                <!-- 显著特征将动态插入 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 联系方式 -->
+                <div class="bg-white card-shadow rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">
+                        <i class="fas fa-phone-alt mr-2 text-red-600"></i>紧急联系方式
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-sm text-gray-600">负责机构</div>
+                            <div class="font-medium text-lg" id="police-contact">待提供</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">案件最后更新</div>
+                            <div class="font-medium" id="last-updated">待提供</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧栏 - 案件详情 -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- 案件时间线 -->
+                <div class="bg-white card-shadow rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">
+                        <i class="fas fa-history mr-2 text-purple-600"></i>案件时间线
+                    </h3>
+                    <div class="space-y-4 relative pl-8" id="timeline-content">
+                        <!-- 时间线内容将动态插入 -->
+                    </div>
+                </div>
+
+                <!-- AI分析报告 -->
+                <div class="bg-white card-shadow rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">
+                        <i class="fas fa-brain mr-2 text-orange-600"></i>AI智能分析报告
+                    </h3>
+                    
+                    <!-- 风险雷达图占位 -->
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6 text-center">
+                        <div class="text-gray-600 mb-2">风险维度分析图</div>
+                        <div class="h-32 bg-gradient-to-r from-blue-100 to-purple-100 rounded flex items-center justify-center">
+                            <i class="fas fa-chart-radar text-3xl text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- 分析模块 -->
+                    <div class="space-y-6" id="ai-analysis-content">
+                        <!-- AI分析内容将动态插入 -->
+                    </div>
+                </div>
+
+                <!-- 类似案件关联 -->
+                <div class="bg-white card-shadow rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">
+                        <i class="fas fa-project-diagram mr-2 text-teal-600"></i>类似案件关联
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="font-semibold text-gray-900">地理关联</div>
+                            <div class="text-gray-600 text-sm mt-1">同一地区存在相似失踪手法的案例</div>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="font-semibold text-gray-900">人口统计学关联</div>
+                            <div class="text-gray-600 text-sm mt-1">针对特定职业、37岁段人群的规律性事件</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部行动区 -->
+    <footer class="bg-gray-900 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="font-semibold mb-4">案件信息</h4>
+                    <div class="space-y-2 text-gray-300 text-sm">
+                        <div>案件编号: 待提供</div>
+                        <div>负责机构: 待提供</div>
+                        <div>最后更新: 待提供</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">紧急联系</h4>
+                    <div class="space-y-2 text-gray-300 text-sm">
+                        <div>警方热线: 待提供</div>
+                        <div>匿名举报: 1-800-222-TIPS</div>
+                        <div>家属联系: 待提供</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">快速行动</h4>
+                    <div class="flex space-x-3">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                            <i class="fas fa-share-alt mr-1"></i>分享
+                        </button>
+                        <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm">
+                            <i class="fas fa-print mr-1"></i>打印海报
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2024 失踪人员信息中心 - 所有信息基于公开数据，仅供参考</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function changeMainImage(src) {
+            document.querySelector('header img').src = src;
+        }
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
