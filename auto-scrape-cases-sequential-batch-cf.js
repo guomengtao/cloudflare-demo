@@ -5,7 +5,7 @@ const axios = require('axios');
 
 // 配置
 const DATABASE_ID = "cloudflare-demo-db";
-const BATCH_LIMIT = 66; // 提升单次采集数量
+const BATCH_LIMIT = 63; // 提升单次采集数量
 
 // 检查后端API是否可用
 async function checkBackendAPI() {
@@ -217,16 +217,13 @@ async function getCasesToScrape() {
 async function dynamicDelay() {
     const delaySeconds = 6 + Math.random() * 6; // 6-12秒随机延迟
     const totalMs = Math.floor(delaySeconds * 1000);
-    const intervalMs = 1000; // 每秒更新一次
     
     console.log(`\n⏱️  开始待机倒计时: ${Math.ceil(delaySeconds)}秒`);
     
-    for (let remaining = Math.ceil(delaySeconds); remaining > 0; remaining--) {
-        process.stdout.write(`\r⏳ 剩余待机时间: ${remaining}秒`);
-        await new Promise(r => setTimeout(r, intervalMs));
-    }
+    // 使用setTimeout一次性等待，不显示中间过程
+    await new Promise(r => setTimeout(r, totalMs));
     
-    console.log(`\n✅ 待机结束，继续处理下一条`);
+    console.log(`✅ 待机结束，继续处理下一条`);
 }
 
 // 主循环
@@ -271,7 +268,6 @@ async function main() {
         // 显示采集结果
         if (res.success) {
             console.log(`✅ 采集成功: ${res.caseId}`);
-            console.log(`📝 内容预览: ${res.content.substring(0, 100)}...`);
         } else {
             console.log(`❌ 采集失败: ${res.caseId}, 状态码: ${res.statusCode}`);
         }
