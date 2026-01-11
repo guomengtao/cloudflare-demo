@@ -215,7 +215,7 @@ async function getCasesToScrape() {
 
 // 动态倒计时函数
 async function dynamicDelay() {
-    const delaySeconds = 6 + Math.random() * 6; // 6-12秒随机延迟
+    const delaySeconds = 1 + Math.random() * 4; // 6-12秒随机延迟
     const totalMs = Math.floor(delaySeconds * 1000);
     
     console.log(`\n⏱️  开始待机倒计时: ${Math.ceil(delaySeconds)}秒`);
