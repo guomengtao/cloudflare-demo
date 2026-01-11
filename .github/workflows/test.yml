@@ -1,6 +1,6 @@
 name: Generate Missing Cases HTML -main
 on:
-  schedule:
+  # schedule:
     # - cron: '0 0 * * *' # 每天凌晨自动运行
   workflow_dispatch:      # 允许手动触发
 
