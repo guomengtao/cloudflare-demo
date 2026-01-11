@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        .bg-titanium {
+            background-color: #e0e0cf;
+        }
+        .text-titanium {
+            color: #e0e0cf;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+<nav class="fixed top-0 left-0 w-full p-4 flex justify-between items-center glass">
+    <div class="text-2xl font-bold">凌云科技</div>
+    <ul class="flex space-x-6">
+        <li><a href="#" class="hover:text-titanium">首页</a></li>
+        <li><a href="#" class="hover:text-titanium">产品</a></li>
+        <li><a href="#" class="hover:text-titanium">关于我们</a></li>
+        <li><a href="#" class="hover:text-titanium">联系我们</a></li>
+    </ul>
+</nav>
+<section class="h-screen flex flex-col justify-center items-center bg-titanium text-white">
+    <h1 class="text-6xl font-extrabold mb-4">拥抱未来</h1>
+    <p class="text-2xl mb-8">人工智能引领创新</p>
+    <a href="#" class="bg-white text-titanium px-6 py-3 rounded-lg shadow-md">了解更多</a>
+</section>
+<section class="p-8 bg-white">
+    <h2 class="text-3xl font-bold mb-8 text-center">核心产品</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="p-6 bg-gray-100 rounded-lg hover:shadow-lg transform transition duration-500 ease-in-out hover:-translate-y-1">
+            <h3 class="text-2xl font-bold mb-4">智能分析</h3>
+            <p class="text-xl">提供深度数据分析服务</p>
+        </div>
+        <div class="p-6 bg-gray-100 rounded-lg hover:shadow-lg transform transition duration-500 ease-in-out hover:-translate-y-1">
+            <h3 class="text-2xl font-bold mb-4">机器学习平台</h3>
+            <p class="text-xl">构建高效的机器学习环境</p>
+        </div>
+        <div class="p-6 bg-gray-100 rounded-lg hover:shadow-lg transform transition duration-500 ease-in-out hover:-translate-y-1">
+            <h3 class="text-2xl font-bold mb-4">AI 自动化</h3>
+            <p class="text-xl">实现流程自动化与优化</p>
+        </div>
+    </div>
+</section>
+<section class="p-8 bg-titanium overflow-hidden">
+    <h2 class="text-3xl font-bold mb-8 text-center text-white">合作伙伴</h2>
+    <div class="flex animate-marquee whitespace-nowrap">
+        <img src="https://via.placeholder.com/150?text=Partner+1" alt="Partner 1" class="mx-4">
+        <img src="https://via.placeholder.com/150?text=Partner+2" alt="Partner 2" class="mx-4">
+        <img src="https://via.placeholder.com/150?text=Partner+3" alt="Partner 3" class="mx-4">
+        <img src="https://via.placeholder.com/150?text=Partner+4" alt="Partner 4" class="mx-4">
+        <img src="https://via.placeholder.com/150?text=Partner+5" alt="Partner 5" class="mx-4">
+        <img src="https://via.placeholder.com/150?text=Partner+6" alt="Partner 6" class="mx-4">
+    </div>
+</section>
+<footer class="p-8 bg-white text-center">
+    <p>&copy; 2023 凌云科技. 版权所有.</p>
+</footer>
+</body>
+</html>

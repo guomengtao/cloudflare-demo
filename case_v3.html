@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #050505; }
+        .gold-glow { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+        .border-gradient {
+            border: 2px solid transparent;
+            background-image: linear-gradient(#111, #111), linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba, #aa771c);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+        }
+    </style>
+</head>
+<body class="text-gray-200 overflow-x-hidden">
+    <div class="fixed inset-0 z-[-1] bg-[radial-gradient(circle_at_top_right,_#1a1a1a_0%,_#050505_100%)]"></div>
+
+    <div class="flex justify-center items-center min-h-screen p-4">
+        <div class="animate__animated animate__fadeIn w-full max-w-4xl relative">
+            
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-yellow-600/10 rounded-full blur-3xl"></div>
+
+            <div class="border-gradient rounded-2xl overflow-hidden backdrop-blur-2xl bg-black/60 gold-glow">
+                <div class="md:flex">
+                    <div class="md:w-1/3 relative group">
+                        <div class="h-full min-h-[400px] bg-neutral-900 flex items-center justify-center overflow-hidden">
+                            <img src="https://via.placeholder.com/400x600" class="object-cover h-full w-full transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0" alt="Profile">
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
+                            <span class="text-[10px] tracking-[0.3em] uppercase text-yellow-500 font-bold">Classified File</span>
+                        </div>
+                    </div>
+
+                    <div class="md:w-2/3 p-8 md:p-12 flex flex-col justify-center">
+                        <div class="animate__animated animate__fadeInRight animate__delay-1s">
+                            <h2 class="text-xs tracking-[0.5em] uppercase text-yellow-600 mb-2 font-bold">Missing Person Profile</h2>
+                            <h1 class="text-5xl font-light tracking-tighter text-white mb-6">
+                                Bradley <span class="font-bold text-yellow-500">Wayne Allan</span>
+                            </h1>
+                            
+                            <div class="space-y-6 text-gray-400 leading-relaxed">
+                                <p class="border-l-2 border-yellow-700/50 pl-4 italic">
+                                    "The epitome of elegance and sophistication, a visionary leader in the realms of luxury."
+                                </p>
+                                
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p class="text-yellow-600/70 uppercase text-[10px] tracking-widest">Last Seen</p>
+                                        <p class="text-white">Metropolis Central, 2024</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-yellow-600/70 uppercase text-[10px] tracking-widest">Status</p>
+                                        <p class="text-white">Active Investigation</p>
+                                    </div>
+                                </div>
+
+                                <p class="text-sm font-light">
+                                    With a legacy that spans generations, Bradley Wayne Allan has set standards of excellence that few dare to match. Blending timeless charm with modern sophistication.
+                                </p>
+                            </div>
+
+                            <button class="mt-10 px-8 py-3 bg-yellow-600/10 border border-yellow-600/50 text-yellow-500 text-xs tracking-widest uppercase hover:bg-yellow-600 hover:text-black transition-all duration-300">
+                                Contact Bureau
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

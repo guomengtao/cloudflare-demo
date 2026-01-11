@@ -3,74 +3,478 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lilia Edith Anguiano 案例详情</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>莉莉亚·伊迪丝·安古亚诺 - 失踪案件分析报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @layer base {
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: #f8fafc;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Playfair Display', serif;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .timeline-item::before {
+                content: '';
+                position: absolute;
+                left: -12px;
+                top: 8px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .gradient-border {
+                position: relative;
+                border-radius: 1rem;
+                background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            }
+            .gradient-border::before {
+                content: '';
+                position: absolute;
+                inset: -2px;
+                z-index: -1;
+                border-radius: 1rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <header class="bg-blue-500 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="./" class="text-white font-bold text-lg">失踪人员查找</a>
-            <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="./" class="text-white hover:text-blue-300">首页</a></li>
-                    <li><a href="./list" class="text-white hover:text-blue-300">全部列表</a></li>
-                    <li><a href="#" class="text-white hover:text-blue-300">California</a></li>
-                    <li><a href="#" class="text-white hover:text-blue-300">Merced County</a></li>
-                    <li><a href="#" class="text-white hover:text-blue-300">Los Banos</a></li>
-                </ul>
-            </nav>
+<body class="text-gray-800">
+    <!-- 顶部导航 -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-search text-purple-600 text-xl"></i>
+                        <a href="/" class="text-xl font-bold text-gray-900">失踪人员信息中心</a>
+                    </div>
+                    <div class="flex items-center space-x-1 text-sm text-gray-600">
+                        <a href="/list" class="hover:text-purple-700 transition-colors">案件列表</a>
+                        <span class="text-gray-400">›</span>
+                        <span class="text-gray-900">案件详情</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors shadow-md hover:shadow-lg">
+                        <i class="fas fa-phone mr-2"></i>举报线索
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 案件头部 -->
+    <header class="gradient-bg text-white py-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -mt-32 -ml-32"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full -mb-48 -mr-48"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-12">
+                <div class="w-52 h-52 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl backdrop-blur-sm">
+                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/lilia_edith_anguiano_1.jpg" 
+                         alt="莉莉亚·伊迪丝·安古亚诺" class="w-full h-full object-cover">
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">莉莉亚·伊迪丝·安古亚诺</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
+                        <div class="flex items-center justify-center md:justify-start space-x-2">
+                            <i class="fas fa-calendar-alt text-white/80"></i>
+                            <span>失踪时间: 1999年8月21日</span>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start space-x-2">
+                            <i class="fas fa-map-marker-alt text-white/80"></i>
+                            <span>失踪地点: 加利福尼亚州洛斯巴诺斯</span>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start space-x-2">
+                            <i class="fas fa-user text-white/80"></i>
+                            <span>当前52岁: 52岁</span>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start space-x-2">
+                            <i class="fas fa-exclamation-triangle text-white/80"></i>
+                            <span>案件状态: 危险级失踪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="container mx-auto mt-8">
-        <section class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h1 class="text-2xl font-bold mb-4">Lilia Edith Anguiano</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/lilia_edith_anguiano_1.jpg" alt="Lilia Edith Anguiano" class="w-full h-64 object-cover rounded-lg">
+    <!-- 主要内容区域 -->
+    <main class="max-w-7xl mx-auto px-4 py-10">
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="gradient-bg text-white p-6 rounded-xl text-center card-hover">
+                <div class="text-3xl font-bold mb-2">27年</div>
+                <div class="text-sm opacity-90">失踪时长</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl text-center card-hover shadow-lg">
+                <div class="text-3xl font-bold text-purple-700 mb-2">女性</div>
+                <div class="text-sm text-gray-600">性别</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl text-center card-hover shadow-lg">
+                <div class="text-3xl font-bold text-purple-700 mb-2">西班牙裔</div>
+                <div class="text-sm text-gray-600">族裔</div>
+            </div>
+            <div class="bg-gradient-to-r from-red-500 to-orange-500 text-white p-6 rounded-xl text-center card-hover">
+                <div class="text-3xl font-bold mb-2">高风险</div>
+                <div class="text-sm opacity-90">风险等级</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 左侧栏 - 基本信息 -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- 照片墙 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-5 text-gray-900 flex items-center">
+                        <i class="fas fa-images text-purple-600 mr-3"></i>照片集
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative group">
+                            <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/lilia_edith_anguiano_1.jpg" 
+                                 alt="莉莉亚·伊迪丝·安古亚诺" class="w-full h-40 object-cover rounded-lg cursor-pointer shadow-md group-hover:shadow-xl transition-shadow"
+                                 onclick="changeMainImage(this.src)">
+                            <div class="absolute inset-0 bg-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                <i class="fas fa-search-plus text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <img src="https://wsrv.nl/?url=http://charleyproject.org/wp-content/uploads/2017/10/lilia_edith_anguiano_1.jpg" 
+                                 alt="莉莉亚·伊迪丝·安古亚诺" class="w-full h-40 object-cover rounded-lg cursor-pointer shadow-md group-hover:shadow-xl transition-shadow"
+                                 onclick="changeMainImage(this.src)">
+                            <div class="absolute inset-0 bg-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                <i class="fas fa-search-plus text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-gray-600">失踪日期: 1999年8月21日</p>
-                    <p class="text-gray-600">失踪地点: 加利福尼亚州洛斯巴诺斯</p>
-                    <p class="text-gray-600">性别: 女性</p>
-                    <p class="text-gray-600">种族: 西班牙裔</p>
-                    <p class="text-gray-600">出生日期: 1973年1月16日 (52岁)</p>
-                    <p class="text-gray-600">身高体重: 4'0, 110磅</p>
-                    <p class="text-gray-600">显著特征: 西班牙裔女性，棕色头发，棕色眼睛。有时拼写为"Lila"。</p>
-                    <p class="text-gray-600">失踪时状态: 危险级失踪</p>
+
+                <!-- 生理特征 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-5 text-gray-900 flex items-center">
+                        <i class="fas fa-user-circle text-purple-600 mr-3"></i>生理特征
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600"><i class="fas fa-ruler-vertical text-gray-400 mr-2"></i>身高</span>
+                            <span class="font-medium text-gray-900">4'0"</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600"><i class="fas fa-weight text-gray-400 mr-2"></i>体重</span>
+                            <span class="font-medium text-gray-900">110磅</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600"><i class="fas fa-calendar-day text-gray-400 mr-2"></i>出生日期</span>
+                            <span class="font-medium text-gray-900">1973年1月16日</span>
+                        </div>
+                        <div class="pt-3">
+                            <div class="text-sm text-gray-600 mb-3 font-medium">显著特征:</div>
+                            <div class="space-y-2" id="distinctive-features">
+                                <div class="flex items-start">
+                                    <i class="fas fa-circle text-purple-500 text-xs mt-1.5 mr-2"></i>
+                                    <span>西班牙裔女性，棕色头发，棕色眼睛</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-circle text-purple-500 text-xs mt-1.5 mr-2"></i>
+                                    <span>有时拼写为"Lila"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 联系方式 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-5 text-gray-900 flex items-center">
+                        <i class="fas fa-phone-alt text-purple-600 mr-3"></i>紧急联系方式
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-sm text-gray-600 mb-1">负责机构</div>
+                            <div class="font-medium text-lg text-gray-900" id="police-contact">洛斯巴诺斯警察局</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600 mb-1">报案电话</div>
+                            <div class="font-medium text-gray-900">209-827-7070</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600 mb-1">最后更新</div>
+                            <div class="font-medium text-gray-900">2024年</div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-100">
+                            <a href="tel:209-827-7070" class="block w-full bg-purple-600 text-white py-3 rounded-lg text-center font-medium hover:bg-purple-700 transition-colors shadow-md">
+                                <i class="fas fa-phone mr-2"></i>立即联系警方
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <h2 class="text-xl font-bold mt-6 mb-4">失踪详情</h2>
-            <p>Anguiano 最后一次被看到是在她公寓楼内的洗衣房，时间是1999年8月21日晚上10:30或10:45。邻居看到她在与前男友 Adolfo Romo Martinez 交谈，持续了近一个小时。Martinez 曾对她实施过家暴，并在分手后继续威胁她。Anguiano 离开时衣服留在烘干机里，孩子们睡在公寓里，她与堂姐同住。她从此再未被看到。</p>
-            <h2 class="text-xl font-bold mt-6 mb-4">AI 分析报告</h2>
-            <h3 class="text-lg font-semibold mt-4 mb-2">案件画像概览</h3>
-            <p><strong>身份标签:</strong> Lilia Edith Anguiano, 年龄26岁, 失踪时长27年。</p>
-            <p><strong>生理显著特征:</strong> 棕色头发, 棕色眼睛, 曾被前男友家暴。</p>
-            <p><strong>状态评估:</strong> 危险级失踪。</p>
-            <h3 class="text-lg font-semibold mt-4 mb-2">时空矛盾点分析</h3>
-            <p><strong>消失环境:</strong> 在一个相对安全的社区内，但邻居证言存在矛盾。</p>
-            <p><strong>生活稳定性偏离:</strong> 社交关系紧张，财务状况不稳定，心理压力大。</p>
-            <p><strong>关键窗口期:</strong> 1999年8月21日至1999年9月，这段时间内进行黄金搜索。</p>
-            <h3 class="text-lg font-semibold mt-4 mb-2">潜在风险因素评分</h3>
-            <p><strong>环境风险:</strong> 社区安全，但存在家暴历史。</p>
-            <p><strong>医疗风险:</strong> 无明显证据表明存在严重健康问题。</p>
-            <p><strong>外部侵害:</strong> 前男友存在暴力倾向，可能是主要嫌疑人。</p>
-            <h3 class="text-lg font-semibold mt-4 mb-2">调查突破口建议</h3>
-            <p><strong>DNA/法医建议:</strong> 核对 NamUs 数据库中带有特定特征的无名尸体。</p>
-            <p><strong>数字足迹:</strong> 检查1999年的信用卡记录和社交媒体记录。</p>
-            <p><strong>物理搜索建议:</strong> 加强对附近区域的搜索，特别是可能的藏匿地点。</p>
-            <h3 class="text-lg font-semibold mt-4 mb-2">类似案件关联</h3>
-            <p><strong>地理关联:</strong> 同一地区存在其他失踪案件，手法相似。</p>
-            <p><strong>人口统计学关联:</strong> 针对年轻女性的失踪事件较为常见。</p>
-            <h3 class="text-lg font-semibold mt-4 mb-2">法律与免责声明</h3>
-            <p>本报告由AI基于公开数据生成，仅供参考，不代表官方结论，也不应替代警方的专业调查。</p>
-            <p>官方报案电话: 209-827-7070</p>
-            <p>调查机构: 洛斯巴诺斯警察局</p>
-        </section>
+
+            <!-- 右侧栏 - 案件详情 -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- 案件概述 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 flex items-center">
+                        <i class="fas fa-file-alt text-purple-600 mr-3"></i>案件概述
+                    </h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        莉莉亚·伊迪丝·安古亚诺，52岁，西班牙裔女性，于1999年8月21日在加利福尼亚州洛斯巴诺斯失踪。
+                        最后一次被看到是在她公寓楼内的洗衣房，当时正与前男友交谈。案件状态为危险级失踪。
+                    </p>
+                </div>
+
+                <!-- 案件时间线 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-5 text-gray-900 flex items-center">
+                        <i class="fas fa-history text-purple-600 mr-3"></i>案件时间线
+                    </h3>
+                    <div class="space-y-5 relative pl-8" id="timeline-content">
+                        <div class="timeline-item relative">
+                            <h4 class="font-semibold text-purple-800">1973年1月16日</h4>
+                            <p class="text-sm text-gray-600">莉莉亚·伊迪丝·安古亚诺出生</p>
+                        </div>
+                        <div class="timeline-item relative">
+                            <h4 class="font-semibold text-purple-800">1999年8月21日 晚10:30-10:45</h4>
+                            <p class="text-sm text-gray-600">最后一次被看到在公寓楼内的洗衣房，与前男友Adolfo Romo Martinez交谈</p>
+                        </div>
+                        <div class="timeline-item relative">
+                            <h4 class="font-semibold text-purple-800">1999年8月22日</h4>
+                            <p class="text-sm text-gray-600">家人发现她失踪，衣服留在烘干机里，孩子们睡在公寓里</p>
+                        </div>
+                        <div class="timeline-item relative">
+                            <h4 class="font-semibold text-purple-800">至今</h4>
+                            <p class="text-sm text-gray-600">莉莉亚仍下落不明，案件持续调查中</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 失踪详情 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-5 text-gray-900 flex items-center">
+                        <i class="fas fa-info-circle text-purple-600 mr-3"></i>失踪详情
+                    </h3>
+                    <div class="space-y-4">
+                        <p class="text-gray-700 leading-relaxed">
+                            Anguiano 最后一次被看到是在她公寓楼内的洗衣房，时间是1999年8月21日晚上10:30或10:45。邻居看到她在与前男友 Adolfo Romo Martinez 交谈，持续了近一个小时。Martinez 曾对她实施过家暴，并在分手后继续威胁她。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Anguiano 离开时衣服留在烘干机里，孩子们睡在公寓里，她与堂姐同住。她从此再未被看到。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- AI分析报告 -->
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <h3 class="text-xl font-bold mb-5 text-gray-900 flex items-center">
+                        <i class="fas fa-robot text-purple-600 mr-3"></i>AI智能分析报告
+                    </h3>
+                    
+                    <!-- 风险雷达图占位 -->
+                    <div class="bg-purple-50 rounded-lg p-6 mb-6">
+                        <div class="text-center mb-4">
+                            <h4 class="text-lg font-semibold text-purple-800 mb-2">风险维度分析</h4>
+                            <p class="text-sm text-purple-600">基于现有信息的AI风险评估</p>
+                        </div>
+                        <div class="h-40 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center shadow-inner">
+                            <i class="fas fa-chart-radar text-4xl text-purple-300"></i>
+                        </div>
+                    </div>
+
+                    <!-- 分析模块 -->
+                    <div class="space-y-6" id="ai-analysis-content">
+                        <div class="bg-purple-50 p-5 rounded-lg">
+                            <h4 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                                <i class="fas fa-user-tag text-purple-600 mr-2"></i>案件画像概览
+                            </h4>
+                            <div class="space-y-2 text-gray-700">
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[100px]">身份标签:</span>
+                                    <span>Lilia Edith Anguiano, 年龄26岁, 失踪时长27年</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[100px]">生理特征:</span>
+                                    <span>棕色头发, 棕色眼睛, 曾被前男友家暴</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[100px]">状态评估:</span>
+                                    <span>危险级失踪</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 p-5 rounded-lg">
+                            <h4 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                                <i class="fas fa-map-marker-alt text-purple-600 mr-2"></i>时空矛盾点分析
+                            </h4>
+                            <div class="space-y-2 text-gray-700">
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">消失环境:</span>
+                                    <span>在一个相对安全的社区内，但邻居证言存在矛盾</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">生活稳定性:</span>
+                                    <span>社交关系紧张，财务状况不稳定，心理压力大</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">关键窗口期:</span>
+                                    <span>1999年8月21日至1999年9月，这段时间内进行黄金搜索</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 p-5 rounded-lg">
+                            <h4 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                                <i class="fas fa-exclamation-triangle text-purple-600 mr-2"></i>潜在风险因素评分
+                            </h4>
+                            <div class="space-y-2 text-gray-700">
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">环境风险:</span>
+                                    <span>社区安全，但存在家暴历史</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">医疗风险:</span>
+                                    <span>无明显证据表明存在严重健康问题</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">外部侵害:</span>
+                                    <span>前男友存在暴力倾向，可能是主要嫌疑人</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 p-5 rounded-lg">
+                            <h4 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                                <i class="fas fa-search text-purple-600 mr-2"></i>调查突破口建议
+                            </h4>
+                            <div class="space-y-2 text-gray-700">
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">DNA/法医:</span>
+                                    <span>核对 NamUs 数据库中带有特定特征的无名尸体</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">数字足迹:</span>
+                                    <span>检查1999年的信用卡记录和社交媒体记录</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">物理搜索:</span>
+                                    <span>加强对附近区域的搜索，特别是可能的藏匿地点</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 p-5 rounded-lg">
+                            <h4 class="text-lg font-semibold text-purple-800 mb-3 flex items-center">
+                                <i class="fas fa-project-diagram text-purple-600 mr-2"></i>类似案件关联
+                            </h4>
+                            <div class="space-y-2 text-gray-700">
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">地理关联:</span>
+                                    <span>同一地区存在其他失踪案件，手法相似</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-medium text-purple-900 min-w-[120px]">人口统计:</span>
+                                    <span>针对年轻女性的失踪事件较为常见</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <footer class="bg-gray-800 text-white py-4 text-center">
-        <p>&copy; 2026 美国失踪人员查找项目. 版权所有.</p>
+    <!-- 底部行动区 -->
+    <footer class="bg-gray-900 text-white py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-5 flex items-center">
+                        <i class="fas fa-info-circle text-purple-400 mr-2"></i>案件信息
+                    </h4>
+                    <div class="space-y-3 text-gray-300 text-sm">
+                        <div class="flex justify-between">
+                            <span>案件编号:</span>
+                            <span class="font-medium text-gray-200">待提供</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>负责机构:</span>
+                            <span class="font-medium text-gray-200">洛斯巴诺斯警察局</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>报案电话:</span>
+                            <span class="font-medium text-gray-200">209-827-7070</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-5 flex items-center">
+                        <i class="fas fa-phone-alt text-purple-400 mr-2"></i>紧急联系
+                    </h4>
+                    <div class="space-y-3 text-gray-300 text-sm">
+                        <div class="flex justify-between">
+                            <span>警方热线:</span>
+                            <span class="font-medium text-gray-200">209-827-7070</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>匿名举报:</span>
+                            <span class="font-medium text-gray-200">1-800-222-TIPS</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>最后更新:</span>
+                            <span class="font-medium text-gray-200">2024年</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-5 flex items-center">
+                        <i class="fas fa-share-alt text-purple-400 mr-2"></i>快速行动
+                    </h4>
+                    <div class="space-y-3">
+                        <button class="w-full bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium shadow-md">
+                            <i class="fas fa-share-alt mr-2"></i>分享案件信息
+                        </button>
+                        <button class="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium shadow-md">
+                            <i class="fas fa-print mr-2"></i>打印寻人海报
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2024 失踪人员信息中心 - 所有信息基于公开数据，仅供参考</p>
+                <p class="mt-2">本报告由AI基于公开数据生成，不代表官方结论</p>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        function changeMainImage(src) {
+            document.querySelector('header img').src = src;
+        }
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
