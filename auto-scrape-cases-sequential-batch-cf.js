@@ -153,11 +153,43 @@ async function updateBatchScrapedContent(results) {
             } else {
                 console.log(`\n📋 数据库写入结果:`);
                 console.log(`✅ 写入成功！`);
-                if (stdout.includes("Rows affected")) {
-                    console.log(`   ${stdout.substring(stdout.indexOf("Rows affected"))}`);
+                // 解析输出中的关键信息
+                let rowsExecuted = 0;
+                let rowsRead = 0;
+                let rowsWritten = 0;
+                
+                // 尝试从输出中提取关键指标
+                
+                // 匹配格式："Executed X queries in Yms (A rows read B rows written)"
+                const fullMatch = stdout.match(/Executed\s+(\d+)\s+(?:queries|commands).*\((\d+)\s+rows read\s+(\d+)\s+rows written\)/i);
+                if (fullMatch) {
+                    rowsExecuted = parseInt(fullMatch[1]);
+                    rowsRead = parseInt(fullMatch[2]);
+                    rowsWritten = parseInt(fullMatch[3]);
+                } else {
+                    // 匹配格式："Processed X queries"
+                    const processedMatch = stdout.match(/Processed\s+(\d+)\s+queries/i);
+                    if (processedMatch && processedMatch[1]) {
+                        rowsExecuted = parseInt(processedMatch[1]);
+                    }
+                    
+                    // 分别匹配Rows read和Rows written
+                    const readMatch = stdout.match(/Rows read\s*:\s*(\d+)|(\d+)\s+rows read/i);
+                    if (readMatch) {
+                        rowsRead = parseInt(readMatch[1] || readMatch[2]);
+                    }
+                    
+                    const writtenMatch = stdout.match(/Rows written\s*:\s*(\d+)|(\d+)\s+rows written/i);
+                    if (writtenMatch) {
+                        rowsWritten = parseInt(writtenMatch[1] || writtenMatch[2]);
+                    }
                 }
-                console.log(`   SQL命令执行输出:`);
-                console.log(`   ${stdout.replace(/\n/g, "\n   ")}`);
+                
+                // 显示简化的统计信息
+                console.log(`   ✅ 执行了 ${rowsExecuted} 条查询`);
+                console.log(`   📖 读取了 ${rowsRead} 行数据`);
+                console.log(`   📝 写入了 ${rowsWritten} 行数据`);
+                
                 resolve(true);
             }
         });
@@ -179,6 +211,22 @@ async function getCasesToScrape() {
             }
         });
     });
+}
+
+// 动态倒计时函数
+async function dynamicDelay() {
+    const delaySeconds = 6 + Math.random() * 6; // 6-12秒随机延迟
+    const totalMs = Math.floor(delaySeconds * 1000);
+    const intervalMs = 1000; // 每秒更新一次
+    
+    console.log(`\n⏱️  开始待机倒计时: ${Math.ceil(delaySeconds)}秒`);
+    
+    for (let remaining = Math.ceil(delaySeconds); remaining > 0; remaining--) {
+        process.stdout.write(`\r⏳ 剩余待机时间: ${remaining}秒`);
+        await new Promise(r => setTimeout(r, intervalMs));
+    }
+    
+    console.log(`\n✅ 待机结束，继续处理下一条`);
 }
 
 // 主循环
@@ -229,9 +277,7 @@ async function main() {
         }
         
         if (i < cases.length - 1) {
-            const delay = 1000 + Math.random() * 2000; // 1-3秒随机延迟
-            console.log(`⏱️  等待 ${delay}ms...`);
-            await new Promise(r => setTimeout(r, delay));
+            await dynamicDelay(); // 使用动态倒计时
         }
     }
     
