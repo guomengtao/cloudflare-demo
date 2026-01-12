@@ -62,6 +62,51 @@ app.get('/api/case/:caseId', async (req, res) => {
     }
 });
 
+// API 端点：获取失踪人口信息列表
+app.get('/api/missing-persons/info', async (req, res) => {
+    try {
+        const { page = 1, limit = 30, sortBy = 'analyzed_at', sortOrder = 'DESC' } = req.query;
+        
+        // 验证参数
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+        
+        if (isNaN(pageNum) || isNaN(limitNum) || pageNum < 1 || limitNum < 1) {
+            return res.status(400).json({ error: 'Invalid page or limit parameters' });
+        }
+        
+        // 计算偏移量
+        const offset = (pageNum - 1) * limitNum;
+        
+        // 获取数据总数
+        const countResult = await queryD1('SELECT COUNT(*) as total FROM missing_persons_info');
+        const total = countResult.results[0].total;
+        
+        // 获取分页数据
+        const dataResult = await queryD1(
+            `SELECT * FROM missing_persons_info ORDER BY ${sortBy} ${sortOrder} LIMIT ? OFFSET ?`,
+            [limitNum, offset]
+        );
+        
+        const data = dataResult.results;
+        const totalPages = Math.ceil(total / limitNum);
+        
+        res.json({
+            success: true,
+            data,
+            pagination: {
+                currentPage: pageNum,
+                totalPages,
+                total,
+                limit: limitNum
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching missing persons info:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 // 静态文件服务
 app.use(express.static(__dirname));
 
