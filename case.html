@@ -223,8 +223,16 @@
     <script>
         // Get case_id from URL parameter, default to "milad-abadi"
         function getCaseId() {
+            // Get case ID from URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('case_id') || 'milad-abadi';
+            let caseId = urlParams.get('id');
+            
+            // Default case ID if none provided
+            if (!caseId) {
+                caseId = '1'; // Use the first case (Timothy Leon Aamoth) as default
+            }
+            
+            return caseId;
         }
 
         // Fetch case details from the database

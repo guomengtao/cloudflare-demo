@@ -1,13 +1,11 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const dotenv = require('dotenv');
-const fetch = require('node-fetch');
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
+const fetch = require("node-fetch");
 
 // 初始化配置
-const envPath = fs.existsSync(path.resolve(__dirname, '.env')) 
-    ? path.resolve(__dirname, '.env') 
-    : path.resolve(__dirname, '.env');
+const envPath = path.resolve(__dirname, ".env");
 dotenv.config({ path: envPath });
 
 const { CLOUDFLARE_API_KEY, CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_DATABASE_ID } = process.env;
@@ -19,10 +17,10 @@ const PORT = process.env.PORT || 3000;
 // 封装 D1 API 调用
 async function queryD1(sql, params = []) {
     const response = await fetch(API_URL, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Authorization': `Bearer ${CLOUDFLARE_API_KEY}`,
-            'Content-Type': 'application/json'
+            "Authorization": `Bearer ${CLOUDFLARE_API_KEY}`,
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({ sql, params })
     });
@@ -36,26 +34,31 @@ async function queryD1(sql, params = []) {
 
 // API 端点：获取案件详情
 app.get('/api/case/:caseId', async (req, res) => {
-    const caseId = req.params.caseId;
+    const caseId = parseInt(req.params.caseId);
+    
+    if (isNaN(caseId)) {
+        return res.status(400).json({ error: 'Invalid case ID format' });
+    }
     
     try {
         // 从数据库中查询案件
         const result = await queryD1(
-            'SELECT case_html FROM missing_persons_cases WHERE case_id = ?',
+            'SELECT scraped_content FROM missing_persons_cases WHERE id = ?',
             [caseId]
         );
         
-        if (result.rows && result.rows.length > 0) {
+        if (result.results && result.results.length > 0) {
+            const caseData = result.results[0];
             res.json({
                 case_id: caseId,
-                case_html: result.rows[0].case_html
+                case_html: caseData.scraped_content
             });
         } else {
-            res.status(404).json({ error: 'Case not found' });
+            res.status(404).json({ error: "Case not found" });
         }
     } catch (error) {
-        console.error('Error fetching case:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error("Error fetching case:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
