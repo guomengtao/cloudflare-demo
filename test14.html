@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻人启事：Felicia Brown | 密苏里州失踪档案</title>
+    <style>
+        :root {
+            --emergency-red: #d32f2f;
+            --police-navy: #1a237e;
+            --info-bg: #f8f9fa;
+            --text-dark: #212121;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            color: var(--text-dark);
+        }
+
+        /* 响应式导航 */
+        .navbar {
+            background: #fff;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--emergency-red);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-group { display: flex; align-items: center; gap: 10px; }
+        .logo-group b { color: var(--emergency-red); font-size: 20px; }
+
+        .search-mini {
+            background: #eee;
+            border-radius: 20px;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-mini input { border: none; background: transparent; outline: none; width: 150px; font-size: 14px; }
+
+        /* 面包屑导航 */
+        .breadcrumb {
+            padding: 15px 5%;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* 主卡片布局 */
+        .case-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 20px;
+            padding: 0 5%;
+        }
+
+        /* 左侧：视觉资料卡 */
+        .visual-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .main-img-box {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .main-img-box img { width: 100%; display: block; }
+
+        .status-ribbon {
+            position: absolute;
+            top: 15px;
+            left: -30px;
+            background: var(--emergency-red);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(-45deg);
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .quick-facts {
+            margin-top: 20px;
+            background: var(--info-bg);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .fact-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        /* 右侧：档案详情 */
+        .details-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .case-header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 25px; }
+        .case-header h1 { font-size: 36px; margin: 0; color: var(--police-navy); }
+        .location-tag { color: #d32f2f; font-weight: 600; font-size: 18px; margin-top: 5px; }
+
+        /* 数据网格 */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .data-cell {
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .data-cell label { display: block; font-size: 12px; color: #757575; margin-bottom: 5px; }
+        .data-cell span { font-size: 18px; font-weight: bold; color: var(--police-navy); }
+
+        /* 内容章节 */
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 30px 0 15px;
+            display: flex;
+            align-items: center;
+            color: var(--police-navy);
+        }
+
+        .section-title::before {
+            content: "";
+            width: 5px;
+            height: 20px;
+            background: var(--emergency-red);
+            margin-right: 10px;
+        }
+
+        .narrative-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            padding: 20px;
+            background: #fffdf7;
+            border: 1px solid #f0e6cc;
+            border-radius: 8px;
+        }
+
+        /* 线索联络栏 */
+        .contact-action {
+            margin-top: 40px;
+            background: var(--police-navy);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cta-text h3 { margin: 0 0 5px 0; font-size: 22px; }
+        .phone-link {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffeb3b;
+            text-decoration: none;
+        }
+
+        .share-btn {
+            background: #fff;
+            color: var(--police-navy);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .case-wrapper { grid-template-columns: 1fr; }
+            .data-grid { grid-template-columns: 1fr 1fr; }
+            .contact-action { flex-direction: column; text-align: center; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-group">
+            <b>MISSING</b> <span>失踪人员公共查询系统</span>
+        </div>
+        <div class="search-mini">
+            <input type="text" placeholder="搜索姓名/城市...">
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        首页 / 失踪人员档案 / 密苏里州 / Felicia Brown
+    </div>
+
+    <div class="case-wrapper">
+        <aside class="visual-card">
+            <div class="main-img-box">
+                <div class="status-ribbon">MISSING</div>
+                <img src="https://charleyproject.org/wp-content/uploads/2025/12/brown_felicia.jpg" alt="Felicia Brown">
+            </div>
+            
+            <div class="quick-facts">
+                <div class="fact-row"><strong>种族</strong> <span>白人</span></div>
+                <div class="fact-row"><strong>性别</strong> <span>女性</span></div>
+                <div class="fact-row"><strong>发色</strong> <span>金色 (Blonde)</span></div>
+                <div class="fact-row"><strong>瞳色</strong> <span>褐色 (Brown)</span></div>
+            </div>
+            
+            <p style="text-align:center; font-size:12px; color:#999; margin-top:15px;">
+                档案编号：#MO-2024-FB<br>
+                照片录入时间：约 2024 年
+            </p>
+        </aside>
+
+        <main class="details-card">
+            <div class="case-header">
+                <h1>Felicia Brown</h1>
+                <div class="location-tag">最后目击地点：密苏里州，哥伦比亚市 (Columbia, MO)</div>
+                <p style="font-size: 14px; color: #666; margin-top: 5px;">
+                    ※ 哥伦比亚市位于密苏里州中部，圣路易斯与堪萨斯城中间。
+                </p>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-cell">
+                    <label>失踪日期</label>
+                    <span>2024年8月1日</span>
+                </div>
+                <div class="data-cell">
+                    <label>失踪时年龄</label>
+                    <span>32 岁</span>
+                </div>
+                <div class="data-cell">
+                    <label>当前推算年龄</label>
+                    <span>33 岁</span>
+                </div>
+                <div class="data-cell">
+                    <label>身高</label>
+                    <span>5'5 (165 cm)</span>
+                </div>
+                <div class="data-cell">
+                    <label>体重</label>
+                    <span>180 lbs (81.6 kg)</span>
+                </div>
+                <div class="data-cell">
+                    <label>案件分类</label>
+                    <span style="font-size: 16px;">失踪 (Missing)</span>
+                </div>
+            </div>
+
+            <div class="section-title">失踪详情</div>
+            <div class="narrative-text">
+                Felicia Brown 最后一次现身是在 2024 年 8 月 1 日，地点位于密苏里州的哥伦比亚市。自那以后，她再未与任何亲友取得联系。目前该案件可公开的调查细节非常有限，警方正在征集任何可能的线索。
+            </div>
+
+            <div class="section-title">调查机构</div>
+            <p><strong>哥伦比亚警察局 (Columbia Police Department)</strong></p>
+            
+            <div class="contact-action">
+                <div class="cta-text">
+                    <h3>发现线索？请立即致电</h3>
+                    <a href="tel:5738747652" class="phone-link">573‐874‐7652</a>
+                </div>
+                <a href="#" class="share-btn">生成寻人海报</a>
+            </div>
+
+            <div style="margin-top: 30px; font-size: 13px; color: #888;">
+                数据来源：密苏里州公路巡逻队 (Missouri State Highway Patrol) | Charley Project<br>
+                档案最后更新：2025年12月17日
+            </div>
+        </main>
+    </div>
+
+    <footer style="background:#333; color:#ccc; text-align:center; padding:30px 0; font-size:12px;">
+        <p>© 2026 失踪人员公共信息平台 (仿真设计)</p>
+        <p>如果发现当事人，请勿私自接触，请立即拨打当地报警电话或调查机构号码。</p>
+    </footer>
+
+</body>
+</html>

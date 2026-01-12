@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员档案：Michael Buehl (OH-2023)</title>
+    <style>
+        :root {
+            --police-blue: #1a2a44;
+            --alert-orange: #f39c12;
+            --danger-red: #c0392b;
+            --border-light: #e0e0e0;
+            --bg-gray: #fcfcfc;
+        }
+
+        body {
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        /* 顶部导航 */
+        .top-nav {
+            background: var(--police-blue);
+            color: white;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-brand { font-size: 20px; font-weight: bold; letter-spacing: 1px; }
+        .search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 4px; padding: 5px 15px; }
+        .search-bar input { background: none; border: none; color: white; outline: none; width: 200px; }
+
+        /* 面包屑 */
+        .breadcrumb {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* 档案主卡片 */
+        .case-container {
+            max-width: 1100px;
+            margin: 0 auto 50px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: 380px 1fr;
+        }
+
+        /* 左侧栏：视觉识别区 */
+        .visual-sidebar {
+            background: var(--bg-gray);
+            border-right: 1px solid var(--border-light);
+            padding: 30px;
+        }
+
+        .image-gallery { margin-bottom: 25px; }
+        .main-img { width: 100%; border-radius: 4px; border: 4px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 12px; }
+        .thumb-group { display: flex; gap: 10px; }
+        .thumb-group img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.7; transition: 0.3s; }
+        .thumb-group img:hover { opacity: 1; }
+
+        .feature-list { list-style: none; padding: 0; }
+        .feature-tag { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 0; 
+            border-bottom: 1px dashed #ccc;
+            font-size: 14px;
+        }
+        .feature-tag strong { color: #555; }
+
+        /* 右侧栏：详情区 */
+        .case-details { padding: 40px; position: relative; }
+        .case-id { position: absolute; top: 40px; right: 40px; color: #999; font-size: 12px; }
+        
+        .status-header {
+            display: inline-block;
+            background: var(--alert-orange);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        h1 { font-size: 36px; margin: 0 0 10px 0; color: var(--police-blue); }
+        .location-label { color: var(--danger-red); font-weight: 500; margin-bottom: 30px; display: flex; align-items: center; }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .data-item label { display: block; font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 5px; }
+        .data-item span { font-size: 16px; font-weight: 600; }
+
+        .clothing-box {
+            background: #fff9e6;
+            border-left: 4px solid var(--alert-orange);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 2px solid var(--police-blue);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            color: var(--police-blue);
+        }
+
+        .narrative { line-height: 1.8; color: #444; margin-bottom: 40px; }
+
+        /* 联系区 */
+        .agency-footer {
+            background: #edf2f7;
+            padding: 25px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .phone-cta { font-size: 24px; font-weight: bold; color: var(--danger-red); }
+
+        @media (max-width: 850px) {
+            .case-container { grid-template-columns: 1fr; }
+            .top-nav { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="nav-brand">NATIONAL MISSING PERSONS DATABASE</div>
+        <div class="search-bar">
+            <input type="text" placeholder="全局案卷搜索...">
+        </div>
+    </header>
+
+    <nav class="breadcrumb">
+        档案库 / 美国 / 俄亥俄州 / 案件号 #2023-MB
+    </nav>
+
+    <main class="case-container">
+        <aside class="visual-sidebar">
+            <div class="image-gallery">
+                <img src="https://charleyproject.org/wp-content/uploads/2025/12/buehl_michael.jpg" class="main-img" alt="Michael Buehl">
+                <div class="thumb-group">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/12/buehl_michael.jpg">
+                    <img src="https://charleyproject.org/wp-content/uploads/2025/12/buehl_michael2.jpg">
+                </div>
+            </div>
+
+            <ul class="feature-list">
+                <li class="feature-tag"><strong>种族</strong> <span>白人 (White)</span></li>
+                <li class="feature-tag"><strong>性别</strong> <span>男性</span></li>
+                <li class="feature-tag"><strong>发色</strong> <span>棕色</span></li>
+                <li class="feature-tag"><strong>瞳色</strong> <span>蓝色</span></li>
+            </ul>
+            <p style="margin-top:20px; font-size:12px; color:#999; text-align:center;">照片摄于 约2023年</p>
+        </aside>
+
+        <section class="case-details">
+            <span class="case-id">档案建立日期: 2025-12-15</span>
+            <div class="status-header">失踪人员 (MISSING)</div>
+            <h1>Michael Buehl</h1>
+            <div class="location-label">
+                失踪地点：俄亥俄州，拉文纳 (Ravenna, Ohio)
+            </div>
+
+            <div class="data-grid">
+                <div class="data-item">
+                    <label>失踪日期</label>
+                    <span>2023年1月24日</span>
+                </div>
+                <div class="data-item">
+                    <label>失踪时年龄</label>
+                    <span>50 岁</span>
+                </div>
+                <div class="data-item">
+                    <label>身高</label>
+                    <span>5'6 (168 cm)</span>
+                </div>
+                <div class="data-item">
+                    <label>体重</label>
+                    <span>165 lbs (75 kg)</span>
+                </div>
+            </div>
+
+            <div class="section-title">当时穿着</div>
+            <div class="clothing-box">
+                一件<strong>棕褐色夹克</strong> (Tan jacket) 和 <strong>蓝色牛仔裤</strong> (Blue jeans)。
+            </div>
+
+            <div class="section-title">失踪经过</div>
+            <div class="narrative">
+                Michael Buehl 最后一次露面是 2023 年 1 月 24 日。据调查，他在与女朋友发生争吵后离开了位于俄亥俄州拉文纳（Ravenna）的住所，此后便音讯全无。目前关于该案件的细节披露较少。
+            </div>
+
+            <div class="section-title">官方联系方式</div>
+            <div class="agency-footer">
+                <div>
+                    <div style="font-weight:bold; color:#2c3e50;">拉文纳警察局</div>
+                    <div style="font-size:14px; color:#666;">调查编号：Ref-2023-01</div>
+                </div>
+                <div class="phone-cta">330-296-6486</div>
+            </div>
+
+            <div style="margin-top: 30px; font-size: 13px; color: #999;">
+                信息来源：<a href="https://www.ohioattorneygeneral.gov/">俄亥俄州总检察长办公室</a> · NamUs · Fox 8 新闻
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 40px 0; color: #888; font-size: 12px;">
+        最后更新于 2025年12月15日 | 静态档案系统
+    </footer>
+
+</body>
+</html>

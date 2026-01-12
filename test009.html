@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员档案：Angela Kim Marie Abbrederis</title>
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --crimson: #a91e2c;
+            --deep-navy: #1a202c;
+            --slate-gray: #f1f5f9;
+            --accent-gold: #b7791f;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #cbd5e1;
+            color: #2d3748;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        /* 面包屑导航 */
+        .breadcrumb {
+            padding: 15px 40px;
+            background: var(--slate-gray);
+            font-size: 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .breadcrumb a { color: var(--accent-gold); text-decoration: none; }
+        .breadcrumb span { margin: 0 8px; color: #a0aec0; }
+
+        /* 头部 */
+        .case-header {
+            background: var(--deep-navy);
+            color: white;
+            padding: 40px;
+            border-bottom: 5px solid var(--crimson);
+        }
+        .case-header h1 { margin: 0; font-size: 32px; letter-spacing: 1px; }
+        .case-header .case-id { font-family: monospace; opacity: 0.7; font-size: 14px; margin-top: 5px; }
+
+        /* 主体布局 */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; padding: 20px; }
+        }
+
+        /* 侧边照片与身份标签 */
+        .photo-sidebar img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .alias-tag-box {
+            background: #fffaf0;
+            border: 1px solid #feebc8;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .alias-tag-box h4 { margin: 0 0 10px 0; font-size: 14px; color: var(--accent-gold); border-bottom: 1px solid #fbd38d; }
+        .alias-list { font-size: 13px; color: #744210; margin: 0; padding-left: 18px; }
+
+        /* 数据网格 */
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .vital-item { border-left: 3px solid var(--crimson); padding-left: 15px; }
+        .vital-item label { display: block; font-size: 12px; font-weight: 700; color: var(--crimson); text-transform: uppercase; }
+        .vital-item span { font-size: 16px; font-weight: 700; }
+
+        /* 特征模块 */
+        .feature-box {
+            background: var(--slate-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .feature-box h3 { margin-top: 0; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+
+        /* 案情详情 */
+        .details-section h3 {
+            border-bottom: 2px solid var(--deep-navy);
+            padding-bottom: 8px;
+            font-size: 22px;
+        }
+        .details-content p { margin-bottom: 20px; text-align: justify; }
+        .clue-alert {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #c53030;
+        }
+
+        /* 调查机构 */
+        .footer-agency {
+            background: var(--deep-navy);
+            color: white;
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .phone-box { font-size: 24px; font-weight: 900; color: #fc8181; }
+
+        .update-info {
+            background: #edf2f7;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 面包屑导航 -->
+    <nav class="breadcrumb">
+        <a href="#">首页</a><span>/</span>
+        <a href="#">德克萨斯州失踪人员</a><span>/</span>
+        <strong>Angela Abbrederis 案</strong>
+    </nav>
+
+    <header class="case-header">
+        <h1>安吉拉·金·玛丽·阿布雷德里斯 <small style="font-weight: 400; opacity: 0.8;">Angela Kim Marie Abbrederis</small></h1>
+        <div class="case-id">案件编号：DALLAS-1996-0402 | 疑似遭遇不测 (Foul Play Suspected)</div>
+    </header>
+
+    <div class="main-grid">
+        <!-- 左侧栏 -->
+        <aside class="photo-sidebar">
+            <img src="http://charleyproject.org/wp-content/uploads/2017/10/abbrederis_angela.jpg" alt="Angela Abbrederis">
+            
+            <div class="alias-tag-box">
+                <h4>已知化名 / 别名</h4>
+                <ul class="alias-list">
+                    <li>Mei Ling (美玲)</li>
+                    <li>Angela Kimmarie Ng</li>
+                    <li>Audra Abbrederis</li>
+                    <li>Vanessa Abbrederis</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 右侧信息区 -->
+        <main>
+            <div class="vitals-grid">
+                <div class="vital-item"><label>失踪时间</label><span>1996年04月02日</span></div>
+                <div class="vital-item"><label>失踪地点</label><span>德克萨斯州 达拉斯</span></div>
+                <div class="vital-item"><label>族裔背景</label><span>亚裔 / 白人混血</span></div>
+                <div class="vital-item"><label>出生日期</label><span>1968年10月25日 (现年57岁)</span></div>
+                <div class="vital-item"><label>身高范围</label><span>170cm - 175cm</span></div>
+                <div class="vital-item"><label>体重范围</label><span>52kg - 59kg</span></div>
+            </div>
+
+            <section class="feature-box">
+                <h3>🔍 身体显著特征</h3>
+                <p><strong>特征描述：</strong>棕色头发，棕色眼睛。其中一侧髋部有疤痕，右侧髋部纹有<strong>蝴蝶图案</strong>刺青。接受过<strong>隆胸手术</strong>。</p>
+                <div class="clue-alert">
+                    *注：部分官方机构可能将其族裔错误标注为“西班牙裔”。
+                </div>
+            </section>
+
+            <section class="details-section">
+                <h3>案件详细经过</h3>
+                <div class="details-content">
+                    <p>1996年4月2日，安吉拉在达拉斯失踪。令人起疑的是，她留下了车辆、衣物、行李、车钥匙等几乎所有个人财物。她在公寓内的狗也无人照看，洗衣机里还有洗好的衣服，床上堆着待整理的衣物——这些反常迹象表明她并非自愿离开。门附近曾发现红色指纹，后经鉴定为油漆而非血迹。</p>
+                    
+                    <p><strong>可疑行为：</strong>失踪后，其男友从其储蓄账户提走资金，将其名下车辆过户至自己名下，并清空了联名账户。男友声称这些财物为其共同拥有，警方当时未将其列为必然嫌疑人。</p>
+                    
+                    <p><strong>个人背景：</strong>失踪时，安吉拉在达拉斯多家俱乐部担任脱衣舞者。她曾有陆军服役经历，并于1990年结婚，1995年离婚。她与居住在密歇根州的母亲和姐姐关系密切，但失踪时与居住在香港的父亲关系疏远。</p>
+                    
+                    <p>目前，安吉拉仍下落不明，警方怀疑她已遭遇不测。</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 调查机构 -->
+    <footer class="footer-agency">
+        <div>
+            <h3 style="margin: 0; color: #cbd5e1;">负责调查机构</h3>
+            <p style="margin: 5px 0;">达拉斯警察局 (Dallas Police Department)</p>
+        </div>
+        <div class="phone-box">214-671-4243</div>
+        <div style="font-size: 14px;">
+            数据来源：德州公共安全部 / 达拉斯晨报
+        </div>
+    </footer>
+
+    <div class="update-info">
+        档案初创：2004年10月12日 | 最后核实：2026年1月11日（包含身高体重及详情更新）
+    </div>
+</div>
+
+</body>
+</html>

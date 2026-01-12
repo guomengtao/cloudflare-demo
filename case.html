@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Person Case Details</title>
+    <meta name="description" content="Detailed information about missing person cases from the Charley Project">
+    <meta name="keywords" content="missing persons, case details, Charley Project">
+    <meta name="author" content="Charley Project">
+    <meta property="og:title" content="Missing Person Case Details">
+    <meta property="og:description" content="Detailed information about missing person cases">
+    <meta property="og:type" content="website">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        #case {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        #case-top {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        #photos {
+            margin-bottom: 1.5rem;
+        }
+
+        #photos ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        #photos li {
+            flex-shrink: 0;
+        }
+
+        #photos img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #photos img:hover {
+            transform: scale(1.05);
+        }
+
+        #photos p {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        ul li {
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        ul li:last-child {
+            border-bottom: none;
+        }
+
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        #case-bottom {
+            margin-top: 2rem;
+        }
+
+        #case-bottom h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.3rem;
+        }
+
+        #case-bottom p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        #agencies {
+            margin-bottom: 1.5rem;
+        }
+
+        #agencies ul li {
+            margin-bottom: 0.5rem;
+            border-bottom: none;
+        }
+
+        .updated {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .error {
+            text-align: center;
+            padding: 3rem;
+            color: #e74c3c;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            #case {
+                padding: 1.5rem;
+            }
+
+            .columns {
+                flex-direction: column;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            #photos ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #photos img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Missing Person Case Details</h1>
+        <p>Comprehensive information about missing individuals</p>
+    </header>
+
+    <div class="container">
+        <div id="case">
+            <div class="loading" id="loading">Loading case details...</div>
+            <div class="error" id="error" style="display: none;">Error loading case details</div>
+            
+            <!-- Content will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Get case_id from URL parameter, default to "milad-abadi"
+        function getCaseId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('case_id') || 'milad-abadi';
+        }
+
+        // Fetch case details from the database
+        async function fetchCaseDetails(caseId) {
+            try {
+                // Call the API to get case details
+                const response = await fetch(`/api/case/${caseId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch case details');
+                }
+                const data = await response.json();
+                return data.case_html;
+            } catch (error) {
+                console.error('Error fetching case details:', error);
+                throw error;
+            }
+        }
+
+        // Display case details
+        async function displayCaseDetails() {
+            const caseId = getCaseId();
+            const caseContainer = document.getElementById('case');
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+
+            try {
+                const caseHtml = await fetchCaseDetails(caseId);
+                
+                // Clear loading state
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'none';
+                
+                // Create a temporary div to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = caseHtml;
+                
+                // Append the content to the case container
+                const caseContent = tempDiv.firstChild;
+                if (caseContent) {
+                    caseContainer.appendChild(caseContent);
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = `Error loading case details for ${caseId}`;
+            }
+        }
+
+        // Load case details when the page loads
+        window.addEventListener('DOMContentLoaded', displayCaseDetails);
+    </script>
+</body>
+</html>

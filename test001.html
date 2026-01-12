@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case File: Calvert Baker</title>
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #c0392b;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-body: #f8f9fa;
+            --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* 头部样式 */
+        .case-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid var(--primary-color);
+            box-shadow: var(--card-shadow);
+        }
+
+        .case-header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .case-header .badge {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* 主体布局 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 850px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+
+        /* 左侧：图片廊 */
+        .photo-gallery {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .grid-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .grid-photos img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            border: 1px solid #eee;
+        }
+
+        .grid-photos img:hover {
+            transform: scale(1.05);
+            filter: brightness(0.9);
+        }
+
+        .main-photo {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .photo-caption {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 1rem;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        /* 右侧：详细信息表格 */
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+        }
+
+        .info-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .info-item label {
+            display: block;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-item span {
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+
+        /* 详情区域 */
+        .details-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .details-section h3 {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 底部机构信息 */
+        .footer-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .agency-box {
+            background: #2c3e50;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .agency-box h3 { color: #ecf0f1; margin-top: 0;}
+
+        .source-box {
+            background: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .updated-tag {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 3rem;
+            padding-bottom: 2rem;
+        }
+
+        a { color: var(--primary-color); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="case-header">
+        <h1>Calvert Baker</h1>
+        <div class="badge">Case #2022-MISSING</div>
+    </header>
+
+    <div class="main-content">
+        <!-- Photo Section -->
+        <aside class="photo-gallery">
+            <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert.jpg" alt="Main Photo" class="main-photo">
+            <div class="grid-photos">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert2.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert3.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert4.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert5.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert_tattoos.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert_tattoos2.jpg">
+            </div>
+            <p class="photo-caption">Baker, circa 2022; Baker's tattoos; Hat similar to Baker's</p>
+        </aside>
+
+        <!-- Vital Info Section -->
+        <main class="info-card">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Missing Since</label>
+                    <span>July 18, 2022</span>
+                </div>
+                <div class="info-item">
+                    <label>Missing From</label>
+                    <span>Pinon, Arizona</span>
+                </div>
+                <div class="info-item">
+                    <label>Classification</label>
+                    <span>Missing</span>
+                </div>
+                <div class="info-item">
+                    <label>Sex / Race</label>
+                    <span>Male / Native American</span>
+                </div>
+                <div class="info-item">
+                    <label>Age at Disappearance</label>
+                    <span>40 years old</span>
+                </div>
+                <div class="info-item">
+                    <label>Height / Weight</label>
+                    <span>5'9 - 5'10, 215 lbs</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <div class="info-item" style="border: none;">
+                    <label>Distinguishing Characteristics</label>
+                    <p>Native American male. Black hair, brown eyes. Baker is an enrolled member of the Navajo Nation. The left side of his bottom lip is pierced. He wears eyeglasses with brown frames. Tattoos on both forearms and hand.</p>
+                </div>
+                <div class="info-item" style="border: none;">
+                    <label>Clothing Description</label>
+                    <p>Gray t-shirt, blue sweatpants, sneakers, two turquoise rings on left ring finger, camouflage-print hat with neck flap.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Details Section -->
+    <section class="details-section">
+        <h3>Details of Disappearance</h3>
+        <p>Baker was last seen in Pinon, Arizona on July 18, 2022. He has never been heard from again. Few details are available in his case, but he is known to have strong ties to the Navajo Nation community.</p>
+    </section>
+
+    <!-- Agencies & Sources -->
+    <section class="footer-info">
+        <div class="agency-box">
+            <h3>Investigating Agency</h3>
+            <p><strong>Navajo Nation Police Department</strong><br>
+            Chinle District: 928-674-2000</p>
+        </div>
+        <div class="source-box">
+            <h3>Source Information</h3>
+            <ul style="padding-left: 20px; margin: 0;">
+                <li><a href="http://www.namus.gov/" target="_blank">NamUs (National Missing and Unidentified Persons System)</a></li>
+                <li><a href="#" target="_blank">Navajo Nation Missing Persons Portal</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <p class="updated-tag">
+        Case updated July 21, 2026 • Originally added October 12, 2004
+    </p>
+</div>
+
+</body>
+</html>

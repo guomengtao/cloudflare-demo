@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MISSING: Calvert Baker | Case File</title>
+    <link rel="stylesheet" href="fonts.googleapis.com">
+    <style>
+        :root {
+            --primary: #d63031;
+            --dark: #1a1a1a;
+            --gray-bg: #f0f2f5;
+            --text: #2d3436;
+            --border: #e1e4e8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* 顶部档案头 */
+        .case-header {
+            background: var(--dark);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 5px solid var(--primary);
+        }
+
+        .case-header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .status-tag {
+            background: var(--primary);
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* 主体布局 */
+        .case-wrapper {
+            background: white;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+        }
+
+        @media (max-width: 850px) {
+            .case-wrapper { grid-template-columns: 1fr; }
+        }
+
+        /* 左侧栏：图片 */
+        .side-gallery {
+            background: #f8f9fa;
+            padding: 30px;
+            border-right: 1px solid var(--border);
+        }
+
+        .main-photo-frame {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        .main-photo-frame img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .main-photo-frame img:hover { transform: scale(1.05); }
+
+        .thumb-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .thumb-grid img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .thumb-grid img:hover { opacity: 1; border-color: var(--primary); }
+
+        .photo-note {
+            font-size: 12px;
+            color: #636e72;
+            margin-top: 15px;
+            padding: 10px;
+            background: #eee;
+            border-radius: 6px;
+        }
+
+        /* 右侧栏：数据 */
+        .main-info {
+            padding: 40px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .data-card {
+            border-left: 3px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .data-card label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .data-card span {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .full-width { grid-column: span 2; }
+
+        /* 内容板块 */
+        .section-box {
+            margin-bottom: 35px;
+        }
+
+        .section-box h3 {
+            font-size: 18px;
+            border-bottom: 2px solid var(--dark);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-box h3::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .description-text {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.8;
+            background: #fdfdfd;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* 底部信息 */
+        .case-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .agency-card {
+            background: var(--dark);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .agency-card h4 { margin: 0 0 10px 0; color: var(--primary); }
+
+        .source-card {
+            flex: 1;
+            padding: 10px;
+        }
+
+        .source-card a {
+            color: var(--dark);
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .source-card a:hover { color: var(--primary); }
+
+        .timestamp {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #b2bec3;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="case-header">
+        <div>
+            <small style="opacity: 0.7;">CASE FILE</small>
+            <h1>Calvert Baker</h1>
+        </div>
+        <div class="status-tag">MISSING</div>
+    </header>
+
+    <div class="case-wrapper">
+        <!-- 左侧图片库 -->
+        <aside class="side-gallery">
+            <div class="main-photo-frame">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert.jpg" alt="Main photo of Calvert Baker">
+            </div>
+            <div class="thumb-grid">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert2.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert3.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert4.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert5.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert_tattoos.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert_tattoos2.jpg">
+                <img src="https://charleyproject.org/wp-content/uploads/2024/07/baker_calvert_hat.jpg">
+            </div>
+            <div class="photo-note">
+                <strong>Notes:</strong> Baker, circa 2022; Baker's tattoos; Hat similar to Baker's
+            </div>
+        </aside>
+
+        <!-- 右侧核心信息 -->
+        <main class="main-info">
+            <div class="data-grid">
+                <div class="data-card">
+                    <label>Missing Since</label>
+                    <span>July 18, 2022</span>
+                </div>
+                <div class="data-card">
+                    <label>Missing From</label>
+                    <span>Pinon, Arizona</span>
+                </div>
+                <div class="data-card">
+                    <label>Classification</label>
+                    <span>Missing Person</span>
+                </div>
+                <div class="data-card">
+                    <label>Age / Sex / Race</label>
+                    <span>40 yrs / Male / Native American</span>
+                </div>
+                <div class="data-card">
+                    <label>Height / Weight</label>
+                    <span>5'9" - 5'10" / 215 lbs</span>
+                </div>
+                <div class="data-card">
+                    <label>Navajo Nation Member</label>
+                    <span>Yes (Enrolled)</span>
+                </div>
+                <div class="data-card full-width">
+                    <label>Distinguishing Characteristics</label>
+                    <span>Black hair, brown eyes. Left side of bottom lip is pierced. Wears brown-frame eyeglasses. Tattoos on both forearms and hand.</span>
+                </div>
+            </div>
+
+            <section class="section-box">
+                <h3>Clothing & Jewelry Description</h3>
+                <div class="description-text">
+                    Gray t-shirt, blue sweatpants, sneakers, two turquoise rings on his left ring finger, and a camouflage-print hat with a neck flap (reference photo provided).
+                </div>
+            </section>
+
+            <section class="section-box">
+                <h3>Details of Disappearance</h3>
+                <div class="description-text">
+                    Baker was last seen in Pinon, Arizona on July 18, 2022. He has never been heard from again. Few details are available in his case, but he remains a priority for the community.
+                </div>
+            </section>
+
+            <div class="case-footer">
+                <div class="agency-card">
+                    <h4>Investigating Agency</h4>
+                    <strong>Navajo Nation Police Department</strong><br>
+                    Chinle District Office<br>
+                    Phone: 928-674-2000
+                </div>
+                <div class="source-card">
+                    <h4>Source Information</h4>
+                    <a href="http://www.namus.gov/" target="_blank">→ NamUs Official Profile</a>
+                    <a href="#" target="_blank">→ Navajo Nation Missing Persons Portal</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="timestamp">
+        Updated 1 time since Oct 12, 2004. | <strong>Last updated: July 21, 2024</strong>
+    </div>
+</div>
+
+</body>
+</html>

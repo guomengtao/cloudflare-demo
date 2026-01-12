@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻人档案：Bobby Brown | 加州洛杉矶县</title>
+    <style>
+        :root {
+            --accent: #fbc02d; /* 警戒黄 */
+            --danger: #b71c1c; /* 警示红 */
+            --navy: #0d47a1;   /* 警务蓝 */
+            --dark: #1a1a1a;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, "Helvetica Neue", sans-serif;
+            background: #eef2f7;
+            color: var(--dark);
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        /* 顶部视觉条 */
+        .top-banner {
+            background: var(--navy);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .breadcrumb { font-size: 12px; opacity: 0.8; margin-top: 5px; }
+
+        /* 核心展示区 */
+        .main-hero {
+            max-width: 1200px;
+            margin: 30px auto;
+            display: flex;
+            gap: 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* 左侧：图像识别区 */
+        .image-section {
+            flex: 0 0 450px;
+            background: #222;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .photo-warning {
+            background: var(--accent);
+            color: #000;
+            padding: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .age-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* 右侧：关键信息区 */
+        .info-section {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .case-status {
+            color: var(--danger);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 52px;
+            margin: 0;
+            color: var(--navy);
+            letter-spacing: -1px;
+        }
+
+        .location-hero {
+            font-size: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 5px solid var(--navy);
+            margin: 20px 0;
+        }
+
+        /* 数据磁贴 */
+        .data-tiles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .tile {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .tile label { font-size: 12px; color: #888; display: block; margin-bottom: 5px; }
+        .tile span { font-size: 17px; font-weight: 700; color: #333; }
+
+        /* 容貌特征高亮块 */
+        .feature-box {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 5px;
+            margin: 5px;
+            font-size: 14px;
+            border: 1px solid #ffd54f;
+        }
+
+        /* 详情与联系 */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-card {
+            background: var(--navy);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .phone-number {
+            display: block;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 15px 0;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+            .main-hero { flex-direction: column; }
+            .image-section { flex: none; }
+            .details-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="top-banner">
+    <div>
+        <strong>加州官方失踪人员数据库</strong>
+        <div class="breadcrumb">档案库 > 洛杉矶县 > 康普顿 > Bobby Brown</div>
+    </div>
+    <div style="text-align: right">
+        <span style="font-size: 12px">档案最后更新: 2025年12月26日</span>
+    </div>
+</header>
+
+<div class="main-hero">
+    <section class="image-section">
+        <div class="age-overlay">失踪时 81 岁</div>
+        <img src="https://charleyproject.org/wp-content/uploads/2025/12/brown_bobby.jpg" alt="Bobby Brown">
+        <div class="photo-warning">
+            ⚠️ <strong>注意：</strong> 此照片拍摄于 2015 年（失踪前 9 年）。<br>
+            失踪时 Bobby 的样貌可能比照片中更显苍老，且头发已花白。
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="case-status">失踪案件 (Missing Case)</div>
+        <h1>Bobby Brown</h1>
+        
+        <div class="location-hero">
+            📍 最后目击于：<strong>洛杉矶县 康普顿 (Compton)</strong><br>
+            <small>具体地点：South White Avenue 1100 街区</small>
+        </div>
+
+        <div class="data-tiles">
+            <div class="tile"><label>失踪时间</label><span>2024年10月6日</span></div>
+            <div class="tile"><label>种族</label><span>非裔</span></div>
+            <div class="tile"><label>身高</label><span>175 cm (5'9)</span></div>
+            <div class="tile"><label>出生日期</label><span>1943年3月27日</span></div>
+            <div class="tile"><label>现年</label><span>82 岁</span></div>
+            <div class="tile"><label>体重</label><span>52 kg (偏瘦)</span></div>
+        </div>
+
+        <div class="feature-box">
+            <strong style="display: block; margin-bottom: 10px; color: #a44c00;">识别特征：</strong>
+            <span class="feature-tag">白发 (White hair)</span>
+            <span class="feature-tag">褐色眼睛</span>
+            <span class="feature-tag">戴眼镜</span>
+            <span class="feature-tag">蓄胡须 (Mustache)</span>
+        </div>
+
+        <div class="details-grid">
+            <div>
+                <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">失踪经过</h3>
+                <p style="line-height: 1.8; color: #444;">
+                    Bobby Brown 最后一次被目击是在 2024 年 10 月 6 日，地点位于加利福尼亚州康普顿（Compton）的 South White Avenue 1100 街区。自那天起，他再也没有出现过，目前案件线索非常稀少。
+                </p>
+            </div>
+            
+            <div class="contact-card">
+                <h3>提供线索</h3>
+                <p>洛杉矶县警局 (LASD)</p>
+                <a href="tel:3238905500" class="phone-number">323-890-5500</a>
+                <p style="font-size: 12px; opacity: 0.8;">请告知调度员关于 Bobby Brown 的寻人通告</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<footer style="text-align: center; color: #999; font-size: 12px; margin-top: 40px;">
+    数据来源：洛杉矶县警长部门 (LASD) | 加州总检察长办公室<br>
+    © 2026 美国失踪人员公共寻人档案系统 (California Missing Persons Registry)
+</footer>
+
+</body>
+</html>

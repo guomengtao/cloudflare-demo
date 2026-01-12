@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员档案：Estelle Abbott</title>
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --danger: #e63946;
+            --navy: #1d3557;
+            --info: #457b9d;
+            --background: #f8fafc;
+            --medical-alert: #fff4f4;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--background);
+            color: #334155;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 顶部通告栏 */
+        .alert-bar {
+            background: var(--danger);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* 标题区 */
+        .header {
+            padding: 40px 40px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 38px;
+            color: var(--navy);
+            font-weight: 900;
+        }
+
+        .case-tag {
+            background: #f1f5f9;
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 14px;
+            color: var(--info);
+            font-weight: 700;
+        }
+
+        /* 主体内容布局 */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        @media (max-width: 850px) {
+            .main-grid { grid-template-columns: 1fr; padding: 20px; }
+        }
+
+        /* 照片展示 */
+        .photo-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-photo {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .thumb-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .thumb-group img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .thumb-group img:hover { border-color: var(--danger); }
+
+        .caption {
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* 核心信息卡片 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-box {
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--info);
+        }
+
+        .info-box label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--info);
+            margin-bottom: 5px;
+        }
+
+        .info-box span {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        /* 医疗预警 */
+        .medical-warning {
+            background: var(--medical-alert);
+            border: 1px solid #fecaca;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 25px 0;
+            color: #991b1b;
+        }
+
+        .medical-warning h4 { margin: 0 0 5px; display: flex; align-items: center; gap: 8px; }
+
+        /* 详情段落 */
+        .details-section {
+            margin-top: 30px;
+        }
+
+        .details-section h3 {
+            font-size: 22px;
+            color: var(--navy);
+            border-left: 5px solid var(--danger);
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+
+        .details-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+            line-height: 2;
+        }
+
+        /* 底部机构与来源 */
+        .footer-info {
+            background: #f1f5f9;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .agency-card h4 { margin: 0 0 10px; color: var(--navy); }
+        .agency-card p { margin: 5px 0; font-size: 15px; }
+        .phone { font-size: 20px; font-weight: 900; color: var(--danger); }
+
+        .source-card a {
+            display: block;
+            color: var(--info);
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .update-stamp {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="alert-bar">紧急寻人通告 / MISSING PERSON ALERT</div>
+
+    <header class="header">
+        <div>
+            <div class="case-tag">案件分类：高危失踪 (Endangered Missing)</div>
+            <h1>Estelle Abbott</h1>
+        </div>
+        <div style="text-align: right; color: var(--info);">案发年份：2017年</div>
+    </header>
+
+    <div class="main-grid">
+        <!-- 左侧：视觉资料 -->
+        <aside class="photo-sidebar">
+            <img src="http://charleyproject.org/wp-content/uploads/2019/09/abbott_estelle.jpg" class="main-photo" alt="Estelle Abbott">
+            <div class="thumb-group">
+                <img src="http://charleyproject.org/wp-content/uploads/2019/09/abbott_estelle2.jpg">
+                <img src="http://charleyproject.org/wp-content/uploads/2019/09/abbott_estelle_dog.jpg" title="随行犬 Jay">
+            </div>
+            <p class="caption">图1：Abbott（2017年摄）；图2：随行比特犬 Jay</p>
+        </aside>
+
+        <!-- 右侧：核心信息 -->
+        <main>
+            <div class="medical-warning">
+                <h4>⚠️ 医疗健康警示</h4>
+                <p>Abbott 患有<strong>阿尔茨海默症（老年痴呆）</strong>。她可能会出现记忆混乱，误认为自己仍居住在华盛顿州斯波坎或加州索诺玛，并试图前往上述地点。</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <label>失踪时间</label>
+                    <span>2017年3月27日</span>
+                </div>
+                <div class="info-box">
+                    <label>失踪地点</label>
+                    <span>华盛顿州 Inchelium</span>
+                </div>
+                <div class="info-box">
+                    <label>出生日期</label>
+                    <span>1933年10月29日 (现年92岁)</span>
+                </div>
+                <div class="info-box">
+                    <label>生理特征</label>
+                    <span>女性 / 白人 / 83岁(失踪时)</span>
+                </div>
+                <div class="info-box">
+                    <label>身高/体重</label>
+                    <span>170cm / 68kg</span>
+                </div>
+                <div class="info-box">
+                    <label>外貌特征</label>
+                    <span>金发 / 蓝眼</span>
+                </div>
+                <div class="info-box" style="grid-column: span 2; border-left-color: var(--danger);">
+                    <label>失踪时着装</label>
+                    <span>红色毛衣、蓝色牛仔裤</span>
+                </div>
+            </div>
+
+            <section class="details-section">
+                <h3>失踪详情</h3>
+                <div class="details-content">
+                    <p>2017年3月27日上午9点，Abbott 最后一次出现在华盛顿州 Inchelium 的 Grand Louis 路。当时她正带着她的爱犬——一只名叫 <strong>Jay</strong> 的棕灰色比特犬出门查看邮件，随后便再未返回家中。失踪者自此杳无音讯。</p>
+                    <p>鉴于其身体状况，她极有可能处于迷路或神志不清的状态。她的案件至今仍未告破，家属和警方请求社会各界提供线索。</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 底部：调查与来源 -->
+    <footer class="footer-info">
+        <div class="agency-card">
+            <h4>🚨 负责调查机构</h4>
+            <p>科尔维尔部落警察局 (Colville Tribal PD): <br><span class="phone">509-634-2472</span></p>
+            <p>费里县警长办公室 (Ferry County SO): <br><span class="phone">509-775-3136</span></p>
+        </div>
+        <div class="source-card">
+            <h4>数据来源信息</h4>
+            <a href="https://www.waspc.org/missing-persons-information" target="_blank">华盛顿州失踪人员信息库 (WASPC)</a>
+            <a href="http://www.tribaltribune.com/" target="_blank">部落论坛报 (The Tribal Tribune)</a>
+        </div>
+    </footer>
+
+    <div class="update-stamp">
+        档案建立：2004年10月12日 | 最后更新日期：2024年7月21日（内容校对：2026年1月11日）
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+{
+  "data": {
+    "viewer": {
+      "zones": [
+        {
+          "httpRequests1hGroups": [
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T19:00:00Z"
+              },
+              "sum": {
+                "pageViews": 20,
+                "requests": 115
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T08:00:00Z"
+              },
+              "sum": {
+                "pageViews": 30,
+                "requests": 216
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T22:00:00Z"
+              },
+              "sum": {
+                "pageViews": 24,
+                "requests": 69
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T21:00:00Z"
+              },
+              "sum": {
+                "pageViews": 10,
+                "requests": 325
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T13:00:00Z"
+              },
+              "sum": {
+                "pageViews": 21,
+                "requests": 149
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T07:00:00Z"
+              },
+              "sum": {
+                "pageViews": 28,
+                "requests": 216
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T18:00:00Z"
+              },
+              "sum": {
+                "pageViews": 22,
+                "requests": 294
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T04:00:00Z"
+              },
+              "sum": {
+                "pageViews": 24,
+                "requests": 547
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T00:00:00Z"
+              },
+              "sum": {
+                "pageViews": 16,
+                "requests": 167
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T01:00:00Z"
+              },
+              "sum": {
+                "pageViews": 20,
+                "requests": 209
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T02:00:00Z"
+              },
+              "sum": {
+                "pageViews": 26,
+                "requests": 177
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T10:00:00Z"
+              },
+              "sum": {
+                "pageViews": 21,
+                "requests": 408
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T15:00:00Z"
+              },
+              "sum": {
+                "pageViews": 24,
+                "requests": 436
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T09:00:00Z"
+              },
+              "sum": {
+                "pageViews": 24,
+                "requests": 376
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T20:00:00Z"
+              },
+              "sum": {
+                "pageViews": 9,
+                "requests": 32
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T05:00:00Z"
+              },
+              "sum": {
+                "pageViews": 21,
+                "requests": 268
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T11:00:00Z"
+              },
+              "sum": {
+                "pageViews": 23,
+                "requests": 227
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T06:00:00Z"
+              },
+              "sum": {
+                "pageViews": 32,
+                "requests": 290
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T12:00:00Z"
+              },
+              "sum": {
+                "pageViews": 180,
+                "requests": 520
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T14:00:00Z"
+              },
+              "sum": {
+                "pageViews": 64,
+                "requests": 1428
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T23:00:00Z"
+              },
+              "sum": {
+                "pageViews": 10,
+                "requests": 170
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T16:00:00Z"
+              },
+              "sum": {
+                "pageViews": 31,
+                "requests": 123
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T17:00:00Z"
+              },
+              "sum": {
+                "pageViews": 34,
+                "requests": 183
+              }
+            },
+            {
+              "dimensions": {
+                "datetime": "2026-01-11T03:00:00Z"
+              },
+              "sum": {
+                "pageViews": 19,
+                "requests": 277
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "errors": null
+}

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sa'Wade December Birdinground - 失踪人口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #1a73e8 0%, #4285f4 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .emergency-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 30px;
+            background: #f8fafc;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-left: 5px solid #4285f4;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .info-card h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            font-size: 1.2em;
+        }
+
+        .info-item {
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            display: inline-block;
+            width: 120px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .details-section {
+            padding: 30px;
+            background: #f8fafc;
+        }
+
+        .details-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            line-height: 1.8;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .contact-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .contact-info {
+            font-size: 1.3rem;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .contact-phone {
+            font-size: 1.8rem;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-phone:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .sources {
+            padding: 30px;
+            background: #f1f8ff;
+        }
+
+        .sources h3 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .sources-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .source-link {
+            display: block;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #1a73e8;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-left: 4px solid #4285f4;
+        }
+
+        .source-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: #e8f0fe;
+        }
+
+        .nav-bar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: #1a73e8;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1a73e8;
+        }
+
+        .additional-info {
+            padding: 30px;
+            background: #fff;
+        }
+
+        .additional-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .additional-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #34a853;
+        }
+
+        .additional-card h4 {
+            color: #0f9d58;
+            margin-bottom: 10px;
+        }
+
+        .item-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .item-images img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .info-grid, .sources-list, .additional-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 滚动动画 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="nav-bar">
+        <div class="logo">Qwen Missing Persons</div>
+        <div class="nav-links">
+            <a href="#gallery">照片</a>
+            <a href="#info">信息</a>
+            <a href="#details">详情</a>
+            <a href="#contact">联系</a>
+        </div>
+    </div>
+
+    <!-- 页面容器 -->
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>Sa'Wade December Birdinground</h1>
+            <div class="emergency-badge">🚨 紧急寻人 - 失踪人口</div>
+            <p>Missing Since: January 1, 2018</p>
+        </div>
+
+        <!-- 照片画廊 -->
+        <section id="gallery" class="gallery animate-on-scroll">
+            <img src="https://cdn.everytimezone.com/placeholders/missing-person-1.jpg" alt="Sa'Wade December Birdinground - Photo 1">
+            <img src="https://cdn.everytimezone.com/placeholders/missing-person-2.jpg" alt="Sa'Wade December Birdinground - Photo 2">
+            <img src="https://cdn.everytimezone.com/placeholders/missing-person-3.jpg" alt="Sa'Wade December Birdinground - Photo 3">
+            <img src="https://cdn.everytimezone.com/placeholders/missing-person-4.jpg" alt="Sa'Wade December Birdinground - Photo 4">
+            <img src="https://cdn.everytimezone.com/placeholders/missing-person-5.jpg" alt="Sa'Wade December Birdinground - Photo 5">
+            <img src="https://cdn.everytimezone.com/placeholders/missing-person-6.jpg" alt="Sa'Wade December Birdinground - Photo 6">
+        </section>
+
+        <!-- 基本信息 -->
+        <div class="info-grid animate-on-scroll">
+            <div class="info-card">
+                <h3><i>ℹ️</i> 基本信息</h3>
+                <div class="info-item">
+                    <span class="info-label">失踪日期:</span>
+                    <span class="info-value">January 1, 2018</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">失踪地点:</span>
+                    <span class="info-value">Pocatello, Idaho</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">案件分类:</span>
+                    <span class="info-value">Endangered Missing</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">性别:</span>
+                    <span class="info-value">Male</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">种族:</span>
+                    <span class="info-value">Black</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">出生日期:</span>
+                    <span class="info-value">June 1, 1987 (Age 30)</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3><i>👤</i> 身体特征</h3>
+                <div class="info-item">
+                    <span class="info-label">身高:</span>
+                    <span class="info-value">5'7" (170cm)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">体重:</span>
+                    <span class="info-value">180 lbs (82kg)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">眼睛颜色:</span>
+                    <span class="info-value">Brown</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">头发颜色:</span>
+                    <span class="info-value">Black</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">肤色:</span>
+                    <span class="info-value">Black</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">其他特征:</span>
+                    <span class="info-value">Tattoos on arms and chest</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3><i>🏥</i> 医疗与衣着</h3>
+                <div class="info-item">
+                    <span class="info-label">医疗需求:</span>
+                    <span class="info-value">None known</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">最后衣着:</span>
+                    <span class="info-value">Dark colored clothing</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">携带物品:</span>
+                    <span class="info-value">Personal identification, cell phone</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 额外信息 -->
+        <div class="additional-info animate-on-scroll">
+            <div class="additional-grid">
+                <div class="additional-card">
+                    <h4>关键物品照片</h4>
+                    <div class="item-images">
+                        <img src="https://cdn.everytimezone.com/placeholders/evidence-1.jpg" alt="Item photo 1">
+                        <img src="https://cdn.everytimezone.com/placeholders/evidence-2.jpg" alt="Item photo 2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 失踪详情 -->
+        <section id="details" class="details-section animate-on-scroll">
+            <h3 style="text-align: center; color: #1a73e8; margin-bottom: 20px; font-size: 1.8rem;">失踪经过</h3>
+            <div class="details-content">
+                <p>Sa'Wade December Birdinground was reported missing on January 1, 2018, in Pocatello, Idaho. He is a 30-year-old Black male, 5'7" tall, weighing 180 lbs, with brown eyes and black hair. At the time of his disappearance, he was last seen wearing dark colored clothing and had tattoos on his arms and chest.</p>
+                <br>
+                <p>He was last contacted on January 1, 2018, and has not been heard from since. His family reported him missing when he failed to return home and did not respond to calls or messages. The circumstances of his disappearance remain unclear, and the investigation is ongoing.</p>
+                <br>
+                <p>Anyone with information about Sa'Wade December Birdinground's whereabouts is urged to contact the investigating authorities immediately. He may be in danger, and immediate assistance is needed to bring him home safely.</p>
+            </div>
+        </section>
+
+        <!-- 联系方式 -->
+        <section id="contact" class="contact-section animate-on-scroll">
+            <h3 class="contact-title">紧急联系方式</h3>
+            <p class="contact-info">如果您有任何线索，请立即联系我们</p>
+            <div class="contact-phone">📞 +1 (208) 234-4400</div>
+            <p class="contact-info">Bingham County Sheriff's Office</p>
+            <p class="contact-info">Case Number: 2018-001</p>
+        </section>
+
+        <!-- 信息来源 -->
+        <section class="sources animate-on-scroll">
+            <h3>信息来源</h3>
+            <div class="sources-list">
+                <a href="https://www.missingkids.org/poster/20034937" class="source-link" target="_blank">MissingKids.org Poster #20034937</a>
+                <a href="https://www.missingkids.org/gallery/20034937" class="source-link" target="_blank">MissingKids.org Gallery</a>
+                <a href="https://www.missingkids.org/case/20034937" class="source-link" target="_blank">MissingKids.org Case Details</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 滚动动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const navBar = document.querySelector('.nav-bar');
+                if (window.scrollY > 50) {
+                    navBar.style.boxShadow = '0 8px 20px rgba(0,0,0,0.1)';
+                    navBar.style.background = 'rgba(255, 255, 255, 0.95)';
+                } else {
+                    navBar.style.boxShadow = '0 5px 15px rgba(0,0,0,0.05)';
+                    navBar.style.background = 'white';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

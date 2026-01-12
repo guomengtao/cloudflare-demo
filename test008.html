@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人员档案：Cathleen Abbott</title>
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --police-blue: #1e3a8a;
+            --alert-red: #be123c;
+            --bg-gray: #f8fafc;
+            --text-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .case-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* 警示页眉 */
+        .case-header {
+            background: var(--police-blue);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .case-header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            background: var(--alert-red);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* 主体内容 */
+        .case-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .case-content { grid-template-columns: 1fr; padding: 20px; }
+        }
+
+        /* 左侧照片 */
+        .photo-section {
+            text-align: center;
+        }
+
+        .photo-section img {
+            width: 100%;
+            border-radius: 8px;
+            border: 4px solid #f1f5f9;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .photo-label {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* 右侧详情网格 */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            background: var(--bg-gray);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-item label {
+            display: block;
+            color: var(--police-blue);
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .info-item span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* 显著特征高亮 */
+        .special-feature {
+            grid-column: span 2;
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+        }
+
+        .special-feature label { color: var(--alert-red); }
+
+        /* 失踪背景与机构 */
+        .bottom-section {
+            padding: 0 40px 40px;
+        }
+
+        .content-box {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .content-box h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--police-blue);
+            border-left: 4px solid var(--police-blue);
+            padding-left: 12px;
+        }
+
+        .agency-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .phone-number {
+            font-size: 24px;
+            color: var(--alert-red);
+            font-weight: 900;
+        }
+
+        /* 页脚更新信息 */
+        .case-footer {
+            background: #f1f5f9;
+            padding: 20px 40px;
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .source-link a {
+            color: var(--police-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="case-card">
+    <header class="case-header">
+        <h1>凯瑟琳·阿博特 <small style="font-size: 18px; font-weight: 400; opacity: 0.8;">Cathleen Abbott</small></h1>
+        <div class="status-badge">失踪 (Missing)</div>
+    </header>
+
+    <div class="case-content">
+        <!-- 照片区域 -->
+        <aside class="photo-section">
+            <img src="http://charleyproject.org/wp-content/uploads/2019/06/abbott_cathleen.jpg" alt="Cathleen Abbott">
+            <p class="photo-label">照片摄于 2017 年前后</p>
+        </aside>
+
+        <!-- 数据网格 -->
+        <main class="details-grid">
+            <div class="info-item">
+                <label>失踪日期</label>
+                <span>2017年8月31日</span>
+            </div>
+            <div class="info-item">
+                <label>失踪地点</label>
+                <span>内布拉斯加州 奥马哈</span>
+            </div>
+            <div class="info-item">
+                <label>种族/性别</label>
+                <span>白人 / 女性</span>
+            </div>
+            <div class="info-item">
+                <label>失踪时年龄</label>
+                <span>58 岁</span>
+            </div>
+            <div class="info-item">
+                <label>身高/体重</label>
+                <span>168cm / 63.5kg</span>
+            </div>
+            <div class="info-item">
+                <label>眼睛/发色</label>
+                <span>棕色 / 灰色</span>
+            </div>
+            <div class="info-item special-feature">
+                <label>显著身体特征识别</label>
+                <span>右侧上臂纹有英文字母 <strong>“C”</strong> 的刺青。</span>
+            </div>
+        </main>
+    </div>
+
+    <div class="bottom-section">
+        <section class="content-box">
+            <h3>失踪经过详情</h3>
+            <p>凯瑟琳·阿博特最后一次露面是在 2017 年 8 月 31 日的内布拉斯加州奥马哈市。此后便音讯全无，她的亲友再也没有收到过关于她的任何消息。目前该案可提供的公开细节非常有限。</p>
+        </section>
+
+        <section class="content-box">
+            <div class="agency-info">
+                <div>
+                    <h3>负责调查机构</h3>
+                    <p style="margin: 5px 0;">奥马哈警察局 (Omaha Police Department)</p>
+                </div>
+                <div class="phone-number">402-444-5818</div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="case-footer">
+        <div>
+            <span>最后更新日期: 2026年1月11日</span>
+            <span style="margin-left: 20px;">档案编号: #CP2019-NE-CA</span>
+        </div>
+        <div class="source-link">
+            数据来源: <a href="https://statepatrol.nebraska.gov/services/missing-persons" target="_blank">内布拉斯加州巡警失踪人员库</a>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻人档案 - Robert Byrne</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50; 
+            --accent-color: #e74c3c; /* 红色警告色 */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #333;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 导航条 */
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .search-container {
+            display: flex;
+            background: #f1f3f5;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .search-container input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 5px;
+            width: 180px;
+        }
+
+        /* 面包屑 */
+        .breadcrumb-wrapper {
+            max-width: 1200px;
+            margin: 15px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a { color: #007bff; text-decoration: none; }
+        .breadcrumb span { margin: 0 8px; color: #ccc; }
+
+        /* 主体内容布局 */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* 左侧照片墙 */
+        .photo-sidebar {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .main-photo {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .thumbnail-grid img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+        }
+
+        .thumbnail-grid img:hover { border-color: var(--accent-color); }
+
+        .case-status {
+            background: #fff5f5;
+            color: var(--accent-color);
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            border: 1px solid #feb2b2;
+        }
+
+        /* 右侧详情 */
+        .content-area {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .header-title {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header-title h1 {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .update-tag {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: #f1f3f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* 数据网格 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .info-block label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .info-block p {
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .full-row { grid-column: 1 / -1; }
+
+        /* 章节标题 */
+        .section-head {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin: 30px 0 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-head::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: var(--accent-color);
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        .detail-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+            background: #fcfcfc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 1px solid #eee;
+        }
+
+        /* 机构卡片 */
+        .agency-card {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f0f7ff;
+            border-radius: 8px;
+            border: 1px solid #d0e3ff;
+        }
+
+        .phone-number {
+            font-size: 22px;
+            color: #0056b3;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .navbar { height: auto; padding: 15px; flex-direction: column; gap: 15px; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">MISSING 寻人数据库</a>
+            <ul class="nav-links">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">加州案件</a></li>
+                <li><a href="#">高危失踪</a></li>
+                <li><a href="#">线索征集</a></li>
+            </ul>
+            <div class="search-container">
+                <input type="text" placeholder="搜索姓名/城市/编号...">
+            </div>
+        </nav>
+    </header>
+
+    <div class="breadcrumb-wrapper">
+        <div class="breadcrumb">
+            <a href="#">首页</a><span>/</span><a href="#">失踪人员档案</a><span>/</span><a href="#">加利福尼亚州</a><span>/</span>Robert Byrne
+        </div>
+    </div>
+
+    <div class="main-container">
+        <aside class="photo-sidebar">
+            <img src="https://charleyproject.org/wp-content/uploads/2025/12/byrne_robert.jpg" class="main-photo" alt="Robert Byrne">
+            <div class="thumbnail-grid">
+                <img src="https://charleyproject.org/wp-content/uploads/2025/12/byrne_robert.jpg" alt="图1">
+                <img src="https://charleyproject.org/wp-content/uploads/2025/12/byrne_robert2.jpg" alt="图2">
+                <img src="https://charleyproject.org/wp-content/uploads/2025/12/byrne_robert3.jpg" alt="图3">
+            </div>
+            <p style="text-align: center; font-size: 13px; color: #888; margin-bottom: 15px;">照片摄于约1995年</p>
+            <div class="case-status">濒危失踪 (Endangered Missing)</div>
+        </aside>
+
+        <main class="content-area">
+            <div class="header-title">
+                <span class="update-tag">最后更新：2025年12月22日</span>
+                <h1>Robert Byrne</h1>
+                <p style="color: #888;">San Bernardino County, California</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-block">
+                    <label>失踪日期</label>
+                    <p>1995年8月1日</p>
+                </div>
+                <div class="info-block">
+                    <label>失踪地点</label>
+                    <p>加州 圣贝纳迪诺县 布卢明顿</p>
+                </div>
+                <div class="info-block">
+                    <label>出生日期</label>
+                    <p>1967年1月16日 (现年58岁)</p>
+                </div>
+                <div class="info-block">
+                    <label>失踪时年龄</label>
+                    <p>28 岁</p>
+                </div>
+                <div class="info-block">
+                    <label>身高</label>
+                    <p>6'0 (约 183 厘米)</p>
+                </div>
+                <div class="info-block">
+                    <label>体重</label>
+                    <p>160 磅 (约 72.5 公斤)</p>
+                </div>
+                <div class="info-block">
+                    <label>种族 / 性别</label>
+                    <p>白人 / 男性</p>
+                </div>
+                <div class="info-block">
+                    <label>外貌特征</label>
+                    <p>棕色头发，淡褐色眼睛 (Hazel eyes)</p>
+                </div>
+            </div>
+
+            <h3 class="section-head">失踪详情</h3>
+            <div class="detail-text">
+                <p>Byrne 最后一次被目击是在 1995 年 8 月 1 日，地点为加利福尼亚州圣贝纳迪诺县（San Bernardino County）。自那天起，他就与外界失去了所有联系。</p>
+                <p style="margin-top: 10px;">他最后的已知住址位于布卢明顿（Bloomington）Laurel Avenue 的 11100 街区。Byrne 的姐姐坚信他遭到了<strong>绑架并被谋杀</strong>，遗体可能被埋在加利福尼亚州的克雷默枢纽（Kramer Junction）地区。目前该案仍未告破。</p>
+            </div>
+
+            <div class="agency-card">
+                <h3 style="margin-bottom: 15px; color: #2c3e50;">调查机构与联络方式</h3>
+                <p>如果您有任何线索，请联系：</p>
+                <p style="margin-top: 10px; font-weight: bold;">圣贝纳迪诺县警长部门 (SBCSD)</p>
+                <p class="phone-number">909-387-3695</p>
+                
+                <div style="margin-top: 20px; font-size: 13px; color: #888;">
+                    数据来源：
+                    <a href="https://oag.ca.gov/missing/detailed-search" style="color: #0056b3;">加州总检察长办公室</a> · 
+                    <a href="https://www.facebook.com/robert.byrne.324145/" style="color: #0056b3;">Facebook 寻人专题页</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; color: #999; font-size: 13px; border-top: 1px solid #eee;">
+        <p>档案编号：CP-1995-RB | 除非特别说明，所有信息均来自 Charley Project 数据库。</p>
+    </footer>
+
+</body>
+</html>

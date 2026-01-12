@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻人启事: Sa’Wade December Birdinground</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --accent-orange: #ff9800;
+            --dark-bg: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-main: #eeeeee;
+            --text-muted: #bbbbbb;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* 导航条 */
+        nav {
+            background-color: #000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-orange);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #333;
+            border-radius: 4px;
+            padding: 5px 10px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px;
+            outline: none;
+        }
+
+        .btn-tip {
+            background-color: var(--primary-red);
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* 面包屑 */
+        .breadcrumbs {
+            padding: 15px 5%;
+            font-size: 0.85rem;
+            background: #252525;
+            color: var(--text-muted);
+        }
+
+        .breadcrumbs span {
+            color: var(--accent-orange);
+        }
+
+        /* 主体内容 */
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* 左侧图片区 */
+        .gallery-section {
+            position: relative;
+        }
+
+        .main-img-container {
+            position: relative;
+            border: 4px solid var(--card-bg);
+        }
+
+        .main-img-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .missing-stamp {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            transform: rotate(-15deg);
+            border: 5px solid var(--primary-red);
+            color: var(--primary-red);
+            padding: 10px 30px;
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .thumb-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .thumb-grid img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .thumb-grid img:hover {
+            border-color: var(--accent-orange);
+        }
+
+        /* 右侧详情区 */
+        .info-section h1 {
+            font-size: 2.2rem;
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-orange);
+            padding-bottom: 10px;
+        }
+
+        .info-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+            display: flex;
+            border-bottom: 1px solid #3d3d3d;
+            padding-bottom: 8px;
+        }
+
+        .label {
+            width: 140px;
+            font-weight: bold;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .highlight-box {
+            background-color: #4a3a00;
+            border-left: 4px solid var(--accent-orange);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        /* 底部 */
+        footer {
+            background-color: #000;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            border-top: 4px solid var(--primary-red);
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .phone {
+            color: var(--accent-orange);
+            font-weight: bold;
+            font-size: 1.5rem;
+            display: block;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">MISSING CASE #2024-SWB</div>
+    <div class="nav-links">
+        <a href="#">首页</a>
+        <a href="#">最新进展</a>
+        <div class="search-box">
+            <input type="text" placeholder="搜索案件...">
+        </div>
+        <a href="#" class="btn-tip">提供线索 (SUBMIT TIP)</a>
+    </div>
+</nav>
+
+<div class="breadcrumbs">
+    首页 / 失踪人口数据库 / 蒙大拿州 / <span>Sa’Wade December Birdinground (13岁)</span>
+</div>
+
+<div class="container">
+    <div class="gallery-section">
+        <div class="main-img-container">
+            <div class="missing-stamp">MISSING</div>
+            <img src="https://charleyproject.org/wp-content/uploads/2025/12/birdinground_sawade.jpg" alt="Sa’Wade">
+        </div>
+        <div class="thumb-grid">
+            <img src="https://charleyproject.org/wp-content/uploads/2025/12/birdinground_sawade2.jpg">
+            <img src="https://charleyproject.org/wp-content/uploads/2025/12/birdinground_sawade_shoes.jpg">
+            <img src="https://charleyproject.org/wp-content/uploads/2025/12/birdinground_sawade_backpack.jpg">
+            <img src="https://charleyproject.org/wp-content/uploads/2025/12/birdinground_sawade3.jpg">
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h1>Sa’Wade Birdinground</h1>
+        
+        <div class="highlight-box">
+            <strong>紧急说明：</strong> Sa'Wade 患有自闭症和学习障碍。她于 2024 年 10 月 6 日深夜从蒙大拿州 Garryowen 的家中失踪。
+        </div>
+
+        <div class="info-table">
+            <div class="info-item">
+                <div class="label">失踪日期</div>
+                <div>2024年10月6日</div>
+            </div>
+            <div class="info-item">
+                <div class="label">失踪地点</div>
+                <div>Garryowen, Montana</div>
+            </div>
+            <div class="info-item">
+                <div class="label">族裔特征</div>
+                <div>美国原住民 (Mandan, Hidatsa, Arikara Nations / Crow Heritage)</div>
+            </div>
+            <div class="info-item">
+                <div class="label">身体描述</div>
+                <div>身高 5'4" - 5'5"，体重 130 - 140 磅，棕发棕眼</div>
+            </div>
+            <div class="info-item">
+                <div class="label">穿着打扮</div>
+                <div>黑色蘑菇连帽衫、动漫T恤、紫色 Skechers 运动鞋、黑色/紫色 Adidas 背包。</div>
+            </div>
+        </div>
+
+        <h3 style="color: var(--accent-orange); margin-top: 30px;">案件细节</h3>
+        <p>Sa’Wade 最后一次露面是在晚上 11:00 左右。第二天早晨家人发现她不在房间内。她没有带走手机，此前从未有离家出走记录。她在学校表现优异，失踪情况极不寻常且令人担忧。</p>
+    </div>
+</div>
+
+<footer>
+    <h3>如果您有任何信息，请立即联系：</h3>
+    <div class="contact-info">
+        Big Horn County Sheriff’s Office: <span class="phone">406-665-9798</span>
+        Federal Bureau of Investigation: <span class="phone">801-575-1400</span>
+    </div>
+    <p style="color: #666; font-size: 0.8rem; margin-top: 20px;">
+        最后更新时间: 2025年12月26日
+    </p>
+</footer>
+
+</body>
+</html>

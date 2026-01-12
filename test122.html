@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domingo Dominguez - 美国失踪人口数据库</title>
+    <meta name="description" content="Domingo Dominguez失踪案件详情 - 2019年7月7日从佛罗里达州Immokalee失踪，18岁西班牙裔男性，身高5'4"，体重140磅">
+    
+    <!-- JSON-LD结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Domingo Dominguez",
+        "description": "失踪人员案件详情",
+        "gender": "Male",
+        "birthDate": "2001-03-08",
+        "missingSince": "2019-07-07",
+        "missingLocation": {
+            "@type": "Place",
+            "name": "Immokalee, Florida"
+        },
+        "height": "5'4\"",
+        "weight": "140 pounds",
+        "race": "Hispanic",
+        "disambiguatingDescription": "18岁西班牙裔男性，2019年7月7日从佛罗里达州Immokalee失踪",
+        "identifier": {
+            "@type": "PropertyValue",
+            "propertyID": "missingPersonCase",
+            "value": "FDLE-2019-XXXXX"
+        },
+        "url": "https://charleyproject.org/cases/d/domingo_dominguez.html"
+    }
+    </script>
+    
+    <style>
+        /* 全局样式重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f5f5f5; }
+        
+        /* 粘性头部 */
+        .sticky-header {
+            position: sticky; top: 0; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        /* 搜索容器 */
+        .search-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .logo { font-size: 24px; font-weight: bold; color: #2c3e50; }
+        
+        .search-bar {
+            flex: 1; max-width: 500px; margin: 0 20px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%; padding: 12px 20px; border: 2px solid #ddd; border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        /* 用户操作按钮 */
+        .user-actions {
+            display: flex; gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px; background: #3498db; color: white;
+            text-decoration: none; border-radius: 5px; border: none; cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn:hover { background: #2980b9; }
+        
+        .btn.secondary { background: #95a5a6; }
+        
+        /* 导航栏 */
+        .nav-bar {
+            background: #2c3e50; padding: 12px 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between;
+        }
+        
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #3498db; }
+        
+        /* 热门标签 */
+        .hot-tags {
+            max-width: 1200px; margin: 20px auto; padding: 0 20px;
+            overflow: hidden;
+            position: relative;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .tag-container {
+            display: flex; gap: 15px;
+            animation: scrollTags 20s linear infinite;
+        }
+        
+        @keyframes scrollTags {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        
+        .tag {
+            padding: 8px 15px; background: #ecf0f1; border-radius: 20px; font-size: 13px;
+            cursor: pointer; transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .tag.emergency { background: #e74c3c; color: white; }
+        .tag.warning { background: #f39c12; color: white; }
+        .tag.hot { background: #27ae60; color: white; }
+        
+        /* 面包屑导航 */
+        .breadcrumb {
+            max-width: 1200px; margin: 20px auto; padding: 0 20px;
+            font-size: 14px; color: #7f8c8d;
+            display: flex; align-items: center;
+            gap: 5px;
+        }
+        
+        .breadcrumb a { color: #3498db; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        
+        /* 主内容容器 */
+        .main-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
+        }
+        
+        /* 案件头部 */
+        .case-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 40px;\ border-radius: 10px; margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .status-indicator {
+            position: absolute; top: 20px; right: 20px;
+            width: 14px; height: 14px; background: #f39c12;\ border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(243, 156, 18, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #f39c12;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        /* AI分析面板 */
+        .ai-analysis {
+            background: #fff3e0;\ border-left: 4px solid #ff9800;\ padding: 20px;
+            margin: 30px 0;\ border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .ai-title { color: #e65100; font-weight: bold; margin-bottom: 10px; }
+        
+        /* 核心案件区 */
+        .case-core {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        /* 照片墙 */
+        .photo-gallery {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .main-photo {
+            width: 100%;
+            height: 350px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .main-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .main-photo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .thumbnail-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        
+        .thumbnail {
+            height: 80px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .thumbnail:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .thumbnail.active {
+            border: 3px solid #3498db;
+        }
+        
+        /* 案件信息 */
+        .case-info {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .info-list {
+            list-style: none;
+        }
+        
+        .info-list li {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .info-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-list strong {
+            display: inline-block;
+            width: 150px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        /* 时间线 */
+        .timeline {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 30px 0;
+        }
+        
+        .timeline h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: #3498db;
+            border-radius: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% + 12px);
+            background: #ecf0f1;
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .timeline-time {
+            color: #3498db;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        /* 互动功能区 */
+        .interaction-section {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .interaction-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .interaction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .interaction-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .interaction-card p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        /* 权威信源 */
+        .authority-sources {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 30px 0;
+        }
+        
+        .authority-sources h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .sources-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .source-section h4 {
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .source-section ul {
+            list-style: none;
+        }
+        
+        .source-section li {
+            margin-bottom: 10px;
+        }
+        
+        .source-section a {
+            color: #2c3e50;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .source-section a:hover {
+            color: #3498db;
+            text-decoration: underline;
+        }
+        
+        /* 分享统计 */
+        .share-stats {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .share-stats h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-item {
+            padding: 15px;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+        
+        /* 祈福墙 */
+        .prayer-wall {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 30px 0;
+        }
+        
+        .prayer-wall h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .prayer-form textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* 分享按钮 */
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .share-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .share-btn.facebook { background: #3b5998; }
+        .share-btn.twitter { background: #1da1f2; }
+        .share-btn.whatsapp { background: #25d366; }
+        .share-btn.email { background: #7f8c8d; }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* 底部信息 */
+        .bottom-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 30px 0;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .nav-links {
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .case-core {
+                grid-template-columns: 1fr;
+            }
+            
+            .interaction-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .info-list strong {
+                display: block;
+                width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .case-header {
+                padding: 20px;
+            }
+        }
+        
+        /* 最后同步时间 */
+        .last-sync {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部全局导航 -->
+    <header class="sticky-header">
+        <div class="search-container">
+            <div class="logo">美国失踪人口数据库</div>
+            <div class="search-bar">
+                <input type="text" placeholder="搜索失踪人员姓名、案件编号或地点...">
+            </div>
+            <div class="user-actions">
+                <button class="btn secondary">登录</button>
+                <button class="btn">注册</button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 导航栏 -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="#">首页</a>
+                <a href="#">最新案件</a>
+                <a href="#">成功案例</a>
+                <a href="#">如何帮助</a>
+                <a href="#">关于我们</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 热门标签 -->
+    <div class="hot-tags">
+        <div class="tag-container">
+            <span class="tag emergency">紧急：24小时内失踪</span>
+            <span class="tag warning">冷案：1年以上</span>
+            <span class="tag hot">佛罗里达州</span>
+            <span class="tag">Immokalee</span>
+            <span class="tag">西班牙裔</span>
+            <span class="tag">青少年</span>
+            <span class="tag">2019年</span>
+            <span class="tag">纹身特征</span>
+            <span class="tag">车辆相关</span>
+            <span class="tag hot">高关注度</span>
+            <!-- 重复标签以实现无缝滚动 -->
+            <span class="tag emergency">紧急：24小时内失踪</span>
+            <span class="tag warning">冷案：1年以上</span>
+            <span class="tag hot">佛罗里达州</span>
+            <span class="tag">Immokalee</span>
+            <span class="tag">西班牙裔</span>
+            <span class="tag">青少年</span>
+            <span class="tag">2019年</span>
+            <span class="tag">纹身特征</span>
+            <span class="tag">车辆相关</span>
+            <span class="tag hot">高关注度</span>
+        </div>
+    </div>
+    
+    <!-- 面包屑导航 -->
+    <div class="breadcrumb">
+        <a href="#">案件列表 (50,000)</a> &gt;
+        <a href="#">佛罗里达州 (1,250)</a> &gt;
+        <a href="#">科利尔县 (125)</a> &gt;
+        <a href="#">Immokalee (35)</a> &gt;
+        <span>Domingo Dominguez</span>
+    </div>
+    
+    <!-- 主内容容器 -->
+    <div class="main-container">
+        
+        <!-- 案件头部 -->
+        <div class="case-header">
+            <div class="status-indicator"></div>
+            <h1>Domingo Dominguez</h1>
+            <div class="status-badge">COLD CASE</div>
+            <p>失踪时间：2019年7月7日 • 失踪地点：佛罗里达州 Immokalee</p>
+            <p class="last-sync">最后同步于 2 分钟前</p>
+        </div>
+        
+        <!-- AI分析面板 -->
+        <div class="ai-analysis">
+            <div class="ai-title">🔍 AI智能摘要</div>
+            <p>Domingo Dominguez，18岁西班牙裔男性，于2019年7月7日从佛罗里达州Immokalee失踪。身高5'4"，体重140磅，耳后有音乐音符纹身。案件已超过5年，属于冷案。<a href="#" style="color: #e65100; text-decoration: underline;">查看官方信源</a></p>
+        </div>
+        
+        <!-- 核心案件区 -->
+        <div class="case-core">
+            <!-- 照片墙 -->
+            <div class="photo-gallery">
+                <div class="main-photo">
+                    <img src="http://charleyproject.org/wp-content/uploads/2020/12/domingodominguez_brayan.jpg" alt="Domingo Dominguez，2019年" class="main-img">
+                </div>
+                <div class="thumbnail-grid">
+                    <div class="thumbnail active">
+                        <img src="http://charleyproject.org/wp-content/uploads/2020/12/domingodominguez_brayan.jpg" alt="Domingo Dominguez，2019年">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="http://charleyproject.org/wp-content/uploads/2020/12/domingodominguez_brayan2.jpg" alt="Domingo Dominguez的另一张照片">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="http://charleyproject.org/wp-content/uploads/2020/12/domingodominguez_brayan3.jpg" alt="Domingo Dominguez的另一张照片">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="http://charleyproject.org/wp-content/uploads/2020/12/domingodominguez_brayan_tattoo.jpg" alt="Domingo Dominguez的耳后音乐音符纹身">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 案件信息 -->
+            <div class="case-info">
+                <h3>案件信息</h3>
+                <ul class="info-list">
+                    <li><strong>失踪时间：</strong>07/07/2019</li>
+                    <li><strong>失踪地点：</strong>Immokalee, Florida</li>
+                    <li><strong>案件分类：</strong>Missing</li>
+                    <li><strong>性别：</strong>Male</li>
+                    <li><strong>种族：</strong>Hispanic</li>
+                    <li><strong>出生日期：</strong>03/08/2001 (24岁)</li>
+                    <li><strong>失踪时年龄：</strong>18岁</li>
+                    <li><strong>身高体重：</strong>5'4"，140磅</li>
+                    <li><strong>特征描述：</strong>Domingo Dominguez可能拼写他的名字为"Bryan"。他来自危地马拉。耳后有音乐音符纹身，本案件摘要中附有照片。</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 可视化时间线 -->
+        <div class="timeline">
+            <h3>失踪时间线</h3>
+            <div class="timeline-item">
+                <div class="timeline-time">2019年7月7日</div>
+                <p>Domingo Dominguez在佛罗里达州Immokalee失踪</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">2020年12月18日</div>
+                <p>案件文件被添加到数据库</p>
+            </div>
+        </div>
+        
+        <!-- 互动功能区 -->
+        <div class="interaction-section">
+            <div class="interaction-card">
+                <h3>💡 提供线索</h3>
+                <p>如果您有任何相关信息，请立即联系警方</p>
+                <button class="btn">报告线索</button>
+            </div>
+            <div class="interaction-card">
+                <h3>📱 生成海报</h3>
+                <p>创建并分享失踪人员海报</p>
+                <button class="btn">生成海报</button>
+            </div>
+            <div class="interaction-card">
+                <h3>🔗 分享案件</h3>
+                <p>帮助扩大搜索范围</p>
+                <button class="btn">分享到社交媒体</button>
+            </div>
+        </div>
+        
+        <!-- 分享统计 -->
+        <div class="share-stats">
+            <h3>案件关注度</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">2,456</div>
+                    <div class="stat-label">总分享次数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15,234</div>
+                    <div class="stat-label">页面浏览量</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">提供线索数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">当前在线关注</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 祈福墙 -->
+        <div class="prayer-wall">
+            <h3>🙏 祈福墙</h3>
+            <p>为Domingo Dominguez送上祝福和祈祷</p>
+            <div class="prayer-form">
+                <textarea placeholder="写下您的祝福和祈祷...（最多200字）"></textarea>
+                <button class="btn">提交祝福</button>
+            </div>
+        </div>
+        
+        <!-- 案件详情和调查机构 -->
+        <div class="case-bottom">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                <div class="authority-sources">
+                    <h3>失踪详情</h3>
+                    <p>Domingo Dominguez于2019年7月7日在佛罗里达州Immokalee的北15街300号街区最后被看到。此后再也没有他的消息。案件细节很少。</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                    <div class="authority-sources">
+                        <h3>调查机构</h3>
+                        <ul>
+                            <li>Collier County Sheriff's Office<br>239-252-9300</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="authority-sources">
+                        <h3>信息来源</h3>
+                        <ul>
+                            <li><a href="https://www.colliersheriff.org/" target="_blank">Collier County Sheriff's Office</a></li>
+                            <li><a href="https://www.fdle.state.fl.us/" target="_blank">Florida Department of Law Enforcement</a></li>
+                            <li><a href="https://www.facebook.com/brayan.domingodominguez" target="_blank">Brayan Domingo Dominguez's Facebook Page</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分享按钮 -->
+        <div class="authority-sources">
+            <h3>分享此案件</h3>
+            <div class="share-buttons">
+                <button class="share-btn facebook">Facebook</button>
+                <button class="share-btn twitter">Twitter</button>
+                <button class="share-btn whatsapp">WhatsApp</button>
+                <button class="share-btn email">Email</button>
+            </div>
+        </div>
+        
+        <!-- 底部信息 -->
+        <div class="bottom-info">
+            <p>Updated 1 time since October 12, 2004. Last updated December 18, 2020; casefile added.</p>
+            <p style="margin-top: 10px;">© 2024 美国失踪人口数据库 | 数据来源于官方机构，仅供参考</p>
+        </div>
+    </div>
+    
+    <script>
+        // 图片切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const mainImg = document.querySelector('.main-img');
+            
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    // 移除所有缩略图的active类
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    // 添加当前点击缩略图的active类
+                    this.classList.add('active');
+                    // 切换主图
+                    mainImg.src = this.querySelector('img').src;
+                });
+            });
+            
+            // 分享按钮功能
+            const shareBtns = document.querySelectorAll('.share-btn');
+            const caseUrl = window.location.href;
+            const caseTitle = '帮助寻找Domingo Dominguez - 失踪人口数据库';
+            
+            shareBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const platform = this.classList[1];
+                    let url = '';
+                    
+                    switch(platform) {
+                        case 'facebook':
+                            url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(caseUrl)}`;
+                            break;
+                        case 'twitter':
+                            url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(caseUrl)}&text=${encodeURIComponent(caseTitle)}`;
+                            break;
+                        case 'whatsapp':
+                            url = `https://wa.me/?text=${encodeURIComponent(caseTitle + ' ' + caseUrl)}`;
+                            break;
+                        case 'email':
+                            url = `mailto:?subject=${encodeURIComponent(caseTitle)}&body=${encodeURIComponent(caseUrl)}`;
+                            break;
+                    }
+                    
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
+            
+            // 统计数字动画
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            const animateStats = () => {
+                statNumbers.forEach(stat => {
+                    const target = parseInt(stat.textContent.replace(/,/g, ''));
+                    let count = 0;
+                    const duration = 2000;
+                    const step = target / (duration / 16);
+                    
+                    const timer = setInterval(() => {
+                        count += step;
+                        if (count >= target) {
+                            count = target;
+                            clearInterval(timer);
+                        }
+                        stat.textContent = Math.floor(count).toLocaleString();
+                    }, 16);
+                });
+            };
+            
+            // 监听统计区域进入视口
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            const statsSection = document.querySelector('.share-stats');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+            
+            // 祈福墙提交功能
+            const prayerForm = document.querySelector('.prayer-form');
+            const prayerTextarea = prayerForm.querySelector('textarea');
+            const submitBtn = prayerForm.querySelector('.btn');
+            
+            submitBtn.addEventListener('click', function() {
+                const message = prayerTextarea.value.trim();
+                if (message.length > 0 && message.length <= 200) {
+                    alert('感谢您的祝福！消息已提交。');
+                    prayerTextarea.value = '';
+                } else {
+                    alert('请输入1-200字的祝福消息。');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

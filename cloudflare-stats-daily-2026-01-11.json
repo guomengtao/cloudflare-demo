@@ -1,0 +1,19 @@
+{
+  "data": {
+    "viewer": {
+      "zones": [
+        {
+          "httpRequests1dGroups": [
+            {
+              "sum": {
+                "pageViews": 733,
+                "requests": 7222
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "errors": null
+}

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪儿童档案：杰马尔·阿卜杜勒·法鲁克</title>
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --safety-blue: #0a3d62;
+            --alert-red: #eb2f06;
+            --light-bg: #f1f2f6;
+            --accent-orange: #fa983a;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+            color: #2f3542;
+        }
+
+        /* 导航条 */
+        .navbar {
+            background-color: var(--safety-blue);
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        .search-bar {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
+        .search-bar input {
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px;
+            outline: none;
+        }
+        .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 面包屑 */
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #747d8c;
+        }
+        .breadcrumb a { color: var(--safety-blue); text-decoration: none; }
+
+        /* 档案主体 */
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .case-header {
+            background: linear-gradient(135deg, var(--safety-blue) 0%, #1e3799 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+        }
+        .case-header h1 { margin: 0; font-size: 36px; font-weight: 900; }
+        .case-type {
+            background: var(--alert-red);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        /* 图片展示 */
+        .photo-gallery img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .thumb-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .thumb-grid img { height: 80px; object-fit: cover; margin-bottom: 0; cursor: pointer; }
+
+        /* 关键信息 */
+        .vitals {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .vital-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-orange);
+        }
+        .vital-box label { font-size: 12px; color: #747d8c; display: block; }
+        .vital-box span { font-weight: 700; font-size: 16px; }
+
+        /* 案情描述 */
+        .content-section { margin-top: 40px; line-height: 1.8; }
+        .content-section h3 {
+            border-bottom: 2px solid var(--safety-blue);
+            padding-bottom: 10px;
+            color: var(--safety-blue);
+        }
+        .highlight-box {
+            background: #fff5f5;
+            border: 1px dashed var(--alert-red);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .footer-info {
+            background: #2f3542;
+            color: white;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .agency-info h4 { color: var(--accent-orange); margin-top: 0; }
+        .phone { font-size: 24px; color: white; font-weight: 900; }
+
+        .source-links a { color: #ced4da; display: block; margin-bottom: 5px; font-size: 13px; }
+
+        @media (max-width: 850px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .navbar { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><strong>全美失踪人口数据库 (2026版)</strong></div>
+        <div class="nav-links">
+            <a href="#">首页</a>
+            <a href="#">失踪儿童</a>
+            <a href="#">高危案件</a>
+            <a href="#">关于我们</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="搜索姓名、案件号...">
+        </div>
+    </nav>
+
+    <div class="container">
+        <nav class="breadcrumb">
+            <a href="#">首页</a> > <a href="#">失踪儿童档案</a> > 杰马尔·阿卜杜勒·法鲁克
+        </nav>
+
+        <article class="case-card">
+            <header class="case-header">
+                <h1>杰马尔·阿卜杜勒·法鲁克 <small style="font-weight: 400; opacity: 0.8;">Jamal Abdul'Faruq</small></h1>
+                <div class="case-type">非亲属绑架案 (Non-Family Abduction)</div>
+            </header>
+
+            <div class="main-grid">
+                <aside class="photo-gallery">
+                    <img src="https://charleyproject.org/wp-content/uploads/2017/10/abdulfaruq_jamal_ap.jpg" alt="年龄进化图">
+                    <div class="thumb-grid">
+                        <img src="https://charleyproject.org/wp-content/uploads/2017/10/abdulfaruq_jamal.jpg" title="1990年失踪前照片">
+                        <img src="http://charleyproject.org/wp-content/uploads/2017/10/jamal_abdulfaruq_2.jpg" title="年龄模拟至38岁">
+                        <img src="http://charleyproject.org/wp-content/uploads/2017/10/jamal_abdulfaruq_7.jpg" title="哥哥 Basil">
+                    </div>
+                    <p style="font-size: 12px; color: #747d8c; text-align: center; margin-top: 10px;">
+                        左起：失踪前照片 (1990)；38岁年龄模拟图；哥哥巴西尔 (已被害)
+                    </p>
+                </aside>
+
+                <main>
+                    <div class="vitals">
+                        <div class="vital-box"><label>失踪时间</label><span>1990年04月16日</span></div>
+                        <div class="vital-box"><label>失踪地点</label><span>弗吉尼亚州 里士满</span></div>
+                        <div class="vital-box"><label>出生日期</label><span>1982年08月12日 (现年43岁)</span></div>
+                        <div class="vital-box"><label>失踪年龄</label><span>7 岁</span></div>
+                        <div class="vital-box"><label>身高/体重</label><span>135cm / 21kg (失踪时)</span></div>
+                        <div class="vital-box"><label>显著特征</label><span>右眉有疤，左耳上方太阳穴有痣</span></div>
+                    </div>
+
+                    <div class="content-section">
+                        <h3>案件背景</h3>
+                        <p>1990年4月16日下午2:30，7岁的杰马尔和8岁的哥哥巴西尔在母亲位于里士满 Clarkson 路的公寓前院玩耍。当时他们的母亲正在屋内午睡。当母亲醒来寻找他们时，两兄弟已消失不见。</p>
+                        
+                        <div class="highlight-box">
+                            <strong>⚠️ 关联凶杀案：</strong>
+                            失踪3天后，警方在10英里外的垃圾填埋场发现了哥哥巴西尔的尸体。他被捆绑、堵嘴，背部有两处致命刺伤。当时并未发现杰马尔的踪迹，他自此人间蒸发。
+                        </div>
+
+                        <h3>案件进展与现状</h3>
+                        <p>调查初期，警方曾怀疑其父亲埃弗雷特，但搜查并未发现任何证据。随后父母双方均被排除嫌疑。杰马尔失踪时就读于 E.S.H. Green 小学二年级，他非常喜欢披萨、《忍者神龟》和篮球。警方认为他目前可能仍然在世。该案件至今悬而未决。</p>
+                        
+                        <p><strong>失踪时穿着：</strong> 黑色蝙蝠侠T恤、蓝色牛仔裤、灰红色绒面棒球夹克、白色运动鞋。</p>
+                    </div>
+                </main>
+            </div>
+
+            <footer class="footer-info">
+                <div class="agency-info">
+                    <h4>🚨 负责调查机构</h4>
+                    <p>里士满警察局 (Richmond Police Department)</p>
+                    <div class="phone">804-780-6748</div>
+                </div>
+                <div class="source-links">
+                    <h4>数据来源</h4>
+                    <a href="#">全美失踪与受剥削儿童中心 (NCMEC)</a>
+                    <a href="#">里士满时报</a>
+                    <a href="#">CNN 案件回顾</a>
+                    <a href="#">消失儿童联盟</a>
+                </div>
+            </footer>
+        </article>
+
+        <p style="text-align: center; font-size: 12px; color: #95a5a6; margin-top: 20px;">
+            档案最后核实日期：2026年1月11日 | 数据最近更新：2023年2月15日
+        </p>
+    </div>
+
+</body>
+</html>
