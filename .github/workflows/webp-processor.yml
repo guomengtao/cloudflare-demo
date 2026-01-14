@@ -13,11 +13,8 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     
-    # 显式声明权限，确保 gh 命令能读写变量
-    permissions:
-      contents: write
-      actions: write
-      variables: write
+    # 彻底修复 Line 20 报错：改用广义写权限
+    permissions: write-all
 
     steps:
       - name: Checkout Code
@@ -30,7 +27,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          # 按照您给的 Scraper 模板风格，精简安装
           npm install consola aws-sdk dotenv yargs sharp
           npm install -g wrangler
           sudo apt-get update && sudo apt-get install -y webp
@@ -47,7 +43,7 @@ jobs:
           B2_REGION: "us-east-005"
         run: |
           mkdir -p temp
-          # 运行您的任务
+          # 运行任务
           node task/task-run.js orm-run-webp.js 10
 
       - name: Cleanup temp
