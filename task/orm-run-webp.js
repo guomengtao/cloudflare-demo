@@ -99,11 +99,8 @@ function readAndUpdateStatus(desiredId = null) {
       : `node ${path.join(__dirname, 'task-gh-id.js')} webp`;
     const output = execSync(command, { encoding: 'utf8' }).trim();
     
-    // 解析返回的 JSON 数据
-    const result = JSON.parse(output);
-    
-    // 获取 ID 值并转换为数字
-    const currentId = parseInt(result.value);
+    // 直接使用输出值
+    const currentId = parseInt(output);
     
     if (!isNaN(currentId)) {
       return currentId;

@@ -1,4 +1,31 @@
+// 彻底抑制dotenv的所有输出
+const originalLog = console.log;
+const originalError = console.error;
+const originalWarn = console.warn;
+const originalInfo = console.info;
+
+// 禁用所有控制台输出
+console.log = function() {};
+console.error = function() {};
+console.warn = function() {};
+console.info = function() {};
+
+// 启用dotenv
+const dotenv = require('dotenv');
+dotenv.config();
+
+// 恢复控制台输出
+console.log = originalLog;
+console.error = originalError;
+console.warn = originalWarn;
+console.info = originalInfo;
+
 const { execSync } = require('child_process');
+
+// 默认配置：不自动更新GitHub变量
+const DEFAULT_CONFIG = {
+  updateGhVariable: false
+};
 
 /**
  * 执行 shell 命令并获取输出
@@ -37,18 +64,31 @@ function setGhVariable(name, value) {
 }
 
 /**
- * 获取 GitHub 变量值
+ * 获取变量值 - 优先从环境变量中读取
+ * @param {string} name - 变量名
+ * @returns {string|null} 变量值或 null
+ */
+function getVariable(name) {
+  try {
+    // 优先从环境变量中读取（包括.env文件）
+    if (process.env[name]) {
+      return process.env[name];
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('获取变量失败:', error.message);
+    return null;
+  }
+}
+
+/**
+ * 获取 GitHub 变量值（仅在明确需要时使用）
  * @param {string} name - 变量名
  * @returns {string|null} 变量值或 null
  */
 function getGhVariable(name) {
   try {
-    // 优先从环境变量中读取
-    if (process.env[name]) {
-      return process.env[name];
-    }
-    
-    // 如果环境变量不存在，再使用 gh 命令读取
     const value = executeCommand(`gh variable get ${name}`);
     return value || null;
   } catch (error) {
@@ -79,6 +119,7 @@ function main() {
   const args = process.argv.slice(2);
   let taskName = 'webp'; // 默认任务名
   let varValue = '1'; // 默认变量值
+  let config = { ...DEFAULT_CONFIG };
   
   // 解析参数
   if (args.length >= 1) {
@@ -86,42 +127,68 @@ function main() {
   }
   
   if (args.length >= 2) {
-    varValue = args[1];
+    // 检查是否是开启GitHub更新的标志
+    if (args[1] === '--gh' || args[1] === '-gh') {
+      config.updateGhVariable = true;
+      // 如果还有第三个参数，那就是varValue
+      if (args.length >= 3) {
+        varValue = args[2];
+      }
+    } else {
+      varValue = args[1];
+      // 检查是否有第三个参数是开启GitHub更新的标志
+      if (args.length >= 3 && (args[2] === '--gh' || args[2] === '-gh')) {
+        config.updateGhVariable = true;
+      }
+    }
   }
   
-  // 转换为符合 GitHub 要求的变量名
+  // 转换为符合要求的变量名
   const varName = convertToGhVariableName(`TASK_${taskName}`);
   
-  // 获取当前变量值
-  const currentValue = getGhVariable(varName);
+  // 获取当前变量值 - 优先从环境变量中读取
+  let currentValue = getVariable(varName);
+  
+  // 如果环境变量中没有，且配置了使用GitHub变量，则从GitHub读取
+  if (!currentValue && config.updateGhVariable) {
+    currentValue = getGhVariable(varName);
+  }
   
   let resultValue;
   if (currentValue === null) {
     // 变量不存在
-    if (args.length >= 2) {
+    if (args.length >= 2 && !['--gh', '-gh'].includes(args[1])) {
       // 传入了新值，直接使用该值
       resultValue = varValue;
-      setGhVariable(varName, resultValue);
+      if (config.updateGhVariable) {
+        setGhVariable(varName, resultValue);
+      }
     } else {
       // 没有传入新值，默认使用1
       resultValue = '1';
-      setGhVariable(varName, resultValue);
+      if (config.updateGhVariable) {
+        setGhVariable(varName, resultValue);
+      }
     }
   } else {
     // 变量存在
-    if (args.length >= 2) {
+    if (args.length >= 2 && !['--gh', '-gh'].includes(args[1])) {
       // 传入了新值，直接使用该值
       resultValue = varValue;
-      setGhVariable(varName, resultValue);
+      if (config.updateGhVariable) {
+        setGhVariable(varName, resultValue);
+      }
     } else {
       // 没有传入新值，使用当前值+1
       resultValue = (parseInt(currentValue) + 1).toString();
-      setGhVariable(varName, resultValue);
+      if (config.updateGhVariable) {
+        setGhVariable(varName, resultValue);
+      }
     }
   }
   
-  // 返回结果 - 使用process.stdout.write确保完整输出
-  process.stdout.write('{"task":"' + taskName + '","value":' + resultValue + '}\n');
+  // 返回结果 - 直接输出值
+  process.stdout.write(resultValue + '\n');
 }
 
 // 执行主函数
