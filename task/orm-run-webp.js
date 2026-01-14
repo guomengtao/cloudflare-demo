@@ -120,36 +120,7 @@ function readAndUpdateStatus(desiredId = null) {
 }
 
 // 2. 查询数据库中的案件总数
-function getCaseCount() {
-  try {
-    const sqlQuery = `SELECT COUNT(id) as count FROM missing_persons_cases`;
-    const command = `npx wrangler d1 execute cloudflare-demo-db --remote --command "${sqlQuery}" --json`;
-    
-    const output = execSync(command, { encoding: 'utf8', timeout: 20000 });
-    
-    const jsonStart = output.indexOf('[');
-    const jsonEnd = output.lastIndexOf(']');
-    
-    if (jsonStart === -1 || jsonEnd === -1) {
-      return 0;
-    }
-    
-    const jsonOutput = output.slice(jsonStart, jsonEnd + 1);
-    const result = JSON.parse(jsonOutput);
-    
-    const cases = result[0]?.results || result.results || [];
-    
-    if (cases.length > 0) {
-      return cases[0].count || 0;
-    } else {
-      return 0;
-    }
-    
-  } catch (error) {
-    console.error('getCaseCount 错误:', error.message);
-    return 0;
-  }
-}
+
 
 // 3. 执行查询获取指定ID的案件数据
 function getCaseById(id) {
@@ -252,11 +223,7 @@ function saveToFile(data, filePath) {
 
 // 5. 主函数
 async function main(startId = null) {
-  // 查询数据库中的案件总数
-  const totalCases = getCaseCount();
-  console.log(`数据库中共有 ${totalCases} 个案件`);
-  
-  let targetId;
+    let targetId;
   let caseData;
   
   if (startId) {
@@ -273,17 +240,11 @@ async function main(startId = null) {
   
   // 如果没有case_html，查找下一个有case_html的案件
   let attempts = 0;
-  const maxAttempts = Math.min(20, totalCases - targetId);
+  const maxAttempts = 20; // 固定最大尝试次数，避免查询数据库
   
   while (!caseData?.case_html && attempts < maxAttempts) {
     attempts++;
     const nextId = targetId + attempts;
-    
-    // 确保不超过最大案件ID
-    if (nextId > totalCases) {
-      console.log(`已达到最大案件ID (${totalCases})，未找到有case_html的案件`);
-      break;
-    }
     
     console.log(`尝试找到有case_html的案件，第${attempts}次尝试，ID: ${nextId}...`);
     
@@ -301,7 +262,7 @@ async function main(startId = null) {
   
   // 无论是否找到有case_html的案件，都更新GitHub变量到最后尝试的ID
   const lastAttemptedId = caseData?.case_html ? targetId : targetId + attempts;
-  if (!startId && lastAttemptedId <= totalCases) {
+  if (!startId) {
     readAndUpdateStatus(lastAttemptedId);
     console.log(`已更新GitHub变量到最后尝试的ID: ${lastAttemptedId}`);
   }
@@ -340,8 +301,7 @@ async function main(startId = null) {
     completenessScore = caseData.case_html.length;
     console.log('调试: case_html 长度:', completenessScore);
     
-    // 查看case_html的前1000个字符
-    console.log('调试: case_html 前1000个字符:', caseData.case_html.substring(0, 1000) + '...');
+
     
     // 提取 case_html 中的所有图片 URL
     const imageUrls = hasRealImages(caseData.case_html, true);
