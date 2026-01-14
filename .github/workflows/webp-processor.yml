@@ -56,7 +56,7 @@ jobs:
           mkdir -p temp
           
           # 打印一下，确保脚本运行前已经拿到了 511
-          echo "Current Task ID from environment: $TASK_ID_ENV"
+          echo "Current Task ID from environment: $TASK_WEBP"
           
           # 执行任务处理器
           node task/task-run.js orm-run-webp.js 10
