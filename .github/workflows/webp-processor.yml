@@ -2,7 +2,6 @@ name: WebP Processor Task
 
 on:
   schedule:
-    # 每 20 分钟运行一次
     - cron: '*/20 * * * *'
   workflow_dispatch: 
 
@@ -14,7 +13,7 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     
-    # 这一块很重要：gh variable set 需要写权限
+    # 显式声明权限，确保 gh 命令能读写变量
     permissions:
       contents: write
       actions: write
@@ -31,19 +30,16 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          # 按照模板风格，直接安装核心依赖
+          # 按照您给的 Scraper 模板风格，精简安装
           npm install consola aws-sdk dotenv yargs sharp
           npm install -g wrangler
           sudo apt-get update && sudo apt-get install -y webp
 
       - name: Run WebP Script
         env:
-          # GitHub 权限 (用于读取/更新 TASK_WEBP 变量)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Cloudflare 配置
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # B2 存储配置
           B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           B2_BUCKET_NAME: "gudq-missing-assets"
@@ -51,9 +47,9 @@ jobs:
           B2_REGION: "us-east-005"
         run: |
           mkdir -p temp
-          # 执行任务：指定脚本和运行批次
+          # 运行您的任务
           node task/task-run.js orm-run-webp.js 10
 
       - name: Cleanup temp
         if: always()
-        run: rm -rf ./img temp/*.jpg temp/*.webp
+        run: rm -rf temp/*.jpg temp/*.webp
