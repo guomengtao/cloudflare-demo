@@ -43,6 +43,12 @@ function setGhVariable(name, value) {
  */
 function getGhVariable(name) {
   try {
+    // 优先从环境变量中读取
+    if (process.env[name]) {
+      return process.env[name];
+    }
+    
+    // 如果环境变量不存在，再使用 gh 命令读取
     const value = executeCommand(`gh variable get ${name}`);
     return value || null;
   } catch (error) {

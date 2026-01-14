@@ -1,42 +1,21 @@
-name: Test-Variable-Read-Only
+name: Test-Variable-By-Env
 
 on:
-  workflow_dispatch: # 允许你在 Actions 页面手动点击运行
+  workflow_dispatch: 
 
 jobs:
-  test-read:
+  test-env:
     runs-on: ubuntu-latest
-    
-    # 显式声明最高权限
-    permissions: write-all
-
     steps:
-      - name: 1. 直接读取测试 (GitHub Context方式)
-        # 这是最稳的方式，不经过命令行，直接由 GitHub 引擎注入
-        run: |
-          echo "变量 TASK_WEBP 的值是: ${{ vars.TASK_WEBP }}"
-          if [ -z "${{ vars.TASK_WEBP }}" ]; then
-            echo "❌ 错误: 无法通过 vars 上下文读取变量"
-          else
-            echo "✅ 成功: 已通过上下文读取到值"
-          fi
-
-      - name: 2. 命令行读取测试 (gh CLI方式)
+      - name: 验证环境变量读取
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 核心：将 GitHub Variables 映射为环境变量
+          TASK_ID_FROM_VARS: ${{ vars.TASK_WEBP }}
         run: |
-          echo "尝试通过 gh 命令行工具读取..."
-          # 增加 --repo 声明，确保指向明确
-          gh variable get TASK_WEBP --repo ${{ github.repository }}
-          
-          if [ $? -eq 0 ]; then
-            echo "✅ 成功: gh 命令行可以正常读取"
+          echo "正在检查环境变量..."
+          if [ -z "$TASK_ID_FROM_VARS" ]; then
+            echo "❌ 失败: 环境变量 TASK_ID_FROM_VARS 为空"
+            exit 1
           else
-            echo "❌ 错误: gh 命令行读取失败 (即你看到的403)"
+            echo "✅ 成功: 读取到的值是 $TASK_ID_FROM_VARS"
           fi
-
-      - name: 3. 环境变量注入测试
-        env:
-          MY_VAR: ${{ vars.TASK_WEBP }}
-        run: |
-          echo "通过环境变量 MY_VAR 读取到的值: $MY_VAR"
