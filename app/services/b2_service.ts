@@ -1,31 +1,28 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import env from '#start/env'
 
-export class B2Service {
-  private client: S3Client
+class B2Service {
+  // 使用 S3 协议兼容模式连接 Backblaze B2
+  private client = new S3Client({
+    endpoint: env.get('B2_ENDPOINT'), 
+    region: env.get('B2_REGION'),
+    credentials: {
+      accessKeyId: env.get('B2_KEY_ID'),
+      secretAccessKey: env.get('B2_APPLICATION_KEY'),
+    },
+  })
 
-  constructor() {
-    this.client = new S3Client({
-      endpoint: env.get('B2_ENDPOINT'), // 如: https://s3.us-west-004.backblazeb2.com
-      region: env.get('B2_REGION'),
-      credentials: {
-        accessKeyId: env.get('B2_KEY_ID'),
-        secretAccessKey: env.get('B2_APPLICATION_KEY'),
-      },
-    })
-  }
-
-  async upload(buffer: Buffer, fileName: string, contentType: string = 'image/webp') {
-    const command = new PutObjectCommand({
+  async upload(buffer: Buffer, key: string) {
+    await this.client.send(new PutObjectCommand({
       Bucket: env.get('B2_BUCKET'),
-      Key: fileName,
+      Key: key,
       Body: buffer,
-      ContentType: contentType,
-    })
+      ContentType: 'image/webp',
+      // 如果需要公开访问，部分桶可能需要配置 ACL，通常 B2 靠桶权限控制
+    }))
 
-    await this.client.send(command)
-    // 返回可访问的 URL (假设你开启了公开访问)
-    return `${env.get('B2_PUBLIC_URL')}/${fileName}`
+    // 拼接最终的公开访问链接
+    return `${env.get('B2_PUBLIC_URL')}/${key}`
   }
 }
 
