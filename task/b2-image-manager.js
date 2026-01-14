@@ -52,7 +52,7 @@ class B2ImageManager {
     }
 
     // 1. 单张图片上传
-    async uploadSingleImage(filePath, caseId, imageType = 'profile') {
+    async uploadSingleImage(filePath, caseId, imageType = 'profile', urlPath = '') {
         try {
             // 检查文件是否存在
             if (!fs.existsSync(filePath)) {
@@ -70,7 +70,7 @@ class B2ImageManager {
             }
             
             // 生成存储路径
-            const storagePath = this.generateStoragePath(caseId, imageType, fileExt);
+            const storagePath = this.generateStoragePath(caseId, imageType, fileExt, urlPath);
             
             // 上传参数
             const params = {
@@ -171,11 +171,13 @@ class B2ImageManager {
     }
 
     // 5. 生成存储路径
-    generateStoragePath(caseId, imageType, fileExt) {
+    generateStoragePath(caseId, imageType, fileExt, urlPath = '') {
         const timestamp = Date.now();
         const randomStr = Math.random().toString(36).substring(2, 8);
         
-        return `cases/${caseId}/${imageType}-${timestamp}-${randomStr}${fileExt}`;
+        // 如果提供了urlPath，将其包含在存储路径中
+        const basePath = urlPath ? `${urlPath}/${caseId}` : `cases/${caseId}`;
+        return `${basePath}/${imageType}-${timestamp}-${randomStr}${fileExt}`;
     }
 
     // 6. 生成图片映射文件
@@ -332,6 +334,12 @@ if (require.main === module) {
             type: 'string',
             default: 'profile'
         })
+        .option('path', {
+            alias: 'p',
+            describe: '存储路径前缀 (如: state/county/city)',
+            type: 'string',
+            default: ''
+        })
         .option('help', {
             alias: 'h',
             describe: '显示帮助信息',
@@ -345,6 +353,9 @@ if (require.main === module) {
             console.log('📁 图片路径:', argv.file);
             console.log('🔍 案件ID:', argv.caseId);
             console.log('🖼️ 图片类型:', argv.imageType);
+            if (argv.path) {
+                console.log('📁 存储路径前缀:', argv.path);
+            }
             
             // 验证文件是否存在
             if (!fs.existsSync(argv.file)) {
@@ -371,7 +382,8 @@ if (require.main === module) {
             
             // 生成存储路径
             const fileName = path.basename(argv.file);
-            const storagePath = `cases/${argv.caseId}/${argv.imageType}-${Date.now()}-${Math.random().toString(36).substring(2, 8)}${fileExt}`;
+            const basePath = argv.path ? `${argv.path}/${argv.caseId}` : `cases/${argv.caseId}`;
+            const storagePath = `${basePath}/${argv.imageType}-${Date.now()}-${Math.random().toString(36).substring(2, 8)}${fileExt}`;
             
             // 读取文件
             const fileBuffer = fs.readFileSync(argv.file);

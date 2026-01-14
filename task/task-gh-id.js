@@ -1,164 +1,110 @@
 const { exec } = require('child_process');
 
-// 配置：只使用D1数据库
-const CONFIG = {
-  useD1Database: true
-};
+/**
+ * 核心配置
+ */
+const DB_NAME = "cloudflare-demo-db";
+const TASK_NAME = "webp_processor";
 
 /**
- * 从 Cloudflare D1 数据库获取进度 ID
- * @param {string} taskName - 任务名称
- * @returns {Promise<number>} 进度 ID
+ * 1. 从 D1 获取当前进度
+ * 逻辑：报错则 Reject，没数据返回 null
  */
-async function getProgressFromD1(taskName) {
+function getProgress(taskName) {
   return new Promise((resolve, reject) => {
-    try {
-      // 使用 wrangler 命令执行 D1 数据库查询
-      const query = `SELECT last_id FROM task_progress WHERE task_name = 'webp_processor'`;
-      const command = `npx wrangler d1 execute cloudflare-demo-db --remote --json --command="${query}"`;
-      
-      exec(command, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`D1 查询错误: ${error.message}`);
-          resolve(511); // 默认返回 511
-          return;
+    const query = `SELECT last_id FROM task_progress WHERE task_name = '${taskName}' LIMIT 1`;
+    const command = `npx wrangler d1 execute ${DB_NAME} --remote --json --command="${query}"`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        return reject(new Error(`D1查询命令执行失败: ${error.message}`));
+      }
+
+      try {
+        // 健壮地寻找 JSON 块，忽略 Wrangler 的其他文本输出
+        const jsonMatch = stdout.match(/\[[\s\S]*\]|\{[\s\S]*\}/);
+        if (!jsonMatch) {
+          return reject(new Error("无法从输出中解析到有效的 JSON 数据"));
         }
         
-        if (stderr) {
-          console.error(`D1 查询警告: ${stderr}`);
+        const data = JSON.parse(jsonMatch[0]);
+        // Wrangler --json 返回的是数组，取第一个元素里的 results
+        const rows = data[0]?.results || [];
+
+        if (rows.length > 0) {
+          const id = parseInt(rows[0].last_id);
+          resolve(isNaN(id) ? null : id);
+        } else {
+          resolve(null); // 数据库确实没有这条任务的记录
         }
-        
-        try {
-          // 修复 JSON 格式，添加缺失的逗号
-          const fixedStdout = stdout
-            .replace(/"results":\s*\[([^\]]*)\]\s*"success"/g, '"results": [$1], "success"')
-            .replace(/"success":\s*true\s*"meta"/g, '"success": true, "meta"')
-            .replace(/"served_by":\s*"([^"]*)"\s*"served_by_region"/g, '"served_by": "$1", "served_by_region"')
-            .replace(/"served_by_region":\s*"([^"]*)"\s*"served_by_colo"/g, '"served_by_region": "$1", "served_by_colo"')
-            .replace(/"served_by_colo":\s*"([^"]*)"\s*"served_by_primary"/g, '"served_by_colo": "$1", "served_by_primary"')
-            .replace(/"served_by_primary":\s*true\s*"timings"/g, '"served_by_primary": true, "timings"')
-            .replace(/"sql_duration_ms":\s*([\d.]+)\s*}/g, '"sql_duration_ms": $1 }')
-            .replace(/"timings":\s*\{([^}]*)\}\s*"duration"/g, '"timings": { $1 }, "duration"')
-            .replace(/"duration":\s*([\d.]+)\s*"changes"/g, '"duration": $1, "changes"')
-            .replace(/"changes":\s*([\d]+)\s*"last_row_id"/g, '"changes": $1, "last_row_id"')
-            .replace(/"last_row_id":\s*([\d]+)\s*"changed_db"/g, '"last_row_id": $1, "changed_db"')
-            .replace(/"changed_db":\s*false\s*"size_after"/g, '"changed_db": false, "size_after"')
-            .replace(/"size_after":\s*([\d]+)\s*"rows_read"/g, '"size_after": $1, "rows_read"')
-            .replace(/"rows_read":\s*([\d]+)\s*"rows_written"/g, '"rows_read": $1, "rows_written"')
-            .replace(/"rows_written":\s*([\d]+)\s*"total_attempts"/g, '"rows_written": $1, "total_attempts"')
-            .replace(/"total_attempts":\s*([\d]+)\s*}/g, '"total_attempts": $1 }');
-          
-          const result = JSON.parse(fixedStdout);
-          if (result[0]?.results && result[0].results.length > 0) {
-            const lastId = parseInt(result[0].results[0].last_id);
-            resolve(isNaN(lastId) ? 511 : lastId);
-          } else {
-            resolve(511); // 默认返回 511
-          }
-        } catch (parseError) {
-          console.error(`解析 D1 查询结果错误: ${parseError.message}`);
-          console.error(`原始输出: ${stdout}`);
-          resolve(511); // 默认返回 511
-        }
-      });
-    } catch (error) {
-      console.error(`获取 D1 进度失败: ${error.message}`);
-      resolve(511); // 默认返回 511
-    }
+      } catch (e) {
+        reject(new Error(`解析 JSON 失败: ${e.message} \n 原始输出: ${stdout}`));
+      }
+    });
   });
 }
 
 /**
- * 更新 Cloudflare D1 数据库中的进度 ID
- * @param {string} taskName - 任务名称
- * @param {number} newId - 新的进度 ID
- * @returns {Promise<boolean>} 是否成功
+ * 2. 更新进度到 D1
+ * 逻辑：采用 SQL MAX 保护，确保 last_id 永远只能变大
  */
-async function updateProgressInD1(taskName, newId) {
+function updateProgress(taskName, newId) {
   return new Promise((resolve, reject) => {
-    try {
-      // 使用 wrangler 命令执行 D1 数据库更新
-      const query = `INSERT OR REPLACE INTO task_progress (task_name, last_id, updated_at) VALUES ('webp_processor', ${newId}, CURRENT_TIMESTAMP)`;
-      const command = `npx wrangler d1 execute cloudflare-demo-db --remote --command="${query}"`;
-      
-      exec(command, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`D1 更新错误: ${error.message}`);
-          resolve(false);
-          return;
-        }
-        
-        if (stderr) {
-          console.error(`D1 更新警告: ${stderr}`);
-        }
-        
-        resolve(true);
-      });
-    } catch (error) {
-      console.error(`更新 D1 进度失败: ${error.message}`);
-      resolve(false);
-    }
+    // 使用 ON CONFLICT 配合 MAX 函数，防止任何形式的进度倒退
+    const query = `
+      INSERT INTO task_progress (task_name, last_id, updated_at) 
+      VALUES ('${taskName}', ${newId}, CURRENT_TIMESTAMP)
+      ON CONFLICT(task_name) DO UPDATE SET 
+      last_id = MAX(task_progress.last_id, EXCLUDED.last_id),
+      updated_at = CURRENT_TIMESTAMP;
+    `;
+    const command = `npx wrangler d1 execute ${DB_NAME} --remote --command="${query}"`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        return reject(new Error(`D1写入失败: ${error.message}`));
+      }
+      resolve(true);
+    });
   });
 }
 
-
-
 /**
- * 主函数
+ * 主执行函数
  */
 async function main() {
-  // 处理命令行参数
-  const args = process.argv.slice(2);
-  let taskName = 'webp'; // 默认任务名
-  let varValue = '1'; // 默认变量值
-  
-  // 解析参数
-  if (args.length >= 1) {
-    taskName = args[0];
-  }
-  
-  if (args.length >= 2) {
-    // 传入了新值，直接使用该值
-    varValue = args[1];
-  }
-  
-  // 获取当前变量值
-  let currentValue = null;
-  let resultValue;
-  
-  if (CONFIG.useD1Database) {
-    // 从 D1 数据库获取
-    const d1Value = await getProgressFromD1('webp_processor');
+  try {
+    // A. 强制禁止手动传入 ID 参数，防止脚本被误调用覆盖数据
+    // 我们只允许读取第一个参数作为 taskName（可选）
+    const args = process.argv.slice(2);
+    const task = args[0] || TASK_NAME;
+
+    // B. 获取进度
+    const currentId = await getProgress(task);
     
-    if (args.length >= 2) {
-      // 传入了新值，直接使用该值
-      resultValue = varValue;
+    let nextId;
+    if (currentId === null) {
+      // 只有在明确知道数据库没记录时，才从 1 开始
+      nextId = 1;
     } else {
-      // 没有传入新值，使用当前值+1或默认值1
-      if (d1Value !== 511) {
-        // 使用 D1 数据库中的值+1
-        resultValue = (parseInt(d1Value) + 1).toString();
-      } else {
-        // 默认使用1
-        resultValue = '1';
-      }
+      // 正常逻辑：在当前基础上 +1
+      nextId = currentId + 1;
     }
-    
-    // 更新到 D1 数据库
-    await updateProgressInD1('webp_processor', parseInt(resultValue));
-  } else {
-    // 理论上不会执行到这里，因为CONFIG.useD1Database固定为true
-    resultValue = '1';
+
+    // C. 写入新进度
+    await updateProgress(task, nextId);
+
+    // D. 成功输出：这是给下一个调用环节看的唯一标准输出
+    process.stdout.write(nextId.toString());
+
+  } catch (err) {
+    // E. 熔断保护
+    // 所有的错误都会进入这里。我们将错误信息定向到 stderr
+    console.error(`\n[FATAL ERROR]: ${err.message}`);
+    // 以退出码 1 结束进程。这会让调用此脚本的父进程知道发生了故障。
+    process.exit(1);
   }
-  
-  // 返回结果 - 直接输出值
-  process.stdout.write(resultValue + '\n');
 }
 
-// 执行主函数
-if (require.main === module) {
-  main().catch(error => {
-    console.error('执行主函数时发生错误:', error);
-    process.exit(1);
-  });
-}
+// 启动程序
+main();
