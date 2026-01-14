@@ -13,29 +13,34 @@ jobs:
   run-batch:
     runs-on: ubuntu-latest
     
-    # 修改后的权限配置：使用更稳健的 actions 和 contents 权限
+    # 强化权限声明
     permissions:
-      contents: read
-      actions: write    # 关键：gh variable set 需要 actions 权限
-      checks: write
+      contents: write
+      actions: write
+      variables: write
 
     steps:
-      - name: ⬇️ Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: 📦 Install Dependencies
+      - name: Install Dependencies
         run: |
-          npm install
+          npm install consola aws-sdk dotenv yargs sharp wrangler
           sudo apt-get update && sudo apt-get install -y webp
 
-      - name: 🏃 Run Task Runner
+      - name: Run Task Runner
         env:
+          # GitHub 变量权限
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Cloudflare 授权 (请确保已经在 Secrets 中添加)
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          # B2 存储配置
           B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           B2_BUCKET_NAME: "gudq-missing-assets"
@@ -43,12 +48,9 @@ jobs:
           B2_REGION: "us-east-005"
         run: |
           mkdir -p temp
-          # 确保路径匹配您的仓库结构：是 task/ 还是 jack/ ？
-          # 根据您之前的描述，这里我使用了 task/，请根据实际文件夹名修改
+          # 运行任务
           node task/task-run.js orm-run-webp.js 10
 
-      - name: 🧹 Cleanup Workspace
+      - name: Cleanup Workspace
         if: always()
-        run: |
-          rm -rf temp/*.jpg
-          rm -rf temp/*.webp
+        run: rm -rf temp/*.jpg temp/*.webp

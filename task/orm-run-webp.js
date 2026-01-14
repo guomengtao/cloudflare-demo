@@ -400,14 +400,15 @@ async function main(startId = null) {
             await convertToWebp(url, outputPath, { quality: 80 });
             
             // 将转换后的 WebP 文件上传到 B2 存储服务
+            // 生成相对路径用于日志显示
             const relativeOutputPath = `./img/${state}/${county}/${city}/${caseData.case_id}/${outputFileName}`;
             console.log(`正在上传到 B2 存储: ${relativeOutputPath}`);
             try {
               // 使用 b2-image-manager.js 上传图片到 B2
-              execSync(`node ${path.join(__dirname, 'b2-image-manager.js')} -f "${relativeOutputPath}" -c "${caseData.case_id}" -t "profile"`, { encoding: 'utf8' });
-              console.log(`✅ B2 上传成功: ${relativeOutputPath}`);
-            } catch (error) {
-              console.error(`❌ B2 上传失败: ${relativeOutputPath}`, error.message);
+              execSync(`node ${path.join(__dirname, 'b2-image-manager.js')} -f "${outputPath}" -c "${caseData.case_id}" -t "profile"`, { encoding: 'utf8' });
+                console.log(`✅ B2 上传成功: ${relativeOutputPath}`);
+              } catch (error) {
+                console.error(`❌ B2 上传失败: ${relativeOutputPath}`, error.message);
             }
             
             // 在转换完成后添加随机等待时间（9-18秒）
