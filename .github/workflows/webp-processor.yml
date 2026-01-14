@@ -59,7 +59,7 @@ jobs:
           echo "Current Task ID from environment: $TASK_WEBP"
           
           # 执行任务处理器
-          node task/task-run.js orm-run-webp.js 10
+          node task/task-run.js orm-run-webp.js 1
 
       - name: Cleanup temp
         if: always()
