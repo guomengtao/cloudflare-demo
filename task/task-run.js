@@ -83,24 +83,24 @@ function formatTime(seconds) {
  */
 async function showCountdown(seconds) {
   for (let i = seconds; i > 0; i--) {
-    // 暴力兼容所有环境
-    if (process.stdout && typeof process.stdout.clearLine === 'function' ) {
+    // 搜索脚本中的 clearLine 关键字，改为：
+    if (process.stdout && process.stdout.isTTY && typeof process.stdout.clearLine === 'function' ) {
         process.stdout.clearLine(0 );
         process.stdout.cursorTo(0 );
     } else {
-        // 仅仅输出一行，不报错
-        // console.log('.');
+        // Action 环境直接打印，不擦除
+        // console.log('任务继续中...');
     }
     process.stdout.write(logger.level < 3 ? '' : `[${new Date().toLocaleString()}] 下一次执行将在 ${formatTime(i)} 后开始...`);
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
-  // 暴力兼容所有环境
-  if (process.stdout && typeof process.stdout.clearLine === 'function' ) {
+  // 搜索脚本中的 clearLine 关键字，改为：
+  if (process.stdout && process.stdout.isTTY && typeof process.stdout.clearLine === 'function' ) {
       process.stdout.clearLine(0 );
       process.stdout.cursorTo(0 );
   } else {
-      // 仅仅输出一行，不报错
-      // console.log('.');
+      // Action 环境直接打印，不擦除
+      // console.log('任务继续中...');
   }
 }
 

@@ -1,26 +1,55 @@
+name: WebP Data Pipeline
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch: 
+
+concurrency:
+  group: image-processing-sync
+  cancel-in-progress: false
+
 jobs:
   run-batch:
     runs-on: ubuntu-latest
     
-    # 强制开启所有相关权限，解决 403 问题
+    # 全量权限声明，不给 403 任何借口
     permissions:
       contents: write
       actions: write
-      variables: write  # 显式声明变量写权限
+      variables: write
+      id-token: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # ... 中间安装步骤不变 ...
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: |
+          npm install consola aws-sdk dotenv yargs sharp wrangler
+          sudo apt-get update && sudo apt-get install -y webp
 
       - name: Run Task Runner
+        # 这一块是核心：确保所有环境变量和 Token 都注入到进程
         env:
-          # 关键：显式注入 GITHUB_TOKEN，gh 命令才会读取这个权限
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          # B2 配置 ...
+          B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
+          B2_BUCKET_NAME: "gudq-missing-assets"
+          B2_ENDPOINT: "s3.us-east-005.backblazeb2.com"
+          B2_REGION: "us-east-005"
         run: |
           mkdir -p temp
+          # 执行脚本
           node task/task-run.js orm-run-webp.js 10
+
+      - name: Cleanup Workspace
+        if: always()
+        run: rm -rf temp/*.jpg temp/*.webp
