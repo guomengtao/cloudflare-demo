@@ -2,8 +2,9 @@ name: WebP Processor Task
 
 on:
   schedule:
+    # 每 20 分钟运行一次
     - cron: '*/20 * * * *'
-  workflow_dispatch: 
+  workflow_dispatch: # 允许手动点击运行
 
 concurrency:
   group: webp-sequential
@@ -13,6 +14,7 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     
+    # 虽然不再依赖 CLI 读取，但保留 write-all 以便尝试自动更新进度
     permissions: write-all
 
     steps:
@@ -26,28 +28,37 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          # 安装处理图片和上传所需的所有依赖
           npm install consola aws-sdk dotenv yargs sharp
           npm install -g wrangler
           sudo apt-get update && sudo apt-get install -y webp
 
       - name: Run WebP Script
         env:
-          # GitHub 令牌
+          # 1. 核心起始 ID 注入 (解决你之前的 403 问题)
+          TASK_ID_ENV: ${{ vars.TASK_WEBP }}
+          
+          # 2. GitHub 权限 (用于脚本后续尝试更新变量)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Cloudflare 授权
+          
+          # 3. Cloudflare 数据库配置
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # B2 存储授权 (使用 AWS 标准变量名)
+          
+          # 4. B2 存储配置 (使用 AWS 兼容命名，SDK 自动识别)
           AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           B2_BUCKET_NAME: "gudq-missing-assets"
           B2_ENDPOINT: "s3.us-east-005.backblazeb2.com"
           B2_REGION: "us-east-005"
-          # 【核心修复】直接从 GitHub Variables 读取 511 并注入
-          TASK_ID_ENV: ${{ vars.TASK_WEBP }}
         run: |
+          # 创建临时目录
           mkdir -p temp
-          # 执行任务
+          
+          # 打印一下，确保脚本运行前已经拿到了 511
+          echo "Current Task ID from environment: $TASK_ID_ENV"
+          
+          # 执行任务处理器
           node task/task-run.js orm-run-webp.js 10
 
       - name: Cleanup temp
