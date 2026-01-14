@@ -335,7 +335,7 @@ async function main(startId = null) {
           }
         }
         
-        // 遍历所有图片URL
+        // 处理所有图片
         for (const url of imageUrls) {
           try {
             // 获取原始文件名

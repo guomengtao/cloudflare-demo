@@ -51,7 +51,7 @@ jobs:
           
           # 执行主脚本，每次处理 15 个 ID (防拉黑稳健频率)
           # 注意：现在脚本内部必须改为从 D1 数据库读取/写入 ID
-          node task/task-run.js orm-run-webp.js 2
+          node task/task-run.js orm-run-webp.js 16
 
       - name: Cleanup
         if: always()
