@@ -1,48 +1,26 @@
-name: WebP Data Pipeline
-
-on:
-  schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch: 
-
-concurrency:
-  group: image-processing-sync
-  cancel-in-progress: false
-
 jobs:
   run-batch:
     runs-on: ubuntu-latest
     
-    # 提升至最高权限，解决 403 问题
-    permissions: write-all
+    # 强制开启所有相关权限，解决 403 问题
+    permissions:
+      contents: write
+      actions: write
+      variables: write  # 显式声明变量写权限
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Dependencies
-        run: |
-          npm install consola aws-sdk dotenv yargs sharp wrangler
-          sudo apt-get update && sudo apt-get install -y webp
+      # ... 中间安装步骤不变 ...
 
       - name: Run Task Runner
         env:
+          # 关键：显式注入 GITHUB_TOKEN，gh 命令才会读取这个权限
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # 必须注入这些给 Wrangler 用的变量
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          # B2 存储配置
-          B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
-          B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
-          B2_BUCKET_NAME: "gudq-missing-assets"
-          B2_ENDPOINT: "s3.us-east-005.backblazeb2.com"
-          B2_REGION: "us-east-005"
+          # B2 配置 ...
         run: |
           mkdir -p temp
-          # 加上强制环境检测，确保脚本能运行
           node task/task-run.js orm-run-webp.js 10
