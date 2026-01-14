@@ -1,0 +1,1 @@
+SELECT COUNT(*) as total FROM missing_persons_info WHERE image_webp_status = 0 AND html_status = 200

@@ -1,0 +1,1 @@
+SELECT * FROM missing_persons_info WHERE image_webp_status = 0 AND html_status = 200 ORDER BY id LIMIT 1

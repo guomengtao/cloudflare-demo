@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeffrey Askren - Missing Person Case</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#dc2626',
+                        secondary: '#1e40af',
+                        neutral: '#1f2937',
+                        accent: '#f59e0b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .sticky-top {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            .photo-gallery {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 0.5rem;
+            }
+            .case-timeline {
+                position: relative;
+            }
+            .case-timeline::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 2px;
+                background-color: #e5e7eb;
+            }
+            .case-timeline-item::before {
+                content: '';
+                position: absolute;
+                left: -0.625rem;
+                top: 0.75rem;
+                width: 1.25rem;
+                height: 1.25rem;
+                border-radius: 50%;
+                background-color: #dc2626;
+                border: 3px solid white;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MissingPersonReport",
+        "name": "Jeffrey Askren",
+        "description": "Endangered Missing Person Case",
+        "url": "https://cn.miissing.gudq.com/test-tailwind-demo",
+        "image": "https://charleyproject.org/wp-content/uploads/2025/09/askren_jeffrey.jpg",
+        "dateCreated": "2025-09-10",
+        "dateModified": "2025-09-10",
+        "author": {
+            "@type": "Organization",
+            "name": "Calaveras County Sheriff's Office"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://cn.miissing.gudq.com/test-tailwind-demo"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Cases (50,000)",
+                    "item": "https://cn.miissing.gudq.com/cases"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "California (1,200)",
+                    "item": "https://cn.miissing.gudq.com/cases/california"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Calaveras County (25)",
+                    "item": "https://cn.miissing.gudq.com/cases/california/calaveras-county"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": "Jeffrey Askren",
+                    "item": "https://cn.miissing.gudq.com/test-tailwind-demo"
+                }
+            ]
+        }
+    }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans text-neutral">
+    <!-- Top Global Navigation -->
+    <header class="bg-white shadow-md sticky-top">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center mb-3 md:mb-0">
+                <i class="fas fa-search text-primary text-2xl mr-2"></i>
+                <span class="text-xl font-bold">Missing Persons Database</span>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="w-full md:w-1/2 relative">
+                <input type="text" placeholder="Search cases..." 
+                       class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+            
+            <!-- Emergency Button -->
+            <div class="mt-3 md:mt-0">
+                <button class="bg-primary text-white px-4 py-2 rounded-full flex items-center hover:bg-primary/90 transition-colors">
+                    <i class="fas fa-phone mr-2"></i>
+                    <span>Report Sightings</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Scrolling Hot Cases -->
+        <div class="bg-gray-100 py-2 overflow-hidden">
+            <div class="flex animate-scroll">
+                <div class="px-4 text-sm whitespace-nowrap">
+                    <span class="font-medium mr-2">Hot Cases:</span>
+                    <span class="text-primary mr-4">🔴 Jeffrey Askren (CA)</span>
+                    <span class="text-primary mr-4">🔴 Sarah Johnson (TX)</span>
+                    <span class="text-primary mr-4">🔴 Michael Chen (NY)</span>
+                    <span class="text-primary mr-4">🔴 Lisa Martinez (FL)</span>
+                    <span class="text-primary mr-4">🔴 David Wilson (IL)</span>
+                    <span class="text-primary mr-4">🔴 Emily Davis (OH)</span>
+                    <span class="text-primary mr-4">🔴 Robert Brown (PA)</span>
+                    <span class="text-primary mr-4">🔴 Jennifer Taylor (MI)</span>
+                    <span class="text-primary mr-4">🔴 William Clark (GA)</span>
+                    <span class="text-primary">🔴 Patricia Rodriguez (AZ)</span>
+                </div>
+                <!-- Duplicate for seamless scrolling -->
+                <div class="px-4 text-sm whitespace-nowrap">
+                    <span class="font-medium mr-2">Hot Cases:</span>
+                    <span class="text-primary mr-4">🔴 Jeffrey Askren (CA)</span>
+                    <span class="text-primary mr-4">🔴 Sarah Johnson (TX)</span>
+                    <span class="text-primary mr-4">🔴 Michael Chen (NY)</span>
+                    <span class="text-primary mr-4">🔴 Lisa Martinez (FL)</span>
+                    <span class="text-primary mr-4">🔴 David Wilson (IL)</span>
+                    <span class="text-primary mr-4">🔴 Emily Davis (OH)</span>
+                    <span class="text-primary mr-4">🔴 Robert Brown (PA)</span>
+                    <span class="text-primary mr-4">🔴 Jennifer Taylor (MI)</span>
+                    <span class="text-primary mr-4">🔴 William Clark (GA)</span>
+                    <span class="text-primary">🔴 Patricia Rodriguez (AZ)</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="bg-white py-2 shadow-sm">
+        <div class="container mx-auto px-4">
+            <ol class="flex items-center text-sm">
+                <li class="flex items-center">
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">
+                        Cases (50,000)
+                    </a>
+                    <i class="fas fa-chevron-right text-gray-400 mx-2 text-xs"></i>
+                </li>
+                <li class="flex items-center">
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">
+                        California (1,200)
+                    </a>
+                    <i class="fas fa-chevron-right text-gray-400 mx-2 text-xs"></i>
+                </li>
+                <li class="flex items-center">
+                    <a href="#" class="text-gray-600 hover:text-primary transition-colors">
+                        Calaveras County (25)
+                    </a>
+                    <i class="fas fa-chevron-right text-gray-400 mx-2 text-xs"></i>
+                </li>
+                <li class="text-primary font-medium">
+                    Jeffrey Askren
+                </li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Case Status Banner -->
+        <div class="mb-6 bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <span class="inline-block w-3 h-3 rounded-full bg-primary mr-2 animate-pulse"></span>
+                <span class="font-medium">ACTIVE CASE</span>
+                <span class="ml-4 text-sm text-gray-500">Last synchronized 2 minutes ago</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">
+                    <i class="fas fa-eye mr-1"></i>
+                    12 people currently viewing
+                </span>
+                <div class="flex space-x-2">
+                    <button class="text-gray-500 hover:text-primary transition-colors" title="Share">
+                        <i class="fas fa-share"></i>
+                    </button>
+                    <button class="text-gray-500 hover:text-primary transition-colors" title="Save">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Top Section -->
+        <section id="case-top" class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Photo Gallery -->
+                <div class="md:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="main-photo aspect-[3/4] overflow-hidden">
+                            <img src="https://charleyproject.org/wp-content/uploads/2025/09/askren_jeffrey.jpg" 
+                                 alt="Jeffrey Askren" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="photo-gallery p-4">
+                            <img src="https://charleyproject.org/wp-content/uploads/2025/09/askren_jeffrey.jpg" 
+                                 alt="Jeffrey Askren" 
+                                 class="w-full h-24 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity">
+                            <img src="https://charleyproject.org/wp-content/uploads/2025/09/askren_jeffrey2.jpg" 
+                                 alt="Jeffrey Askren" 
+                                 class="w-full h-24 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity">
+                            <img src="https://charleyproject.org/wp-content/uploads/2025/09/askren_jeffrey3.jpg" 
+                                 alt="Jeffrey Askren" 
+                                 class="w-full h-24 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity">
+                            <img src="https://charleyproject.org/wp-content/uploads/2025/09/askren_jeffrey4.jpg" 
+                                 alt="Jeffrey Askren" 
+                                 class="w-full h-24 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity">
+                        </div>
+                        <div class="px-4 pb-4 text-sm text-gray-600">
+                            Askren, 1984
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Information -->
+                <div class="md:col-span-2">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h1 class="text-2xl font-bold mb-2">Jeffrey Askren</h1>
+                        <h2 class="text-sm text-gray-500 mb-6">Missing Person Case #CA-1984-0423</h2>
+
+                        <!-- AI Generated Summary -->
+                        <div class="bg-blue-50 border-l-4 border-primary p-4 mb-6">
+                            <h3 class="font-medium text-primary mb-1">Case Summary</h3>
+                            <p class="text-sm">Jeffrey Askren, 30, was last seen on April 23, 1984, in Calaveras County, California. He planned to photograph scenery in the West Point area and never showed up for his overnight reservations. His red Honda Accord was found abandoned with camera equipment inside, but no trace of him has been found. His case remains unsolved.</p>
+                        </div>
+
+                        <!-- Case Details Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-3">
+                                <div class="flex">
+                                    <span class="font-medium w-28">Missing Since:</span>
+                                    <span>04/23/1984</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Missing From:</span>
+                                    <span>Calaveras County, California</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Classification:</span>
+                                    <span>Endangered Missing</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Sex:</span>
+                                    <span>Male</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Race:</span>
+                                    <span>White</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex">
+                                    <span class="font-medium w-28">Age:</span>
+                                    <span>30 years old</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Height/Weight:</span>
+                                    <span>5'9", 150 pounds</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Vehicle:</span>
+                                    <span>Red Honda Accord (accounted for)</span>
+                                </div>
+                                <div class="flex">
+                                    <span class="font-medium w-28">Distinguishing Features:</span>
+                                    <span>Red hair, blue eyes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Timeline -->
+                        <div class="mt-8">
+                            <h3 class="text-lg font-medium mb-4">Last 24 Hours Timeline</h3>
+                            <div class="case-timeline space-y-6 pl-4">
+                                <div class="case-timeline-item relative pl-6">
+                                    <div class="font-medium">Morning, April 23, 1984</div>
+                                    <div class="text-sm text-gray-600">Left home to photograph scenery in West Point area</div>
+                                </div>
+                                <div class="case-timeline-item relative pl-6">
+                                    <div class="font-medium">Evening, April 23, 1984</div>
+                                    <div class="text-sm text-gray-600">Missed overnight reservations at Inn in Sutter Creek</div>
+                                </div>
+                                <div class="case-timeline-item relative pl-6">
+                                    <div class="font-medium">May 1, 1984</div>
+                                    <div class="text-sm text-gray-600">Reported missing after failing to show up for work</div>
+                                </div>
+                                <div class="case-timeline-item relative pl-6">
+                                    <div class="font-medium">April 25, 1984 (estimated)</div>
+                                    <div class="text-sm text-gray-600">Vehicle found abandoned on Winton Road, east of West Point</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Bottom Section -->
+        <section id="case-bottom" class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Details of Disappearance -->
+                <div class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-medium mb-4">Details of Disappearance</h3>
+                    <div class="space-y-4">
+                        <p>Askren was last seen in Calveras County, California. He planned to photograph scenery in the West Point area. He had made overnight reservations at the Inn in Sutter Creek for the night of April 23, 1984, but never showed up there. On May 1, he was reported missing after he failed to show up for work in Santa Clara, California, where he had a job as an electronics engineer. He has never been heard from again.</p>
+                        <p>His red Honda Accord was later found abandoned on Winton Road, east of West Point. Authorities stated it had been there since as early as April 25. There were no footprints in the snow on the ground nearby, but a camera lens cover was found near the vehicle, and there was a tripod inside the vehicle. There was no sign of him at the scene. No other camera equipment or additional evidence was found despite an extensive search.</p>
+                        <p>Askren's vehicle was found just six miles from Wilseyville, California, the site where the serial killers Charles Ng and Leonard Lake were committing their murders during the mid-1980s. Authorities do not know whether he might have been one of their victims, however; his body was not one of those recovered from the Wilseyville site. His case remains unsolved.</p>
+                    </div>
+                </div>
+
+                <!-- Agency and Source Information -->
+                <div class="md:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <h3 class="text-lg font-medium mb-4">Investigating Agency</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-shield-alt text-primary mr-3"></i>
+                                <div>
+                                    <div class="font-medium">Calaveras County Sheriff’s Office</div>
+                                    <div class="text-sm text-gray-600">209-754-6030</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-medium mb-4">Source Information</h3>
+                        <ul class="space-y-2">
+                            <li><a href="https://fox40.com/" target="_blank" class="text-primary hover:underline flex items-center">
+                                <i class="fas fa-link mr-2"></i>
+                                Fox 40
+                            </a></li>
+                            <li><a href="https://www.solvethecase.org/" target="_blank" class="text-primary hover:underline flex items-center">
+                                <i class="fas fa-link mr-2"></i>
+                                Solve the Case
+                            </a></li>
+                            <li><a href="https://www.mymotherlode.com/" target="_blank" class="text-primary hover:underline flex items-center">
+                                <i class="fas fa-link mr-2"></i>
+                                My Motherlode
+                            </a></li>
+                            <li><a href="https://www.sfexaminer.com/" target="_blank" class="text-primary hover:underline flex items-center">
+                                <i class="fas fa-link mr-2"></i>
+                                The San Francisco Examiner
+                            </a></li>
+                            <li><a href="https://www.sfchronicle.com/" target="_blank" class="text-primary hover:underline flex items-center">
+                                <i class="fas fa-link mr-2"></i>
+                                The San Francisco Chronicle
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update Information -->
+            <div class="mt-4 text-sm text-gray-500">
+                Updated 1 time since October 12, 2004. Last updated September 10, 2025; casefile added.
+            </div>
+        </section>
+
+        <!-- Social Interaction Section -->
+        <section class="mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-medium mb-4">Show Your Support</h3>
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <button class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 transition-colors px-4 py-2 rounded-full text-sm">
+                        <i class="fas fa-candle text-yellow-500"></i>
+                        <span>Light a Candle</span>
+                    </button>
+                    <button class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 transition-colors px-4 py-2 rounded-full text-sm">
+                        <i class="fas fa-rose text-pink-500"></i>
+                        <span>Leave a Rose</span>
+                    </button>
+                    <button class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 transition-colors px-4 py-2 rounded-full text-sm">
+                        <i class="fas fa-pray text-blue-500"></i>
+                        <span>Send Prayers</span>
+                    </button>
+                </div>
+
+                <!-- Share Statistics -->
+                <div class="border-t pt-4 mt-4">
+                    <h4 class="font-medium mb-2">Share This Case</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary">1,245</div>
+                            <div class="text-sm text-gray-600">Total Shares</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-500">892</div>
+                            <div class="text-sm text-gray-600">Facebook</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-red-500">353</div>
+                            <div class="text-sm text-gray-600">Twitter</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Cases -->
+        <section>
+            <h3 class="text-lg font-medium mb-4">Similar Cases</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Related Case 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" 
+                             alt="Related Case" 
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <span class="inline-block w-2 h-2 rounded-full bg-primary mr-2"></span>
+                            <span class="text-sm font-medium">ACTIVE</span>
+                        </div>
+                        <h4 class="font-medium mb-1">John Doe</h4>
+                        <div class="text-sm text-gray-600 mb-2">California • Missing since 2023</div>
+                        <button class="text-primary hover:underline text-sm">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Related Case 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" 
+                             alt="Related Case" 
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <span class="inline-block w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
+                            <span class="text-sm font-medium">COLD CASE</span>
+                        </div>
+                        <h4 class="font-medium mb-1">Jane Smith</h4>
+                        <div class="text-sm text-gray-600 mb-2">California • Missing since 1998</div>
+                        <button class="text-primary hover:underline text-sm">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Related Case 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://via.placeholder.com/400x300" 
+                             alt="Related Case" 
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <span class="inline-block w-2 h-2 rounded-full bg-primary mr-2"></span>
+                            <span class="text-sm font-medium">ACTIVE</span>
+                        </div>
+                        <h4 class="font-medium mb-1">Robert Johnson</h4>
+                        <div class="text-sm text-gray-600 mb-2">California • Missing since 2024</div>
+                        <button class="text-primary hover:underline text-sm">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Authority Partners -->
+    <section class="bg-white border-t py-6">
+        <div class="container mx-auto px-4">
+            <h3 class="text-center font-medium mb-4">Trusted Partners</h3>
+            <div class="flex flex-wrap justify-center items-center gap-8">
+                <div class="text-gray-500 hover:text-primary transition-colors">FBI</div>
+                <div class="text-gray-500 hover:text-primary transition-colors">NamUs</div>
+                <div class="text-gray-500 hover:text-primary transition-colors">National Center for Missing & Exploited Children</div>
+                <div class="text-gray-500 hover:text-primary transition-colors">California Department of Justice</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-neutral text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-search text-primary text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">Missing Persons Database</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">Helping families find their loved ones through advanced technology and community support.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">How to Report</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">Subscribe for Updates</h4>
+                    <p class="text-sm text-gray-400 mb-4">Get the latest information on missing persons cases.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" 
+                               class="px-4 py-2 rounded-l-full bg-gray-800 border-0 focus:outline-none focus:ring-2 focus:ring-primary text-white">
+                        <button class="bg-primary text-white px-4 py-2 rounded-r-full hover:bg-primary/90 transition-colors">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-500">
+                <p>© 2025 Missing Persons Database. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-6 right-6 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary/90">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Mobile Emergency Bar -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-white py-3 px-4 flex items-center justify-between shadow-lg">
+        <div>
+            <div class="font-medium">Have Information?</div>
+            <div class="text-xs">Call the investigating agency</div>
+        </div>
+        <button class="bg-white text-primary px-4 py-2 rounded-full text-sm font-medium">
+            <i class="fas fa-phone mr-1"></i>
+            209-754-6030
+        </button>
+    </div>
+
+    <script>
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Photo Gallery functionality
+        const mainPhoto = document.querySelector('.main-photo img');
+        const galleryPhotos = document.querySelectorAll('.photo-gallery img');
+        
+        galleryPhotos.forEach(photo => {
+            photo.addEventListener('click', () => {
+                mainPhoto.src = photo.src;
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

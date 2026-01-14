@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timothy Aamoth - Portland, Oregon 失踪者信息 | 美国失踪人口数据库</title>
+    <meta name="description" content="Timothy Aamoth于1973年1月1日在俄勒冈州波特兰市失踪，24岁白人男性。了解详细信息并提供线索。">
+    <meta name="keywords" content="Timothy Aamoth, Portland, Oregon, 失踪者, 美国失踪人口">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- JSON-LD (Person) 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Timothy Aamoth",
+        "gender": "Male",
+        "nationality": "American",
+        "birthDate": "1949",
+        "description": "Timothy Aamoth于1973年1月1日在俄勒冈州波特兰市失踪，24岁白人男性。",
+        "location": {
+            "@type": "Place",
+            "name": "Portland, Oregon"
+        }
+    }
+    </script>
+    
+    <!-- JSON-LD BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "案件列表 (50,000)",
+                "item": "https://example.com/cases"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "俄勒冈州 (150)",
+                "item": "https://example.com/cases/oregon"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Multnomah县 (25)",
+                "item": "https://example.com/cases/oregon/multnomah"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Portland市 (3)",
+                "item": "https://example.com/cases/oregon/multnomah/portland"
+            },
+            {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "Timothy Aamoth",
+                "item": "https://example.com/cases/oregon/multnomah/portland/timothy-aamoth"
+            }
+        ]
+    }
+    </script>
+    
+    <style>
+        /* 自定义样式 */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .fixed-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+        }
+        .photo-grid img {
+            transition: transform 0.3s ease;
+        }
+        .photo-grid img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- 吸顶导航 -->
+    <header class="sticky-nav bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <button class="text-gray-600 hover:text-gray-900">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <h1 class="text-lg font-bold text-blue-600">美国失踪人口数据库</h1>
+            </div>
+            
+            <!-- 搜索框 -->
+            <div class="flex-1 max-w-md mx-4">
+                <div class="relative">
+                    <input type="text" placeholder="搜索失踪者姓名或地点..." class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <button class="text-gray-600 hover:text-gray-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- 滚动显示的高点击量案件标签 -->
+        <div class="overflow-x-auto whitespace-nowrap bg-gray-50 border-t border-gray-100 px-4 py-2">
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full mr-2">高曝光案件</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">冷案重启</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">儿童失踪</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">青少年失踪</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">近期失踪</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">俄勒冈州</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">加利福尼亚州</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">德克萨斯州</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full mr-2">佛罗里达州</a>
+            <a href="#" class="inline-block px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-full">纽约州</a>
+        </div>
+    </header>
+    
+    <!-- 面包屑导航 -->
+    <nav class="bg-white border-b border-gray-100 px-4 py-2">
+        <ol class="flex items-center text-sm text-gray-600">
+            <li><a href="#" class="hover:text-blue-600">案件列表 (50,000)</a></li>
+            <li class="mx-2">/</li>
+            <li><a href="#" class="hover:text-blue-600">俄勒冈州 (150)</a></li>
+            <li class="mx-2">/</li>
+            <li><a href="#" class="hover:text-blue-600">Multnomah县 (25)</a></li>
+            <li class="mx-2">/</li>
+            <li><a href="#" class="hover:text-blue-600">Portland市 (3)</a></li>
+            <li class="mx-2">/</li>
+            <li class="text-gray-900 font-medium">Timothy Aamoth</li>
+        </ol>
+    </nav>
+    
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-6 pb-24">
+        <!-- 案件顶部信息 -->
+        <section id="case-top" class="mb-8">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- 照片墙 -->
+                <div class="w-full md:w-1/2">
+                    <div id="photos" class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="photo-grid">
+                            <img src="http://charleyproject.org/wp-content/uploads/2020/03/aamoth_timothy.jpg" alt="Timothy Aamoth - Portland, Oregon 失踪者" fetchpriority="high" class="w-full h-auto object-cover">
+                        </div>
+                        <p class="p-4 text-sm text-gray-600">Aamoth, circa 1964 (age 16, approximately nine years prior to his disappearance; more recent photos are unavailable)</p>
+                    </div>
+                    
+                    <!-- 状态灯 -->
+                    <div class="mt-4 flex items-center">
+                        <span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                        <span class="text-sm font-medium">冷案 (Cold Case)</span>
+                    </div>
+                </div>
+                
+                <!-- 基本信息 -->
+                <div class="w-full md:w-1/2">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-900">Timothy Aamoth</h2>
+                        
+                        <!-- AI 摘要 -->
+                        <div class="mb-6 p-4 bg-blue-50 rounded-lg">
+                            <p class="text-sm text-gray-700">Timothy Aamoth于1973年1月1日在俄勒冈州波特兰市失踪，当时24岁。他是一名白人男性，金发碧眼，脚部有特殊特征。调查人员认为他可能已经去世，但案件信息有限。</p>
+                        </div>
+                        
+                        <ul class="space-y-3">
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">失踪日期</strong>
+                                <span class="text-gray-900">01/01/1973</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">失踪地点</strong>
+                                <span class="text-gray-900">Portland, Oregon</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">分类</strong>
+                                <span class="text-gray-900">失踪</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">性别</strong>
+                                <span class="text-gray-900">Male</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">种族</strong>
+                                <span class="text-gray-900">White</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">年龄</strong>
+                                <span class="text-gray-900">24 years old</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">身高体重</strong>
+                                <span class="text-gray-900">5'6 - 5'10, 150 - 170 pounds</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">特征</strong>
+                                <span class="text-gray-900 text-sm">白人男性，金发碧眼。脚部肌腱缩短，脚趾向上弯曲。</span>
+                            </li>
+                        </ul>
+                        
+                        <!-- 动态更新 -->
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <p class="text-xs text-gray-500">最后同步于 5 分钟前</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 案件底部信息 -->
+        <section id="case-bottom" class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 失踪详情 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-900">Details of Disappearance</h3>
+                    <p class="text-gray-700">Aamoth was last known to have been in the Portland, Oregon area sometime around 1973. He may have worked at a garment factory in the past. He has not been heard from since 1973 and has no driver's license on file. Investigators believe he's probably deceased, but little information is available in his case.</p>
+                    
+                    <!-- 时间线 -->
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold mb-3 text-gray-800">失踪前时间线</h4>
+                        <div class="space-y-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-xs font-bold text-blue-800">1973</span>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">失踪时间</p>
+                                    <p class="text-xs text-gray-600">1973年1月1日左右在Portland, Oregon地区失踪</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-xs font-bold text-gray-800">1964</span>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">最后已知照片</p>
+                                    <p class="text-xs text-gray-600">失踪前9年拍摄，当时16岁</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 调查机构和来源 -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">Investigating Agency</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="text-gray-500 mr-2">•</span>
+                                <span class="text-gray-700">Multnomah County Sheriff's Office<br>
+                                <a href="tel:503-988-4300" class="text-blue-600 hover:underline">503-988-4300</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-900">Source Information</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="text-gray-500 mr-2">•</span>
+                                <a href="http://www.namus.gov/" target="_blank" class="text-blue-600 hover:underline">NamUs</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 权威标识 -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-3 text-gray-800">官方合作伙伴</h3>
+                        <div class="flex flex-wrap gap-4">
+                            <div class="w-20 h-10 bg-gray-100 rounded flex items-center justify-center">
+                                <span class="text-xs font-medium text-gray-700">FBI</span>
+                            </div>
+                            <div class="w-20 h-10 bg-gray-100 rounded flex items-center justify-center">
+                                <span class="text-xs font-medium text-gray-700">NamUs</span>
+                            </div>
+                            <div class="w-20 h-10 bg-gray-100 rounded flex items-center justify-center">
+                                <span class="text-xs font-medium text-gray-700">NCIC</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 更新信息 -->
+            <p class="mt-6 text-sm text-gray-500">Updated 1 time since October 12, 2004. Last updated March 16, 2020; casefile added.</p>
+        </section>
+        
+        <!-- 智能关联案件 -->
+        <section class="mb-8">
+            <h3 class="text-xl font-bold mb-4 text-gray-900">相关案件</h3>
+            
+            <!-- 同城案件 -->
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold mb-3 text-gray-800">Portland市其他案件</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-32 bg-gray-200"></div>
+                        <div class="p-4">
+                            <h5 class="font-medium text-gray-900">Jane Doe</h5>
+                            <p class="text-xs text-gray-600">1975年失踪，22岁女性</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-32 bg-gray-200"></div>
+                        <div class="p-4">
+                            <h5 class="font-medium text-gray-900">John Smith</h5>
+                            <p class="text-xs text-gray-600">1972年失踪，30岁男性</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-32 bg-gray-200"></div>
+                        <div class="p-4">
+                            <h5 class="font-medium text-gray-900">Mary Johnson</h5>
+                            <p class="text-xs text-gray-600">1974年失踪，18岁女性</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 同载案件 -->
+            <div>
+                <h4 class="text-lg font-semibold mb-3 text-gray-800">1973年失踪案件</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-32 bg-gray-200"></div>
+                        <div class="p-4">
+                            <h5 class="font-medium text-gray-900">Robert Brown</h5>
+                            <p class="text-xs text-gray-600">California州，28岁男性</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-32 bg-gray-200"></div>
+                        <div class="p-4">
+                            <h5 class="font-medium text-gray-900">Susan Davis</h5>
+                            <p class="text-xs text-gray-600">Washington州，21岁女性</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="h-32 bg-gray-200"></div>
+                        <div class="p-4">
+                            <h5 class="font-medium text-gray-900">Michael Wilson</h5>
+                            <p class="text-xs text-gray-600">Nevada州，35岁男性</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 互动与传播 -->
+        <section>
+            <h3 class="text-xl font-bold mb-4 text-gray-900">互动与传播</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 祈福栏 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800">为Timothy祈福</h4>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <span class="text-3xl mr-3">🕯️</span>
+                            <div>
+                                <p class="font-medium text-gray-900">已有 1,234 人祈福</p>
+                                <p class="text-xs text-gray-600">当前有 56 人正在关注</p>
+                            </div>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                            点亮蜡烛
+                        </button>
+                    </div>
+                    
+                    <!-- 热度墙 -->
+                    <div class="mt-4">
+                        <h5 class="text-sm font-medium text-gray-800 mb-2">关注热度分布</h5>
+                        <div class="h-24 bg-gray-100 rounded">
+                            <!-- 简化的热度图 -->
+                            <div class="flex items-end justify-between h-full px-4 py-2">
+                                <div class="w-8 bg-blue-400 rounded-t" style="height: 60%"></div>
+                                <div class="w-8 bg-blue-500 rounded-t" style="height: 80%"></div>
+                                <div class="w-8 bg-blue-600 rounded-t" style="height: 100%"></div>
+                                <div class="w-8 bg-blue-400 rounded-t" style="height: 50%"></div>
+                                <div class="w-8 bg-blue-300 rounded-t" style="height: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 转发工具 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800">分享案件信息</h4>
+                    <div class="space-y-3">
+                        <button class="w-full flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                            </svg>
+                            分享到Facebook
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                            </svg>
+                            分享到Twitter
+                        </button>
+                        <button class="w-full flex items-center justify-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+                            </svg>
+                            分享到Instagram
+                        </button>
+                    </div>
+                    
+                    <!-- AI海报 -->
+                    <div class="mt-4">
+                        <button class="w-full flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"></path>
+                            </svg>
+                            生成AI宣传海报
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 吸底紧急Bar -->
+    <div class="fixed-bottom-bar bg-red-600 text-white py-4 px-6 flex items-center justify-between">
+        <div>
+            <p class="font-medium">有线索？立即联系</p>
+            <p class="text-sm">Multnomah County Sheriff's Office</p>
+        </div>
+        <button class="bg-white text-red-600 px-6 py-2 rounded-full font-bold hover:bg-gray-100 transition-colors">
+            <a href="tel:503-988-4300">拨打 503-988-4300</a>
+        </button>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-8 px-4 mt-12">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">美国失踪人口数据库</h3>
+                    <p class="text-sm text-gray-400">帮助寻找失踪者，让家庭重聚</p>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">快速链接</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white">案件搜索</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">按州浏览</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">冷案重启</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">找回案例</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">关于我们</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white">组织介绍</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">合作伙伴</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">联系我们</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">捐赠支持</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-4">关注我们</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
+                <p>© 2024 美国失踪人口数据库. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

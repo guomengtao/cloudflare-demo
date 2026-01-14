@@ -1,0 +1,16 @@
+[
+  {
+    "case_id": "case-12345",
+    "images_json": "[\"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/800px-Cat03.jpg\", \"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cat_poster_1.jpg/800px-Cat_poster_1.jpg\"]",
+    "missing_state": "California",
+    "missing_county": "Los Angeles",
+    "missing_city": "Los Angeles"
+  },
+  {
+    "case_id": "case-67890",
+    "images_json": "[\"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_lying_down_3.jpg/800px-Cat_lying_down_3.jpg\"]",
+    "missing_state": "New York",
+    "missing_county": "New York",
+    "missing_city": "New York"
+  }
+]

@@ -37,7 +37,7 @@ function runSimpleQuery() {
   
   try {
     // 使用 wrangler 命令执行 SQL 查询
-    const query = "SELECT id, case_url, case_title, created_at FROM missing_persons_cases LIMIT 5";
+    const query = "SELECT id, case_url, case_title, created_at FROM missing_persons_cases order by id  desc LIMIT 5";
     const command = `npx wrangler d1 execute cloudflare-demo-db --remote --json --command="${query}"`;
     
     console.log('💻 执行命令:', command.substring(0, 100) + '...');

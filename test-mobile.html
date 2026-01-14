@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失踪人口案件 - Jamal Abdul'Faruq</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 自定义样式 */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .photo-gallery {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+        }
+        .photo-gallery li {
+            flex-shrink: 0;
+            scroll-snap-align: start;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- 顶部全局导航 -->
+    <header class="sticky-header bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <button class="mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <h1 class="text-xl font-bold text-red-600">美国失踪人口数据库</h1>
+            </div>
+            <div class="relative">
+                <input type="text" placeholder="搜索案件、姓名、地点..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- 面包屑导航 -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-2">
+            <ol class="flex text-sm">
+                <li><a href="#" class="text-blue-600 hover:underline">案件列表 (50,000)</a></li>
+                <li class="mx-2">></li>
+                <li><a href="#" class="text-blue-600 hover:underline">弗吉尼亚州 (320)</a></li>
+                <li class="mx-2">></li>
+                <li><a href="#" class="text-blue-600 hover:underline">里士满市 (45)</a></li>
+                <li class="mx-2">></li>
+                <li class="text-gray-600">Jamal Abdul'Faruq</li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- 核心案件区 -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- 照片墙 -->
+        <section id="case-top" class="mb-8">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div id="photos" class="relative">
+                    <ul class="photo-gallery">
+                        <li class="w-full md:w-1/2 lg:w-1/4">
+                            <img src="https://charleyproject.org/wp-content/uploads/2017/10/abdulfaruq_jamal.jpg" alt="Jamal Abdul'Faruq" class="w-full h-64 object-cover">
+                        </li>
+                        <li class="w-full md:w-1/2 lg:w-1/4">
+                            <img src="http://charleyproject.org/wp-content/uploads/2017/10/jamal_abdulfaruq_2.jpg" alt="Jamal Abdul'Faruq" class="w-full h-64 object-cover">
+                        </li>
+                        <li class="w-full md:w-1/2 lg:w-1/4">
+                            <img src="https://charleyproject.org/wp-content/uploads/2017/10/abdulfaruq_jamal_ap.jpg" alt="Jamal Abdul'Faruq" class="w-full h-64 object-cover">
+                        </li>
+                        <li class="w-full md:w-1/2 lg:w-1/4">
+                            <img src="http://charleyproject.org/wp-content/uploads/2017/10/jamal_abdulfaruq_7.jpg" alt="Jamal Abdul'Faruq" class="w-full h-64 object-cover">
+                        </li>
+                    </ul>
+                    <p class="text-center py-2 text-sm text-gray-600">Jamal，约1990年；年龄推测至38岁（约2020年）；Basil Abdul'Faruq</p>
+                </div>
+
+                <!-- 案件状态标签 -->
+                <div class="px-4 py-3 bg-red-50 border-t border-red-100">
+                    <span class="inline-block px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">🔴 冷案</span>
+                    <span class="ml-2 text-sm text-gray-700">失踪超过1年</span>
+                </div>
+
+                <!-- 案件基本信息 -->
+                <div class="p-4">
+                    <h2 class="text-2xl font-bold mb-4">Jamal Abdul'Faruq</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <ul class="space-y-2">
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">失踪日期：</strong>
+                                <span>1990年4月16日</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">失踪地点：</strong>
+                                <span>里士满，弗吉尼亚州</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">案件分类：</strong>
+                                <span>非家庭诱拐</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">性别：</strong>
+                                <span>男</span>
+                            </li>
+                        </ul>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">种族：</strong>
+                                <span>黑人</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">出生日期：</strong>
+                                <span>1982年8月12日（43岁）</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">失踪时年龄：</strong>
+                                <span>7岁</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <strong class="text-gray-700">身高体重：</strong>
+                                <span>135厘米，21公斤</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="font-bold text-gray-700 mb-2">穿着/珠宝描述：</h3>
+                        <p>黑色蝙蝠侠T恤、蓝色牛仔裤、灰色和红色 fleece 棒球夹克、白色运动鞋。</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="font-bold text-gray-700 mb-2">显著特征：</h3>
+                        <p>黑人男性，黑色头发，棕色眼睛。Jamal 右眉有疤痕，左耳边太阳穴有痣。失踪时上门牙之间有小缝隙。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 案件详情 -->
+        <section id="case-bottom" class="mb-8">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold mb-3">失踪详情</h3>
+                    <div class="prose max-w-none">
+                        <p>1990年4月16日，Jamal的继母将他和8岁的哥哥Basil送到位于Clarkson Road 1700街区的母亲公寓。下午2:30，兄弟俩到前院玩耍，而他们的母亲Tambra Ellis在屋内睡觉，她前一天上了夜班。</p>
+                        <p>Ellis午睡醒来后寻找儿子，但找不到他们。搜索了45分钟后，她联系了警方。兄弟俩再也没有回到公寓。Basil的照片随此案件摘要一起发布。</p>
+                        <p>三天后，当局在距离他们家十英里的切斯特菲尔德县垃圾填埋场发现了Basil的全裸尸体。Basil被捆绑、塞住嘴巴，背部被刺了两刀，死后头骨被打破。凶手将他的遗体放在塑料垃圾袋中，放入垃圾桶，然后他的尸体被送往垃圾填埋场。现场没有Jamal的踪迹，也没有人再听到过他的消息。</p>
+                        <p>在发现Basil的尸体后，调查人员拘留了男孩们的父亲Everett Abdul'Faruq三个小时。法庭文件显示，当局最初认为孩子是在他父亲的住所内受伤或死亡的。对该房产的搜查未能找到支持这一理论的任何证据。</p>
+                        <p>Everett从未与他儿子的案件有牵连，尽管他拒绝接受测谎仪测试，称这违反了他的穆斯林宗教信仰。最终，Jamal的父母都被排除在他失踪和Basil谋杀案的嫌疑人之外。</p>
+                        <p>1990年，Jamal最喜欢的食物是披萨，他喜欢打篮球、看篮球比赛和看《忍者神龟》视频。失踪时，他在E.S.H. Green小学读二年级。当局认为他可能还活着。他的案件仍未解决。</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-t border-gray-200">
+                    <div id="agencies">
+                        <h3 class="text-xl font-bold mb-3">调查机构</h3>
+                        <ul class="space-y-2">
+                            <li>里士满警察局<br>804-780-6748</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-3">信息来源</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li><a href="http://www.missingkids.com/" target="_blank" class="text-blue-600 hover:underline">国家失踪和受剥削儿童中心</a></li>
+                            <li><a href="http://www.vca.org/" target="_blank" class="text-blue-600 hover:underline">失踪儿童联盟</a></li>
+                            <li><a href="http://www.operationlookout.org/" target="_blank" class="text-blue-600 hover:underline">瞭望行动</a></li>
+                            <li><a href="http://www.timesdispatch.com/" target="_blank" class="text-blue-600 hover:underline">里士满时报</a></li>
+                            <li><a href="http://www.missingandmurdered.org/" target="_blank" class="text-blue-600 hover:underline">失踪与谋杀</a></li>
+                            <li><a href="http://www.amw.com/" target="_blank" class="text-blue-600 hover:underline">美国头号通缉犯</a></li>
+                            <li><a href="http://www.cnn.com/" target="_blank" class="text-blue-600 hover:underline">CNN</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                    <p class="text-sm text-gray-600">自2004年10月12日以来更新了9次。最后更新于2023年2月15日；更新了失踪详情。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部导航 -->
+    <footer class="bg-white border-t border-gray-200 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm text-gray-600">© 2024 美国失踪人口数据库</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-sm text-blue-600 hover:underline">关于我们</a>
+                    <a href="#" class="text-sm text-blue-600 hover:underline">联系我们</a>
+                    <a href="#" class="text-sm text-blue-600 hover:underline">隐私政策</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 移动端紧急拨号栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-red-600 text-white py-3 px-4 shadow-lg md:hidden">
+        <div class="container mx-auto flex items-center justify-between">
+            <div>
+                <p class="text-sm">如有线索，请立即联系</p>
+                <p class="font-bold text-lg">804-780-6748</p>
+            </div>
+            <button class="bg-white text-red-600 px-4 py-2 rounded-full font-bold">
+                <svg class="w-5 h-5 inline mr-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.27-.27.35-.65.24-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"></path>
+                </svg>
+                立即拨打
+            </button>
+        </div>
+    </div>
+</body>
+</html>

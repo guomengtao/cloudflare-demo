@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imgur 图片集成示例 - 美国失踪人口数据库</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .imgur-image {
+            transition: transform 0.3s ease;
+        }
+        .imgur-image:hover {
+            transform: scale(1.02);
+        }
+        .loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Imgur 图片存储集成方案</h1>
+        
+        <!-- 方案介绍 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">📊 Imgur 方案优势</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-blue-50 p-4 rounded">
+                    <h3 class="font-semibold text-blue-800">无限存储</h3>
+                    <p class="text-sm text-blue-600">5万张图片完全免费存储</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded">
+                    <h3 class="font-semibold text-green-800">全球CDN</h3>
+                    <p class="text-sm text-green-600">自动全球分发，美国访问快</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded">
+                    <h3 class="font-semibold text-purple-800">API友好</h3>
+                    <p class="text-sm text-purple-600">完善的批量管理接口</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图片展示示例 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">🖼️ 图片加载演示</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 示例图片1 -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden">
+                    <img 
+                        src="https://i.imgur.com/example1.jpg" 
+                        alt="失踪人口照片示例1"
+                        loading="lazy"
+                        class="w-full h-48 object-cover imgur-image"
+                        onerror="this.src='https://via.placeholder.com/300x200?text=图片加载中'">
+                    <div class="p-3">
+                        <p class="text-sm font-medium">Romaldo Astran</p>
+                        <p class="text-xs text-gray-600">达拉斯, 德克萨斯州</p>
+                    </div>
+                </div>
+
+                <!-- 示例图片2 -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden">
+                    <img 
+                        src="https://i.imgur.com/example2.jpg" 
+                        alt="失踪人口照片示例2"
+                        loading="lazy"
+                        class="w-full h-48 object-cover imgur-image"
+                        onerror="this.src='https://via.placeholder.com/300x200?text=图片加载中'">
+                    <div class="p-3">
+                        <p class="text-sm font-medium">Jane Doe</p>
+                        <p class="text-xs text-gray-600">洛杉矶, 加利福尼亚州</p>
+                    </div>
+                </div>
+
+                <!-- 加载状态示例 -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden">
+                    <div class="w-full h-48 loading"></div>
+                    <div class="p-3">
+                        <p class="text-sm font-medium">图片加载中...</p>
+                        <p class="text-xs text-gray-600">优化加载体验</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技术实现方案 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold mb-4">🔧 技术实现方案</h2>
+            
+            <div class="space-y-4">
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h3 class="font-semibold">1. 注册 Imgur 开发者账号</h3>
+                    <p class="text-sm text-gray-600">访问 https://api.imgur.com/ 注册应用获取 Client ID</p>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                    <h3 class="font-semibold">2. 批量上传脚本</h3>
+                    <p class="text-sm text-gray-600">使用提供的 Node.js 脚本自动上传5万张图片</p>
+                    <code class="text-xs bg-gray-100 p-1 rounded">node imgur-image-manager.js</code>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-4">
+                    <h3 class="font-semibold">3. 域名绑定方案</h3>
+                    <p class="text-sm text-gray-600">通过 Cloudflare Workers 实现自定义域名访问</p>
+                    <code class="text-xs bg-gray-100 p-1 rounded">images.yourdomain.com → i.imgur.com</code>
+                </div>
+
+                <div class="border-l-4 border-orange-500 pl-4">
+                    <h3 class="font-semibold">4. 图片优化策略</h3>
+                    <p class="text-sm text-gray-600">自动转换WebP格式，实现懒加载和响应式图片</p>
+                </div>
+            </div>
+
+            <!-- 性能数据 -->
+            <div class="mt-6 bg-gray-50 p-4 rounded">
+                <h4 class="font-semibold mb-2">📈 预计性能表现</h4>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <span class="font-medium">存储成本:</span>
+                        <span class="text-green-600 ml-2">$0/月</span>
+                    </div>
+                    <div>
+                        <span class="font-medium">美国加载速度:</span>
+                        <span class="text-green-600 ml-2">＜200ms</span>
+                    </div>
+                    <div>
+                        <span class="font-medium">带宽限制:</span>
+                        <span class="text-yellow-600 ml-2">每月1.25TB</span>
+                    </div>
+                    <div>
+                        <span class="font-medium">API调用:</span>
+                        <span class="text-green-600 ml-2">1250次/天</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速开始指南 -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-blue-800 mb-3">🚀 快速开始</h3>
+            <ol class="list-decimal list-inside space-y-2 text-sm text-blue-700">
+                <li>注册 Imgur 开发者账号并创建应用</li>
+                <li>修改 imgur-image-manager.js 中的 Client ID</li>
+                <li>运行批量上传脚本处理图片文件夹</li>
+                <li>配置 Cloudflare Workers 实现域名绑定（可选）</li>
+                <li>在HTML中使用优化后的图片URL</li>
+            </ol>
+            <div class="mt-4">
+                <a href="https://api.imgur.com/" target="_blank" class="inline-block bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700">
+                    立即注册 Imgur 开发者
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 图片懒加载和错误处理
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            
+            images.forEach(img => {
+                // 添加加载状态
+                img.addEventListener('load', function() {
+                    this.classList.remove('loading');
+                });
+                
+                img.addEventListener('error', function() {
+                    this.src = 'https://via.placeholder.com/300x200?text=图片加载失败';
+                });
+            });
+
+            // 模拟图片映射数据
+            const imageMapping = {
+                'romaldo-astran': {
+                    original: 'https://i.imgur.com/abc123.jpg',
+                    optimized: 'https://i.imgur.com/abc123l.jpg', // 大尺寸
+                    thumbnail: 'https://i.imgur.com/abc123s.jpg'   // 小尺寸
+                }
+            };
+            
+            console.log('Imgur 图片映射示例:', imageMapping);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<div id="case-list" class="grid grid-cols-1 gap-4">
+    <div class="case-card">案件 1...</div>
+    <div class="case-card">案件 2...</div>
+</div>
+
+<button 
+    hx-get="/cases/page/2.html" 
+    hx-target="#case-list" 
+    hx-swap="beforeend"
+    class="bg-blue-600 text-white p-3 rounded-lg"
+>
+    加载更多案件
+</button>
