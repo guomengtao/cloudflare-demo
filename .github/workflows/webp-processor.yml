@@ -1,10 +1,10 @@
 name: WebP Processor Task (D1 Database Mode)
 
 on:
-  schedule:
+  # schedule:
     # 采用步进语法：每 15 分钟运行一次
     # 对应北京时间（UTC+8）：00, 15, 30, 45 分
-    - cron: '*/15 * * * *'
+    # - cron: '* * * * *'
   workflow_dispatch: # 允许手动点击运行
 
 # 确保同一时间只有一个任务在跑，防止数据库死锁或 ID 冲突
