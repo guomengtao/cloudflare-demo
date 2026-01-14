@@ -13,7 +13,6 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     
-    # 彻底修复 Line 20 报错：改用广义写权限
     permissions: write-all
 
     steps:
@@ -33,17 +32,22 @@ jobs:
 
       - name: Run WebP Script
         env:
+          # GitHub 令牌
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Cloudflare 授权
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
-          B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
+          # B2 存储授权 (使用 AWS 标准变量名)
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           B2_BUCKET_NAME: "gudq-missing-assets"
           B2_ENDPOINT: "s3.us-east-005.backblazeb2.com"
           B2_REGION: "us-east-005"
+          # 【核心修复】直接从 GitHub Variables 读取 511 并注入
+          TASK_ID_ENV: ${{ vars.TASK_WEBP }}
         run: |
           mkdir -p temp
-          # 运行任务
+          # 执行任务
           node task/task-run.js orm-run-webp.js 10
 
       - name: Cleanup temp

@@ -1,0 +1,42 @@
+name: Test-Variable-Read-Only
+
+on:
+  workflow_dispatch: # 允许你在 Actions 页面手动点击运行
+
+jobs:
+  test-read:
+    runs-on: ubuntu-latest
+    
+    # 显式声明最高权限
+    permissions: write-all
+
+    steps:
+      - name: 1. 直接读取测试 (GitHub Context方式)
+        # 这是最稳的方式，不经过命令行，直接由 GitHub 引擎注入
+        run: |
+          echo "变量 TASK_WEBP 的值是: ${{ vars.TASK_WEBP }}"
+          if [ -z "${{ vars.TASK_WEBP }}" ]; then
+            echo "❌ 错误: 无法通过 vars 上下文读取变量"
+          else
+            echo "✅ 成功: 已通过上下文读取到值"
+          fi
+
+      - name: 2. 命令行读取测试 (gh CLI方式)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "尝试通过 gh 命令行工具读取..."
+          # 增加 --repo 声明，确保指向明确
+          gh variable get TASK_WEBP --repo ${{ github.repository }}
+          
+          if [ $? -eq 0 ]; then
+            echo "✅ 成功: gh 命令行可以正常读取"
+          else
+            echo "❌ 错误: gh 命令行读取失败 (即你看到的403)"
+          fi
+
+      - name: 3. 环境变量注入测试
+        env:
+          MY_VAR: ${{ vars.TASK_WEBP }}
+        run: |
+          echo "通过环境变量 MY_VAR 读取到的值: $MY_VAR"
