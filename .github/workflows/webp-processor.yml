@@ -1,11 +1,13 @@
-name: WebP Processor Task
+name: WebP Processor Task (D1 Database Mode)
 
 on:
   schedule:
-    # 每 20 分钟运行一次
-    - cron: '*/20 * * * *'
+    # 采用步进语法：每 15 分钟运行一次
+    # 对应北京时间（UTC+8）：00, 15, 30, 45 分
+    - cron: '*/15 * * * *'
   workflow_dispatch: # 允许手动点击运行
 
+# 确保同一时间只有一个任务在跑，防止数据库死锁或 ID 冲突
 concurrency:
   group: webp-sequential
   cancel-in-progress: false
@@ -13,9 +15,6 @@ concurrency:
 jobs:
   build-and-run:
     runs-on: ubuntu-latest
-    
-    # 虽然不再依赖 CLI 读取，但保留 write-all 以便尝试自动更新进度
-    permissions: write-all
 
     steps:
       - name: Checkout Code
@@ -28,24 +27,19 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          # 安装处理图片和上传所需的所有依赖
+          # 仅安装必要依赖
           npm install consola aws-sdk dotenv yargs sharp
+          # 如果你的脚本里有使用 wrangler 操作数据库，请确保安装它
           npm install -g wrangler
           sudo apt-get update && sudo apt-get install -y webp
 
       - name: Run WebP Script
         env:
-          # 1. 核心起始 ID 注入 (解决你之前的 403 问题)
-          TASK_ID_ENV: ${{ vars.TASK_WEBP }}
-          
-          # 2. GitHub 权限 (用于脚本后续尝试更新变量)
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-          # 3. Cloudflare 数据库配置
+          # Cloudflare 凭证
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           
-          # 4. B2 存储配置 (使用 AWS 兼容命名，SDK 自动识别)
+          # B2 存储凭证 (使用 AWS 兼容命名以便 SDK 识别)
           AWS_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           B2_BUCKET_NAME: "gudq-missing-assets"
@@ -55,12 +49,10 @@ jobs:
           # 创建临时目录
           mkdir -p temp
           
-          # 打印一下，确保脚本运行前已经拿到了 511
-          echo "Current Task ID from environment: $TASK_WEBP"
-          
-          # 执行任务处理器
-          node task/task-run.js orm-run-webp.js 1
+          # 执行主脚本，每次处理 15 个 ID (防拉黑稳健频率)
+          # 注意：现在脚本内部必须改为从 D1 数据库读取/写入 ID
+          node task/task-run.js orm-run-webp.js 2
 
-      - name: Cleanup temp
+      - name: Cleanup
         if: always()
         run: rm -rf temp/*.jpg temp/*.webp

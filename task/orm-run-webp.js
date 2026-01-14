@@ -229,9 +229,9 @@ async function main(startId = null) {
     console.log(`使用用户指定的起始ID: ${targetId}`);
     caseData = getCaseById(targetId);
   } else {
-    // 读取和更新状态文件中的ID
+    // 从D1数据库读取和更新ID
     targetId = readAndUpdateStatus();
-    console.log(`从GitHub变量获取的起始ID: ${targetId}`);
+    console.log(`从D1数据库获取的起始ID: ${targetId}`);
     caseData = getCaseById(targetId);
   }
   
@@ -249,7 +249,7 @@ async function main(startId = null) {
     caseData = getCaseById(nextId);
     
     if (caseData?.case_html) {
-      // 如果找到有case_html的案件，更新GitHub变量到这个ID
+      // 如果找到有case_html的案件，更新D1数据库到这个ID
       readAndUpdateStatus(nextId);
       targetId = nextId;
       console.log(`找到有case_html的案件，ID: ${targetId}`);
@@ -257,11 +257,11 @@ async function main(startId = null) {
     }
   }
   
-  // 无论是否找到有case_html的案件，都更新GitHub变量到最后尝试的ID
+  // 无论是否找到有case_html的案件，都更新D1数据库到最后尝试的ID
   const lastAttemptedId = caseData?.case_html ? targetId : targetId + attempts;
   if (!startId) {
     readAndUpdateStatus(lastAttemptedId);
-    console.log(`已更新GitHub变量到最后尝试的ID: ${lastAttemptedId}`);
+    console.log(`已更新D1数据库到最后尝试的ID: ${lastAttemptedId}`);
   }
   
   if (!caseData?.case_html) {

@@ -1,125 +1,116 @@
-// 彻底抑制dotenv的所有输出
-const originalLog = console.log;
-const originalError = console.error;
-const originalWarn = console.warn;
-const originalInfo = console.info;
+const { exec } = require('child_process');
 
-// 禁用所有控制台输出
-console.log = function() {};
-console.error = function() {};
-console.warn = function() {};
-console.info = function() {};
-
-// 启用dotenv
-const dotenv = require('dotenv');
-dotenv.config();
-
-// 恢复控制台输出
-console.log = originalLog;
-console.error = originalError;
-console.warn = originalWarn;
-console.info = originalInfo;
-
-const { execSync } = require('child_process');
-
-// 默认配置：不自动更新GitHub变量
-const DEFAULT_CONFIG = {
-  updateGhVariable: false
+// 配置：只使用D1数据库
+const CONFIG = {
+  useD1Database: true
 };
 
 /**
- * 执行 shell 命令并获取输出
- * @param {string} command - 要执行的命令
- * @returns {string} 命令输出
+ * 从 Cloudflare D1 数据库获取进度 ID
+ * @param {string} taskName - 任务名称
+ * @returns {Promise<number>} 进度 ID
  */
-function executeCommand(command) {
-  try {
-    return execSync(command, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
-  } catch (error) {
-    // 过滤掉变量不存在时的错误信息
-    if (error.stderr && error.stderr.includes('variable') && error.stderr.includes('was not found')) {
-      return '';
+async function getProgressFromD1(taskName) {
+  return new Promise((resolve, reject) => {
+    try {
+      // 使用 wrangler 命令执行 D1 数据库查询
+      const query = `SELECT last_id FROM task_progress WHERE task_name = 'webp_processor'`;
+      const command = `npx wrangler d1 execute cloudflare-demo-db --remote --json --command="${query}"`;
+      
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`D1 查询错误: ${error.message}`);
+          resolve(511); // 默认返回 511
+          return;
+        }
+        
+        if (stderr) {
+          console.error(`D1 查询警告: ${stderr}`);
+        }
+        
+        try {
+          // 修复 JSON 格式，添加缺失的逗号
+          const fixedStdout = stdout
+            .replace(/"results":\s*\[([^\]]*)\]\s*"success"/g, '"results": [$1], "success"')
+            .replace(/"success":\s*true\s*"meta"/g, '"success": true, "meta"')
+            .replace(/"served_by":\s*"([^"]*)"\s*"served_by_region"/g, '"served_by": "$1", "served_by_region"')
+            .replace(/"served_by_region":\s*"([^"]*)"\s*"served_by_colo"/g, '"served_by_region": "$1", "served_by_colo"')
+            .replace(/"served_by_colo":\s*"([^"]*)"\s*"served_by_primary"/g, '"served_by_colo": "$1", "served_by_primary"')
+            .replace(/"served_by_primary":\s*true\s*"timings"/g, '"served_by_primary": true, "timings"')
+            .replace(/"sql_duration_ms":\s*([\d.]+)\s*}/g, '"sql_duration_ms": $1 }')
+            .replace(/"timings":\s*\{([^}]*)\}\s*"duration"/g, '"timings": { $1 }, "duration"')
+            .replace(/"duration":\s*([\d.]+)\s*"changes"/g, '"duration": $1, "changes"')
+            .replace(/"changes":\s*([\d]+)\s*"last_row_id"/g, '"changes": $1, "last_row_id"')
+            .replace(/"last_row_id":\s*([\d]+)\s*"changed_db"/g, '"last_row_id": $1, "changed_db"')
+            .replace(/"changed_db":\s*false\s*"size_after"/g, '"changed_db": false, "size_after"')
+            .replace(/"size_after":\s*([\d]+)\s*"rows_read"/g, '"size_after": $1, "rows_read"')
+            .replace(/"rows_read":\s*([\d]+)\s*"rows_written"/g, '"rows_read": $1, "rows_written"')
+            .replace(/"rows_written":\s*([\d]+)\s*"total_attempts"/g, '"rows_written": $1, "total_attempts"')
+            .replace(/"total_attempts":\s*([\d]+)\s*}/g, '"total_attempts": $1 }');
+          
+          const result = JSON.parse(fixedStdout);
+          if (result[0]?.results && result[0].results.length > 0) {
+            const lastId = parseInt(result[0].results[0].last_id);
+            resolve(isNaN(lastId) ? 511 : lastId);
+          } else {
+            resolve(511); // 默认返回 511
+          }
+        } catch (parseError) {
+          console.error(`解析 D1 查询结果错误: ${parseError.message}`);
+          console.error(`原始输出: ${stdout}`);
+          resolve(511); // 默认返回 511
+        }
+      });
+    } catch (error) {
+      console.error(`获取 D1 进度失败: ${error.message}`);
+      resolve(511); // 默认返回 511
     }
-    // 其他错误信息仍会输出
-    if (error.stderr) {
-      console.error(error.stderr.trim());
-    }
-    return '';
-  }
+  });
 }
 
 /**
- * 设置 GitHub 变量
- * @param {string} name - 变量名
- * @param {string} value - 变量值
- * @returns {boolean} 是否成功
+ * 更新 Cloudflare D1 数据库中的进度 ID
+ * @param {string} taskName - 任务名称
+ * @param {number} newId - 新的进度 ID
+ * @returns {Promise<boolean>} 是否成功
  */
-function setGhVariable(name, value) {
-  try {
-    executeCommand(`gh variable set ${name} --body "${value}"`);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-/**
- * 获取变量值 - 优先从环境变量中读取
- * @param {string} name - 变量名
- * @returns {string|null} 变量值或 null
- */
-function getVariable(name) {
-  try {
-    // 优先从环境变量中读取（包括.env文件）
-    if (process.env[name]) {
-      return process.env[name];
+async function updateProgressInD1(taskName, newId) {
+  return new Promise((resolve, reject) => {
+    try {
+      // 使用 wrangler 命令执行 D1 数据库更新
+      const query = `INSERT OR REPLACE INTO task_progress (task_name, last_id, updated_at) VALUES ('webp_processor', ${newId}, CURRENT_TIMESTAMP)`;
+      const command = `npx wrangler d1 execute cloudflare-demo-db --remote --command="${query}"`;
+      
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`D1 更新错误: ${error.message}`);
+          resolve(false);
+          return;
+        }
+        
+        if (stderr) {
+          console.error(`D1 更新警告: ${stderr}`);
+        }
+        
+        resolve(true);
+      });
+    } catch (error) {
+      console.error(`更新 D1 进度失败: ${error.message}`);
+      resolve(false);
     }
-    
-    return null;
-  } catch (error) {
-    console.error('获取变量失败:', error.message);
-    return null;
-  }
+  });
 }
 
-/**
- * 获取 GitHub 变量值（仅在明确需要时使用）
- * @param {string} name - 变量名
- * @returns {string|null} 变量值或 null
- */
-function getGhVariable(name) {
-  try {
-    const value = executeCommand(`gh variable get ${name}`);
-    return value || null;
-  } catch (error) {
-    // 如果错误是"variable ... was not found"，返回null
-    // 否则重新抛出错误
-    if (error.stdout && error.stdout.includes('variable') && error.stdout.includes('was not found')) {
-      return null;
-    }
-    throw error;
-  }
-}
 
-/**
- * 转换变量名为符合 GitHub 要求的格式
- * @param {string} name - 原始变量名
- * @returns {string} 转换后的变量名
- */
-function convertToGhVariableName(name) {
-  // 替换连字符为下划线，确保符合 GitHub 变量名要求
-  return name.replace(/-/g, '_').toUpperCase();
-}
 
 /**
  * 主函数
  */
-function main() {
+async function main() {
   // 处理命令行参数
   const args = process.argv.slice(2);
   let taskName = 'webp'; // 默认任务名
   let varValue = '1'; // 默认变量值
-  let config = { ...DEFAULT_CONFIG };
   
   // 解析参数
   if (args.length >= 1) {
@@ -127,64 +118,37 @@ function main() {
   }
   
   if (args.length >= 2) {
-    // 检查是否是开启GitHub更新的标志
-    if (args[1] === '--gh' || args[1] === '-gh') {
-      config.updateGhVariable = true;
-      // 如果还有第三个参数，那就是varValue
-      if (args.length >= 3) {
-        varValue = args[2];
-      }
-    } else {
-      varValue = args[1];
-      // 检查是否有第三个参数是开启GitHub更新的标志
-      if (args.length >= 3 && (args[2] === '--gh' || args[2] === '-gh')) {
-        config.updateGhVariable = true;
-      }
-    }
+    // 传入了新值，直接使用该值
+    varValue = args[1];
   }
   
-  // 转换为符合要求的变量名
-  const varName = convertToGhVariableName(`TASK_${taskName}`);
-  
-  // 获取当前变量值 - 优先从环境变量中读取
-  let currentValue = getVariable(varName);
-  
-  // 如果环境变量中没有，且配置了使用GitHub变量，则从GitHub读取
-  if (!currentValue && config.updateGhVariable) {
-    currentValue = getGhVariable(varName);
-  }
-  
+  // 获取当前变量值
+  let currentValue = null;
   let resultValue;
-  if (currentValue === null) {
-    // 变量不存在
-    if (args.length >= 2 && !['--gh', '-gh'].includes(args[1])) {
+  
+  if (CONFIG.useD1Database) {
+    // 从 D1 数据库获取
+    const d1Value = await getProgressFromD1('webp_processor');
+    
+    if (args.length >= 2) {
       // 传入了新值，直接使用该值
       resultValue = varValue;
-      if (config.updateGhVariable) {
-        setGhVariable(varName, resultValue);
-      }
     } else {
-      // 没有传入新值，默认使用1
-      resultValue = '1';
-      if (config.updateGhVariable) {
-        setGhVariable(varName, resultValue);
+      // 没有传入新值，使用当前值+1或默认值1
+      if (d1Value !== 511) {
+        // 使用 D1 数据库中的值+1
+        resultValue = (parseInt(d1Value) + 1).toString();
+      } else {
+        // 默认使用1
+        resultValue = '1';
       }
     }
+    
+    // 更新到 D1 数据库
+    await updateProgressInD1('webp_processor', parseInt(resultValue));
   } else {
-    // 变量存在
-    if (args.length >= 2 && !['--gh', '-gh'].includes(args[1])) {
-      // 传入了新值，直接使用该值
-      resultValue = varValue;
-      if (config.updateGhVariable) {
-        setGhVariable(varName, resultValue);
-      }
-    } else {
-      // 没有传入新值，使用当前值+1
-      resultValue = (parseInt(currentValue) + 1).toString();
-      if (config.updateGhVariable) {
-        setGhVariable(varName, resultValue);
-      }
-    }
+    // 理论上不会执行到这里，因为CONFIG.useD1Database固定为true
+    resultValue = '1';
   }
   
   // 返回结果 - 直接输出值
@@ -193,5 +157,8 @@ function main() {
 
 // 执行主函数
 if (require.main === module) {
-  main();
+  main().catch(error => {
+    console.error('执行主函数时发生错误:', error);
+    process.exit(1);
+  });
 }
