@@ -119,7 +119,39 @@ function readAndUpdateStatus(desiredId = null) {
   }
 }
 
-// 2. 执行查询获取指定ID的案件数据
+// 2. 查询数据库中的案件总数
+function getCaseCount() {
+  try {
+    const sqlQuery = `SELECT COUNT(*) as count FROM missing_persons_cases`;
+    const command = `npx wrangler d1 execute cloudflare-demo-db --remote --command "${sqlQuery}" --json`;
+    
+    const output = execSync(command, { encoding: 'utf8', timeout: 20000 });
+    
+    const jsonStart = output.indexOf('[');
+    const jsonEnd = output.lastIndexOf(']');
+    
+    if (jsonStart === -1 || jsonEnd === -1) {
+      return 0;
+    }
+    
+    const jsonOutput = output.slice(jsonStart, jsonEnd + 1);
+    const result = JSON.parse(jsonOutput);
+    
+    const cases = result[0]?.results || result.results || [];
+    
+    if (cases.length > 0) {
+      return cases[0].count || 0;
+    } else {
+      return 0;
+    }
+    
+  } catch (error) {
+    console.error('getCaseCount 错误:', error.message);
+    return 0;
+  }
+}
+
+// 3. 执行查询获取指定ID的案件数据
 function getCaseById(id) {
   try {
     // 使用简单的查询命令，直接在命令行中执行
@@ -220,29 +252,42 @@ function saveToFile(data, filePath) {
 
 // 5. 主函数
 async function main(startId = null) {
+  // 查询数据库中的案件总数
+  const totalCases = getCaseCount();
+  console.log(`数据库中共有 ${totalCases} 个案件`);
+  
   let targetId;
   let caseData;
   
   if (startId) {
     // 使用用户指定的起始ID
     targetId = startId;
+    console.log(`使用用户指定的起始ID: ${targetId}`);
     caseData = getCaseById(targetId);
   } else {
     // 读取和更新状态文件中的ID
     targetId = readAndUpdateStatus();
+    console.log(`从GitHub变量获取的起始ID: ${targetId}`);
     caseData = getCaseById(targetId);
   }
   
   // 如果没有case_html，查找下一个有case_html的案件
   let attempts = 0;
-  const maxAttempts = 10;
+  const maxAttempts = Math.min(20, totalCases - targetId);
   
   while (!caseData?.case_html && attempts < maxAttempts) {
     attempts++;
-    console.log(`尝试找到有case_html的案件，第${attempts}次尝试...`);
+    const nextId = targetId + attempts;
+    
+    // 确保不超过最大案件ID
+    if (nextId > totalCases) {
+      console.log(`已达到最大案件ID (${totalCases})，未找到有case_html的案件`);
+      break;
+    }
+    
+    console.log(`尝试找到有case_html的案件，第${attempts}次尝试，ID: ${nextId}...`);
     
     // 不更新GitHub变量，直接尝试下一个ID
-    const nextId = targetId + attempts;
     caseData = getCaseById(nextId);
     
     if (caseData?.case_html) {
@@ -255,7 +300,7 @@ async function main(startId = null) {
   }
   
   if (!caseData?.case_html) {
-    console.log(`在尝试${maxAttempts}次后，未找到有case_html的案件`);
+    console.log(`在尝试${attempts}次后，未找到有case_html的案件`);
     return;
   }
   

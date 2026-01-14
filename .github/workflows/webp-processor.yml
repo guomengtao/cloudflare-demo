@@ -1,12 +1,10 @@
-name: 🚀 WebP Data Pipeline
+name: WebP Data Pipeline
 
 on:
   schedule:
-    # 每 30 分钟触发一次
     - cron: '*/30 * * * *'
-  workflow_dispatch:      # 允许手动点击按钮触发任务
+  workflow_dispatch: 
 
-# 核心安全：确保同一时间只有一个任务在跑，避免 TASK_WEBP 进度被多个实例同时修改
 concurrency:
   group: image-processing-sync
   cancel-in-progress: false
@@ -15,10 +13,11 @@ jobs:
   run-batch:
     runs-on: ubuntu-latest
     
-    # 必须开启变量写权限，否则 gh variable set 会报 403 错误
+    # 修改后的权限配置：使用更稳健的 actions 和 contents 权限
     permissions:
       contents: read
-      variables: write
+      actions: write    # 关键：gh variable set 需要 actions 权限
+      checks: write
 
     steps:
       - name: ⬇️ Checkout Repository
@@ -32,11 +31,9 @@ jobs:
       - name: 📦 Install Dependencies
         run: |
           npm install
-          # 确保虚拟机上有 sharp 依赖的库或 webp 工具
           sudo apt-get update && sudo apt-get install -y webp
 
       - name: 🏃 Run Task Runner
-        # 环境变量对接：这里是代码自动识别 Action 环境的关键
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
@@ -44,17 +41,14 @@ jobs:
           B2_BUCKET_NAME: "gudq-missing-assets"
           B2_ENDPOINT: "s3.us-east-005.backblazeb2.com"
           B2_REGION: "us-east-005"
-          # 如果有 Cloudflare D1 相关的配置也放在这里
-          # CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          # CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
-          # 建立必要的目录防止脚本报错
           mkdir -p temp
-          # 执行任务处理器：脚本名 执行次数 (这里设为10)
+          # 确保路径匹配您的仓库结构：是 task/ 还是 jack/ ？
+          # 根据您之前的描述，这里我使用了 task/，请根据实际文件夹名修改
           node task/task-run.js orm-run-webp.js 10
 
       - name: 🧹 Cleanup Workspace
-        if: always() # 无论成功还是中途崩溃，都要清理临时文件
+        if: always()
         run: |
           rm -rf temp/*.jpg
           rm -rf temp/*.webp
