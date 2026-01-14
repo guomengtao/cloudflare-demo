@@ -25,8 +25,9 @@ function getRandomWaitTime(min, max) {
 /**
  * 执行指定的脚本文件
  * @param {string} scriptName - 脚本文件名
+ * @param {string[]} extraArgs - 传递给脚本的额外参数
  */
-function executeScript(scriptName) {
+function executeScript(scriptName, extraArgs = []) {
   try {
     // 构建脚本路径
     let scriptPath;
@@ -49,8 +50,13 @@ function executeScript(scriptName) {
       return false;
     }
     
+    // 构建完整的命令行参数
+    const argsStr = extraArgs.join(' ');
+    const command = `node ${scriptPath} ${argsStr}`;
+    
     logger.info(`开始执行: ${scriptPath}`);
-    execSync(`node ${scriptPath}`, { stdio: 'inherit' });
+    logger.debug(`执行命令: ${command}`);
+    execSync(command, { stdio: 'inherit' });
     logger.success(`执行完成`);
     return true;
   } catch (error) {
@@ -96,62 +102,73 @@ async function main() {
   let count = 0; // 默认无限循环
   let minWait = 9; // 默认最小等待秒数
   let maxWait = 18; // 默认最大等待秒数
+  let extraArgs = []; // 传递给脚本的额外参数
   
   // 解析参数
   if (args.length >= 1) {
     // 第一个参数：循环执行的文件名
     if (args[0].endsWith('.js')) {
       scriptName = args[0];
+      
+      // 解析后续参数
+      if (args.length >= 2) {
+        // 第二个参数：执行次数
+        const parsedCount = parseInt(args[1]);
+        if (!isNaN(parsedCount) && parsedCount >= 0) {
+          count = parsedCount;
+        }
+        
+        // 解析等待时间参数
+        if (args.length >= 3) {
+          const parsedMin = parseInt(args[2]);
+          if (!isNaN(parsedMin) && parsedMin > 0) {
+            minWait = parsedMin;
+          }
+        }
+        
+        if (args.length >= 4) {
+          const parsedMax = parseInt(args[3]);
+          if (!isNaN(parsedMax) && parsedMax >= minWait) {
+            maxWait = parsedMax;
+          }
+        }
+        
+        // 剩余参数作为额外参数传递给脚本
+        if (args.length >= 5) {
+          extraArgs = args.slice(4);
+        }
+      }
     } else {
       // 保持向后兼容：如果第一个参数不是.js文件，则按旧格式解析
       const parsedCount = parseInt(args[0]);
       if (!isNaN(parsedCount) && parsedCount >= 0) {
         count = parsedCount;
       }
-    }
-  }
-  
-  if (args.length >= 2) {
-    // 第二个参数
-    if (args[0].endsWith('.js')) {
-      // 新格式：第一个参数是文件名，第二个参数是执行次数
-      const parsedCount = parseInt(args[1]);
-      if (!isNaN(parsedCount) && parsedCount >= 0) {
-        count = parsedCount;
+      
+      // 解析等待时间参数
+      if (args.length >= 2) {
+        const parsedMin = parseInt(args[1]);
+        if (!isNaN(parsedMin) && parsedMin > 0) {
+          minWait = parsedMin;
+        }
       }
-    } else {
-      // 旧格式：第二个参数是最小等待秒数
-      const parsedMin = parseInt(args[1]);
-      if (!isNaN(parsedMin) && parsedMin > 0) {
-        minWait = parsedMin;
+      
+      if (args.length >= 3) {
+        const parsedMax = parseInt(args[2]);
+        if (!isNaN(parsedMax) && parsedMax >= minWait) {
+          maxWait = parsedMax;
+        }
       }
-    }
-  }
-  
-  if (args.length >= 3) {
-    // 第三个参数
-    if (args[0].endsWith('.js')) {
-      // 新格式：第三个参数是最小等待秒数
-      const parsedMin = parseInt(args[2]);
-      if (!isNaN(parsedMin) && parsedMin > 0) {
-        minWait = parsedMin;
-      }
-    } else {
-      // 旧格式：第三个参数是最大等待秒数
-      const parsedMax = parseInt(args[2]);
-      if (!isNaN(parsedMax) && parsedMax >= minWait) {
-        maxWait = parsedMax;
+      
+      // 剩余参数作为额外参数传递给脚本
+      if (args.length >= 4) {
+        extraArgs = args.slice(3);
       }
     }
   }
   
-  if (args.length >= 4) {
-    // 第四个参数：最大等待秒数
-    const parsedMax = parseInt(args[3]);
-    if (!isNaN(parsedMax) && parsedMax >= minWait) {
-      maxWait = parsedMax;
-    }
-  }
+  // 显示参数信息
+  logger.info(`额外参数: ${extraArgs.length > 0 ? extraArgs.join(' ') : '无'}`);
   
   // 显示启动信息
   logger.start('任务运行器已启动');
@@ -166,7 +183,7 @@ async function main() {
     // 无限循环执行
     while (true) {
       // 执行任务
-      executeScript(scriptName);
+      executeScript(scriptName, extraArgs);
       
       // 计算下一次等待时间
       const waitTime = getRandomWaitTime(minWait, maxWait);
@@ -182,7 +199,7 @@ async function main() {
       logger.info(`执行次数: ${i + 1}/${count}`);
       
       // 执行任务
-      executeScript(scriptName);
+      executeScript(scriptName, extraArgs);
       
       // 如果不是最后一次执行，添加等待
       if (i < count - 1) {

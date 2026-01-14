@@ -21,18 +21,26 @@ function formatPathName(name) {
 
 // 从 jack/ai-cf-to-county.js 复制的图片提取函数
 function hasRealImages(htmlContent, returnUrls = false) {
-    if (!htmlContent) return returnUrls ? [] : false;
+    console.log('调试: hasRealImages 函数被调用');
+    console.log('调试: htmlContent 长度:', htmlContent ? htmlContent.length : 0);
+    
+    if (!htmlContent) {
+        console.log('调试: htmlContent 为空');
+        return returnUrls ? [] : false;
+    }
     
     // 支持多种图片格式
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
     
     // 简化检测逻辑：直接搜索图片URL
-    const urlPattern = new RegExp(`https?:\\/\\/[^\\s"']+\\.(${imageExtensions.join('|')})[^\\s"']*`, 'gi');
+    const urlPattern = new RegExp(`https?:\/\/[^\s"']+\.(${imageExtensions.join('|')})[^\s"']*`, 'gi');
     const urlMatches = htmlContent.match(urlPattern) || [];
+    console.log('调试: URL 模式匹配到', urlMatches.length, '个图片URL');
     
     // 同时检查 <img> 标签
     const imgPattern = /<img[^>]+src="([^"]+)"[^>]*>/gi;
     const imgMatches = htmlContent.match(imgPattern) || [];
+    console.log('调试: <img> 标签匹配到', imgMatches.length, '个');
     
     // 合并所有图片URL
     const allImageUrls = [...urlMatches];
@@ -83,10 +91,12 @@ function hasRealImages(htmlContent, returnUrls = false) {
 }
 
 // 1. 读取和更新状态文件中的ID - 改为从 task-gh-id.js 获取数据
-function readAndUpdateStatus() {
+function readAndUpdateStatus(desiredId = null) {
   try {
     // 调用 task-gh-id.js 脚本获取返回值，传递变量名 webp
-    const command = `node ${path.join(__dirname, 'task-gh-id.js')} webp`;
+    const command = desiredId 
+      ? `node ${path.join(__dirname, 'task-gh-id.js')} webp ${desiredId}` 
+      : `node ${path.join(__dirname, 'task-gh-id.js')} webp`;
     const output = execSync(command, { encoding: 'utf8' }).trim();
     
     // 解析返回的 JSON 数据
@@ -134,9 +144,14 @@ function getCaseById(id) {
     // 获取查询结果
     const cases = result[0]?.results || result.results || [];
     
-    return cases.length > 0 ? cases[0] : null;
+    if (cases.length > 0) {
+      return cases[0];
+    } else {
+      return null;
+    }
     
   } catch (error) {
+    console.error('getCaseById 错误:', error.message);
     return null;
   }
 }
@@ -204,12 +219,45 @@ function saveToFile(data, filePath) {
 }
 
 // 5. 主函数
-async function main() {
-  // 读取和更新状态文件中的ID
-  const targetId = readAndUpdateStatus();
+async function main(startId = null) {
+  let targetId;
+  let caseData;
   
-  // 使用新获取的ID查询案件
-  const caseData = getCaseById(targetId);
+  if (startId) {
+    // 使用用户指定的起始ID
+    targetId = startId;
+    caseData = getCaseById(targetId);
+  } else {
+    // 读取和更新状态文件中的ID
+    targetId = readAndUpdateStatus();
+    caseData = getCaseById(targetId);
+  }
+  
+  // 如果没有case_html，查找下一个有case_html的案件
+  let attempts = 0;
+  const maxAttempts = 10;
+  
+  while (!caseData?.case_html && attempts < maxAttempts) {
+    attempts++;
+    console.log(`尝试找到有case_html的案件，第${attempts}次尝试...`);
+    
+    // 不更新GitHub变量，直接尝试下一个ID
+    const nextId = targetId + attempts;
+    caseData = getCaseById(nextId);
+    
+    if (caseData?.case_html) {
+      // 如果找到有case_html的案件，更新GitHub变量到这个ID
+      readAndUpdateStatus(nextId);
+      targetId = nextId;
+      console.log(`找到有case_html的案件，ID: ${targetId}`);
+      break;
+    }
+  }
+  
+  if (!caseData?.case_html) {
+    console.log(`在尝试${maxAttempts}次后，未找到有case_html的案件`);
+    return;
+  }
   
   if (caseData) {
     let completenessScore = 0;
@@ -230,87 +278,98 @@ async function main() {
       }
     }
     
-    if (caseData.case_html) {
-      // 计算case_html字段的字符数长度
-      completenessScore = caseData.case_html.length;
+    // 检查case_html是否存在
+    if (!caseData.case_html) {
+      console.log('未找到case_html内容，跳过处理');
+      return;
+    }
+    
+    // 计算case_html字段的字符数长度
+    completenessScore = caseData.case_html.length;
+    console.log('调试: case_html 长度:', completenessScore);
+    
+    // 查看case_html的前1000个字符
+    console.log('调试: case_html 前1000个字符:', caseData.case_html.substring(0, 1000) + '...');
+    
+    // 提取 case_html 中的所有图片 URL
+    const imageUrls = hasRealImages(caseData.case_html, true);
+    imageCount = imageUrls.length;
+    
+    console.log(`调试: 找到 ${imageCount} 个图片URL`);
+    
+    // 处理每个图片URL
+    if (imageUrls.length > 0) {
+      // 只输出图片 URL
+      console.log('调试: 图片URL列表:');
+      imageUrls.forEach(url => {
+        console.log(url);
+      });
       
-      // 提取 case_html 中的所有图片 URL
-      const imageUrls = hasRealImages(caseData.case_html, true);
-      imageCount = imageUrls.length;
-      
-      // 处理每个图片URL
-        if (imageUrls.length > 0) {
-          // 只输出图片 URL
-          imageUrls.forEach(url => {
-            console.log(url);
-          });
-          
-          // 转换图片为 WebP 格式并保存
-          if (caseData.case_id) {
-            // 准备州、县、城市名称
-            let state = 'unknown';
-            let county = 'unknown';
-            let city = 'unknown';
-            
-            // 如果有infoData，使用其中的信息
-            if (infoData) {
-              state = formatPathName(infoData.missing_state);
-              county = formatPathName(infoData.missing_county);
-              city = formatPathName(infoData.missing_city);
-            } else {
-              // 否则从case_url中提取信息
-              if (caseData.case_url) {
-                // 示例：https://charleyproject.org/case/jamal-abdulfaruq
-                // 尝试从URL中提取更多信息（如果URL结构包含位置信息）
-                // 目前先使用默认值
-              }
-            }
-            
-            // 遍历所有图片URL
-            for (const url of imageUrls) {
-              try {
-                // 获取原始文件名
-                const urlObj = new URL(url);
-                const originalFileName = path.basename(urlObj.pathname);
-                const fileNameWithoutExt = path.parse(originalFileName).name;
-                const outputFileName = `${fileNameWithoutExt}.webp`;
-                
-                // 创建输出目录结构
-                const outputDir = path.join(__dirname, 'img', state, county, city, caseData.case_id);
-                if (!fs.existsSync(outputDir)) {
-                  fs.mkdirSync(outputDir, { recursive: true });
-                }
-                
-                // 构建输出路径
-                const outputPath = path.join(outputDir, outputFileName);
-                
-                // 调用 convertToWebp 函数转换图片
-                await convertToWebp(url, outputPath, { quality: 80 });
-                
-                // 将转换后的 WebP 文件上传到 B2 存储服务
-                const relativeOutputPath = `./img/${state}/${county}/${city}/${caseData.case_id}/${outputFileName}`;
-                console.log(`正在上传到 B2 存储: ${relativeOutputPath}`);
-                try {
-                  // 使用 b2-image-manager.js 上传图片到 B2
-                  execSync(`node ${path.join(__dirname, 'b2-image-manager.js')} -f "${relativeOutputPath}" -c "${caseData.case_id}" -t "profile"`, { encoding: 'utf8' });
-                  console.log(`✅ B2 上传成功: ${relativeOutputPath}`);
-                } catch (error) {
-                  console.error(`❌ B2 上传失败: ${relativeOutputPath}`, error.message);
-                }
-                
-                // 在转换完成后添加随机等待时间（9-18秒）
-                const waitTime = getRandomWaitTime(9, 18);
-                console.log(`图片转换完成，等待 ${waitTime} 秒...`);
-                await wait(waitTime);
-              } catch (error) {
-                console.error(`处理图片失败 ${url}: ${error.message}`);
-              }
-            }
+      // 转换图片为 WebP 格式并保存
+      if (caseData.case_id) {
+        // 准备州、县、城市名称
+        let state = 'unknown';
+        let county = 'unknown';
+        let city = 'unknown';
+        
+        // 如果有infoData，使用其中的信息
+        if (infoData) {
+          state = formatPathName(infoData.missing_state);
+          county = formatPathName(infoData.missing_county);
+          city = formatPathName(infoData.missing_city);
+        } else {
+          // 否则从case_url中提取信息
+          if (caseData.case_url) {
+            // 示例：https://charleyproject.org/case/jamal-abdulfaruq
+            // 尝试从URL中提取更多信息（如果URL结构包含位置信息）
+            // 目前先使用默认值
+          }
         }
-      } else {
-        // 如果没有找到图片URL，添加简单提示
-        console.log('未找到真实图片URL');
+        
+        // 遍历所有图片URL
+        for (const url of imageUrls) {
+          try {
+            // 获取原始文件名
+            const urlObj = new URL(url);
+            const originalFileName = path.basename(urlObj.pathname);
+            const fileNameWithoutExt = path.parse(originalFileName).name;
+            const outputFileName = `${fileNameWithoutExt}.webp`;
+            
+            // 创建输出目录结构
+            const outputDir = path.join(__dirname, 'img', state, county, city, caseData.case_id);
+            if (!fs.existsSync(outputDir)) {
+              fs.mkdirSync(outputDir, { recursive: true });
+            }
+            
+            // 构建输出路径
+            const outputPath = path.join(outputDir, outputFileName);
+            
+            // 调用 convertToWebp 函数转换图片
+            await convertToWebp(url, outputPath, { quality: 80 });
+            
+            // 将转换后的 WebP 文件上传到 B2 存储服务
+            const relativeOutputPath = `./img/${state}/${county}/${city}/${caseData.case_id}/${outputFileName}`;
+            console.log(`正在上传到 B2 存储: ${relativeOutputPath}`);
+            try {
+              // 使用 b2-image-manager.js 上传图片到 B2
+              execSync(`node ${path.join(__dirname, 'b2-image-manager.js')} -f "${relativeOutputPath}" -c "${caseData.case_id}" -t "profile"`, { encoding: 'utf8' });
+              console.log(`✅ B2 上传成功: ${relativeOutputPath}`);
+            } catch (error) {
+              console.error(`❌ B2 上传失败: ${relativeOutputPath}`, error.message);
+            }
+            
+            // 在转换完成后添加随机等待时间（9-18秒）
+            const waitTime = getRandomWaitTime(9, 18);
+            console.log(`图片转换完成，等待 ${waitTime} 秒...`);
+            await wait(waitTime);
+          } catch (error) {
+            console.error(`处理图片失败 ${url}: ${error.message}`);
+          }
+        }
       }
+    } else {
+      // 如果没有找到图片URL，添加简单提示
+      console.log('未找到真实图片URL');
     }
     
     // 更新missing_persons_info表
@@ -326,7 +385,21 @@ async function main() {
 
 // 执行主函数
 if (require.main === module) {
-  main().catch(error => {
+  // 检查命令行参数是否包含起始ID
+  const args = process.argv.slice(2);
+  let startId = null;
+  
+  if (args.length > 0) {
+    startId = parseInt(args[0]);
+    if (!isNaN(startId)) {
+      console.log(`使用命令行指定的起始ID: ${startId}`);
+    } else {
+      console.log('无效的ID参数，将使用默认起始ID');
+      startId = null;
+    }
+  }
+  
+  main(startId).catch(error => {
     console.error('程序执行错误:', error.message);
     process.exit(1);
   });
