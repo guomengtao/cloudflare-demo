@@ -122,7 +122,7 @@ function readAndUpdateStatus(desiredId = null) {
 // 2. 查询数据库中的案件总数
 function getCaseCount() {
   try {
-    const sqlQuery = `SELECT COUNT(*) as count FROM missing_persons_cases`;
+    const sqlQuery = `SELECT COUNT(id) as count FROM missing_persons_cases`;
     const command = `npx wrangler d1 execute cloudflare-demo-db --remote --command "${sqlQuery}" --json`;
     
     const output = execSync(command, { encoding: 'utf8', timeout: 20000 });
@@ -297,6 +297,13 @@ async function main(startId = null) {
       console.log(`找到有case_html的案件，ID: ${targetId}`);
       break;
     }
+  }
+  
+  // 无论是否找到有case_html的案件，都更新GitHub变量到最后尝试的ID
+  const lastAttemptedId = caseData?.case_html ? targetId : targetId + attempts;
+  if (!startId && lastAttemptedId <= totalCases) {
+    readAndUpdateStatus(lastAttemptedId);
+    console.log(`已更新GitHub变量到最后尝试的ID: ${lastAttemptedId}`);
   }
   
   if (!caseData?.case_html) {

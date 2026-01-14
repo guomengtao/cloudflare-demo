@@ -17,14 +17,31 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "drizzle-kit": "^0.31.8",
     "wrangler": "^4.54.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.1693.0",
     "axios": "^1.13.2",
     "cheerio": "^1.1.2",
+    "consola": "^3.4.2",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
+    "express": "^5.2.1",
     "fs": "0.0.1-security",
+    "node-fetch": "^2.7.0",
     "path": "^0.12.7",
     "playwright": "^1.49.0",
-    "puppeteer": "^24.34.0"
-  }
+    "puppeteer": "^24.34.0",
+    "sharp": "^0.34.5",
+    "yargs": "^18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guomengtao/cloudflare-demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/guomengtao/cloudflare-demo/issues"
+  },
+  "homepage": "https://github.com/guomengtao/cloudflare-demo#readme"
 }

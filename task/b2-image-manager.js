@@ -54,6 +54,11 @@ class B2ImageManager {
     // 1. 单张图片上传
     async uploadSingleImage(filePath, caseId, imageType = 'profile') {
         try {
+            // 检查文件是否存在
+            if (!fs.existsSync(filePath)) {
+                throw new Error(`文件不存在: ${filePath}`);
+            }
+            
             const fileBuffer = fs.readFileSync(filePath);
             const fileName = path.basename(filePath);
             const fileExt = path.extname(fileName).toLowerCase();
