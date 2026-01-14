@@ -5,6 +5,7 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch: 
 
+# 确保同一时间只有一个任务在跑，防止进度冲突
 concurrency:
   group: image-processing-sync
   cancel-in-progress: false
@@ -13,12 +14,11 @@ jobs:
   run-batch:
     runs-on: ubuntu-latest
     
-    # 全量权限声明，不给 403 任何借口
+    # 显式声明所有必要权限，彻底解决 gh variable 403 错误
     permissions:
       contents: write
       actions: write
       variables: write
-      id-token: write
 
     steps:
       - name: Checkout Repository
@@ -31,25 +31,41 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          # 安装脚本所需的全部依赖
           npm install consola aws-sdk dotenv yargs sharp wrangler
+          # 安装系统级 WebP 工具
           sudo apt-get update && sudo apt-get install -y webp
 
       - name: Run Task Runner
-        # 这一块是核心：确保所有环境变量和 Token 都注入到进程
         env:
+          # GitHub 权限 Token (由 Actions 自动生成)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          
+          # Cloudflare 配置 (务必确保 Secrets 中的名字与此处一致)
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          
+          # Backblaze B2 配置
           B2_ACCESS_KEY_ID: ${{ secrets.B2_ACCESS_KEY_ID }}
           B2_SECRET_ACCESS_KEY: ${{ secrets.B2_SECRET_ACCESS_KEY }}
           B2_BUCKET_NAME: "gudq-missing-assets"
           B2_ENDPOINT: "s3.us-east-005.backblazeb2.com"
           B2_REGION: "us-east-005"
         run: |
+          # 1. 创建临时目录
           mkdir -p temp
-          # 执行脚本
+          
+          # 2. 验证 Cloudflare 认证状态 (调试用，成功后可删除)
+          echo "Checking Cloudflare auth..."
+          npx wrangler whoami
+          
+          # 3. 执行任务
+          # 这里的 10 代表一次 Workflow 运行执行 10 个批次
           node task/task-run.js orm-run-webp.js 10
 
       - name: Cleanup Workspace
         if: always()
-        run: rm -rf temp/*.jpg temp/*.webp
+        run: |
+          # 无论成功失败，清理掉临时生成的图片文件，释放磁盘空间
+          rm -rf temp/*.jpg
+          rm -rf temp/*.webp
