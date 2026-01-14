@@ -364,12 +364,20 @@ async function main(startId = null) {
             const relativeOutputPath = `./img/${state}/${county}/${city}/${caseData.case_id}/${outputFileName}`;
             console.log(`正在上传到 B2 存储: ${relativeOutputPath}`);
             try {
-              // 使用 b2-image-manager.js 上传图片到 B2
-              execSync(`node ${path.join(__dirname, 'b2-image-manager.js')} -f "${outputPath}" -c "${caseData.case_id}" -t "profile"`, { encoding: 'utf8' });
+                // 使用 b2-image-manager.js 上传图片到 B2
+                execSync(`node ${path.join(__dirname, 'b2-image-manager.js')} -f "${outputPath}" -c "${caseData.case_id}" -t "profile"`, { encoding: 'utf8' });
                 console.log(`✅ B2 上传成功: ${relativeOutputPath}`);
+                
+                // 上传成功后删除本地WebP文件，保持本地干净
+                try {
+                  fs.unlinkSync(outputPath);
+                  console.log(`🗑️  已删除本地WebP文件: ${relativeOutputPath}`);
+                } catch (deleteError) {
+                  console.error(`⚠️  删除本地WebP文件失败: ${relativeOutputPath}`, deleteError.message);
+                }
               } catch (error) {
                 console.error(`❌ B2 上传失败: ${relativeOutputPath}`, error.message);
-            }
+              }
             
             // 在转换完成后添加随机等待时间（9-18秒）
             const waitTime = getRandomWaitTime(9, 18);
