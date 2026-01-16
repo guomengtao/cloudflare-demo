@@ -1,14 +1,14 @@
 name: AI SEO Automation
 
 on:
-  workflow_dispatch: # 手动触发，方便随时监控
+  workflow_dispatch:
   schedule:
-    - cron: '15 * * * *' # 每小时的 15 分执行一次，保持云端活跃
+    - cron: '*/15 * * * *' # 既然配额多，建议改成每 15 分钟跑一次
 
 jobs:
   seo-analysis:
     runs-on: ubuntu-latest
-    timeout-minutes: 30 # 给 AI 预热和重试留足时间
+    timeout-minutes: 30
 
     steps:
       - name: Checkout Code
@@ -27,6 +27,12 @@ jobs:
         run: node ace ai:seo
         env:
           NODE_ENV: production
+          # --- 补充这些基础变量，跳过 Adonis 启动验证 ---
+          PORT: 3333
+          HOST: 0.0.0.0
+          LOG_LEVEL: info
+          APP_KEY: ${{ secrets.APP_KEY }} 
+          
           # 1. 数据库连接 (Neon)
           DB_CONNECTION: pg
           PG_HOST: ${{ secrets.PG_HOST }}
@@ -36,5 +42,6 @@ jobs:
           PG_DB_NAME: ${{ secrets.PG_DB_NAME }}
           PG_SSL: true
 
-          # 2. AI 服务配置 (统一使用 Hugging Face Token)
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          # 2. AI 服务配置 (切换到 Google AI Studio)
+          # 注意：这里的名字要和 SeoAiService.ts 里的 env.get('GEMINI_API_KEY') 保持一致
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
