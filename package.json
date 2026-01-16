@@ -57,6 +57,7 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.6.1",
     "@aws-sdk/client-s3": "^3.968.0",
+    "@google/generative-ai": "^0.24.1",
     "@huggingface/hub": "^2.7.1",
     "@rlanz/bull-queue": "^3.1.0",
     "@vinejs/vine": "^3.0.1",
