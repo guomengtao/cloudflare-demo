@@ -29,11 +29,11 @@ jobs:
           NODE_ENV: production
           # 1. 数据库连接 (Neon)
           DB_CONNECTION: pg
-          PG_HOST: ${{ secrets.DB_PG_HOST }}
-          PG_PORT: ${{ secrets.DB_PG_PORT }}
-          PG_USER: ${{ secrets.DB_PG_USER }}
-          PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
-          PG_DB_NAME: ${{ secrets.DB_PG_DATABASE }}
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_PORT: ${{ secrets.PG_PORT }}
+          PG_USER: ${{ secrets.PG_USER }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          PG_DB_NAME: ${{ secrets.PG_DB_NAME }}
           PG_SSL: true
 
           # 2. AI 服务配置 (统一使用 Hugging Face Token)
