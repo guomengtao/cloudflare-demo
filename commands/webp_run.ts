@@ -1,85 +1,124 @@
 import { BaseCommand } from '@adonisjs/core/ace'
-import Case from '#models/case'
-import sharp from 'sharp'
-import axios from 'axios'
-import B2Service from '#services/b2_service'
+import db from '@adonisjs/lucid/services/db'
+import ImageProcessorService from '#services/image_processor_service'
+import HfService, { HfFile } from '#services/hf_service'
 
 export default class ProcessImages extends BaseCommand {
   static commandName = 'webp:run'
+  static description = '全自动流水线：B2 同步 + HF 批量备份（精简解耦版）'
   static options = { startApp: true }
 
   async run() {
-    this.logger.info('🚀 启动 B2 全自动图片流水线...')
+    this.logger.info('🚀 启动图片处理流水线...')
+    const processor = new ImageProcessorService()
 
     try {
-      // 1. 捞出待处理数据 (每次 50 条，防止内存溢出)
-      const records = await Case.query()
-        .where('image_webp_status', 0)
-        .whereNotNull('case_html')
-        .limit(50)
+      // 1. 获取进度统计
+      const stats = await this.getStats()
+      this.logger.info(`📊 总进度: ${stats.percent}% | 待处理: ${stats.remaining} 个案件`)
+
+      // 2. 获取待处理案件 (关联 info 表获取 url_path)
+      const records = await db
+        .from('missing_persons_cases')
+        .join('missing_persons_info', 'missing_persons_cases.case_id', 'missing_persons_info.case_id')
+        .select(
+          'missing_persons_cases.id',
+          'missing_persons_cases.case_id',
+          'missing_persons_cases.case_html',
+          'missing_persons_info.url_path'
+        )
+        .where('missing_persons_cases.image_webp_status', 0)
+        .whereNotNull('missing_persons_info.url_path')
+        .limit(50) // 每轮处理 50 个案件，防止内存溢出
 
       if (records.length === 0) {
-        this.logger.success('✅ 所有任务已处理完成！')
+        this.logger.success('✅ 所有任务已完成！')
         return
       }
 
+      const hfQueue: HfFile[] = []
+      let processedCasesCount = 0
+
       for (const record of records) {
-        this.logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
-        this.logger.info(`📂 正在处理案件: ${record.caseId}`)
-
-        // 2. 使用宽泛正则提取所有图片链接
-        const htmlContent = record.caseHtml || ''
-
+        this.logger.info(`🔍 正在处理: ${record.case_id}`)
         
+        // 解析 HTML 中的图片链接
         const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi
-        const urls = [...htmlContent.matchAll(imgRegex)]
-          .map((m) => m[1])
-          .filter(url => /\.(jpg|jpeg|png|gif|webp)/i.test(url))
+        const matches = [...(record.case_html?.matchAll(imgRegex) || [])]
+        const urls = matches.map(m => m[1])
 
         if (urls.length === 0) {
-          this.logger.warning('⚠️ 无图片链接，跳过。')
-          record.imageWebpStatus = 1
-          await record.save()
+          // 无图案件直接标记完成
+          await db.from('missing_persons_cases').where('id', record.id).update({ 
+            image_webp_status: 1,
+            image_count: 0 
+          })
           continue
         }
 
-        let successCount = 0
-        for (let i = 0; i < urls.length; i++) {
-          const rawUrl = urls[i]
-          try {
-            this.logger.info(`  [${i + 1}/${urls.length}] 📥 下载中...`)
-            
-            // 3. 内存转换流程
-            const response = await axios.get(rawUrl, { 
-              responseType: 'arraybuffer', 
-              timeout: 20000 
+        const cleanPath = (record.url_path || '').replace(/^\/|\/$/g, '')
+
+        // 3. 调用 Service 处理核心业务 (B2 上传 + 数据库 Assets 录入)
+        const { caseImageCount, processedForHf } = await processor.processCaseImages(
+          record, 
+          urls, 
+          cleanPath
+        )
+
+        // 4. 将图片 buffer 存入 HF 待上传队列
+        if (processedForHf && processedForHf.length > 0) {
+          processedForHf.forEach(item => {
+            hfQueue.push({
+              path: item.path,
+              content: new Blob([item.buffer])
             })
-
-            this.logger.info(`  [${i + 1}/${urls.length}] 🪄 转 WebP 并上传 B2...`)
-            const webpBuffer = await sharp(Buffer.from(response.data))
-              .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
-              .webp({ quality: 80 })
-              .toBuffer()
-
-            // 4. 定义云端路径 (例如: cases/estelle-lois-abbott/1.webp)
-            const cloudKey = `cases/${record.caseId}/${i + 1}.webp`
-            const publicUrl = await B2Service.upload(webpBuffer, cloudKey)
-
-            this.logger.success(`  └─ ✅ 成功: ${publicUrl}`)
-            successCount++
-          } catch (err) {
-            this.logger.error(`  └─ ❌ 失败 [${rawUrl.substring(0, 30)}]: ${err.message}`)
-          }
+          })
         }
 
-        // 5. 回写状态
-        record.imageWebpStatus = 1
-        record.imageCount = successCount
-        await record.save()
-        this.logger.info(`🎉 案件 ${record.caseId} 完成，成功 ${successCount} 张。`)
+        // 5. 更新主表状态
+        await db.from('missing_persons_cases').where('id', record.id).update({
+          image_webp_status: 1,
+          image_count: caseImageCount
+        })
+
+        processedCasesCount++
+        this.logger.success(`   └─ ✅ 完成！存入 ${caseImageCount} 张图片`)
       }
+
+      // 6. 统一推送到 Hugging Face 备份
+      if (hfQueue.length > 0) {
+        this.logger.info(`📤 正在推送本轮 ${hfQueue.length} 张图到 Hugging Face...`)
+        const commitMsg = `Batch: ${processedCasesCount} cases (${hfQueue.length} images)`
+        await HfService.batchUpload(hfQueue, commitMsg)
+        this.logger.success(`✨ HF 备份同步成功！`)
+      }
+
     } catch (error) {
-      this.logger.error(`🚨 系统崩溃: ${error.message}`)
+      this.logger.error(`🚨 运行出错: ${error.message}`)
+    }
+  }
+
+  /**
+   * 获取处理进度统计
+   */
+  async getStats() {
+    const s = await db
+      .from('missing_persons_cases')
+      .join('missing_persons_info', 'missing_persons_cases.case_id', 'missing_persons_info.case_id')
+      .whereNotNull('missing_persons_info.url_path')
+      .select(
+        db.raw('count(*) as total'),
+        db.raw('sum(case when image_webp_status = 1 then 1 else 0 end) as completed')
+      ).first()
+    
+    const total = parseInt(s.total) || 0
+    const completed = parseInt(s.completed) || 0
+
+    return {
+      total,
+      completed,
+      remaining: total - completed,
+      percent: total > 0 ? ((completed / total) * 100).toFixed(2) : '0'
     }
   }
 }
