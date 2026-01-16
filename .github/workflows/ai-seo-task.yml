@@ -1,0 +1,40 @@
+name: AI SEO Automation
+
+on:
+  workflow_dispatch: # 手动触发，方便随时监控
+  schedule:
+    - cron: '15 * * * *' # 每小时的 15 分执行一次，保持云端活跃
+
+jobs:
+  seo-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30 # 给 AI 预热和重试留足时间
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run AI SEO Pipeline
+        run: node ace ai:seo
+        env:
+          NODE_ENV: production
+          # 1. 数据库连接 (Neon)
+          DB_CONNECTION: pg
+          PG_HOST: ${{ secrets.DB_PG_HOST }}
+          PG_PORT: ${{ secrets.DB_PG_PORT }}
+          PG_USER: ${{ secrets.DB_PG_USER }}
+          PG_PASSWORD: ${{ secrets.DB_PG_PASSWORD }}
+          PG_DB_NAME: ${{ secrets.DB_PG_DATABASE }}
+          PG_SSL: true
+
+          # 2. AI 服务配置 (统一使用 Hugging Face Token)
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
